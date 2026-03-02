@@ -11,13 +11,13 @@ $src['irac']    = "$datdir/spec.irac.txt";
 $src['hrac']    = "$datdir/spec.hrac.txt";
 $src['ojas']    = "$datdir/spec.ojas.txt";
 $src['bunrui']  = "$datdir/spec.bunrui.txt";
-$src['dokusei'] = "$datdir/spec.dokusei.txt";
-$src['suisan']  = "$datdir/spec.suisan.txt";
-$src['seizai']  = "$datdir/spec.seizai.txt";
 $src['ryutsu']  = "$datdir/spec.ryutsu.txt";
 $src['shurui']  = "$datdir/spec.idshurui.txt";
 $src['beppyo1'] = "$datdir/spec.beppyo1.txt";
 $src['feedrice'] = "$datdir/spec.feedrice.txt";
+//$src['dokusei'] = "$datdir/spec.dokusei.txt";
+//$src['suisan']  = "$datdir/spec.suisan.txt";
+//$src['seizai']  = "$datdir/spec.seizai.txt";
 //$src['gun_odan'] = "$datdir/spec.gun_odan.txt";
 //$src['tsumajiro'] = "$datdir/spec.tsumajiro.txt";
 ?>
