@@ -1,0 +1,659 @@
+--/d
+/* FRAC Code List http://www.jfrac.com */
+create table if not exists spec.info (item varchar primary key, value varchar);
+insert or replace into spec.info (item, value) values ('frac', 'CLJ2025.05.21');
+/* Mode of Action and Target Site */
+drop table if exists spec.frac_mg;
+create table spec.frac_mg (mid varchar primary key, sayoten varchar, sayokiko varchar, risk varchar);
+begin transaction;
+insert into frac_mg values ('4','A1:RNAポリメラーゼI','A核酸合成代謝','高(耐性管理ガイドライン有り)、卵菌類(べと病、疫病、白さび病)で耐性・交差耐性');
+insert into frac_mg values ('8','A2:アデノシンデアミナーゼ','A核酸合成代謝','中(要耐性管理)、うどんこ病で耐性・交差耐性');
+insert into frac_mg values ('32','A3:DNA/RNA生合成(提案中)','A核酸合成代謝','耐性菌未発生');
+insert into frac_mg values ('31','A4:DNAトポイソメラーゼ タイプII(ジャイレース)','A核酸合成代謝','糸状菌の耐性不明(耐性細菌有り)(要耐性管理)');
+insert into frac_mg values ('52','A5:デノボ型ピリミジン生合成におけるヒドロオロト酸脱水素酵素阻害','A核酸合成代謝','中～高(要耐性管理)');
+insert into frac_mg values ('1','B1:チューブリン重合','B細胞骨格とモーター蛋白質','高(F:10(B2)と負の交差)(耐性管理ガイドライン有り)、広範囲の耐性菌が存在'); --2022.5.31標的部位名変更
+insert into frac_mg values ('10','B2:チューブリン重合','B細胞骨格とモーター蛋白質','高(F:1(B1)と負の交差)(要耐性管理)'); --2022.5.31標的部位名変更
+insert into frac_mg values ('22','B3:チューブリン重合','B細胞骨格とモーター蛋白質','低～中(要耐性管理)'); --2022.5.31標的部位名変更
+insert into frac_mg values ('20','B4：細胞分裂(作用点不明)','B細胞骨格とモーター蛋白質','中(要耐性管理)、ブドウべと病で耐性'); --2025.8.6耐性リスク変更
+insert into frac_mg values ('43','B5:スペクトリン様蛋白質の非局在化','B細胞骨格とモーター蛋白質','耐性菌未発生');
+insert into frac_mg values ('47','B6:アクチン/ミオシン/フィンブリン機能','B細胞骨格とモーター蛋白質','中～高(要耐性管理)、Fusarium graminearumで耐性');
+insert into frac_mg values ('50','B6:アクチン/ミオシン/フィンブリン機能','B細胞骨格とモーター蛋白質','中(要耐性管理)、低感受性コムギうどんこ病(Blumeria, Sphaerotheca 属)');
+insert into frac_mg values ('53','B7:チューブリン動的調節','B細胞骨格とモーター蛋白質','高');
+insert into frac_mg values ('39','C1:複合体I:NADH酸化還元酵素','C呼吸','耐性菌未発生');
+insert into frac_mg values ('7','C2:複合体II:コハク酸脱水素酵素','C呼吸','中～高(耐性管理ガイドライン有り)、複数の耐性菌');
+insert into frac_mg values ('11','C3:複合体III:チトクロームbc1(ユビキノール酸化酵素)Qo部位(cyt b遺伝子)','C呼吸','高(耐性管理ガイドライン有り)、各種糸状菌で耐性');
+insert into frac_mg values ('11A','C3:複合体III:チトクロームbc1(ユビキノール酸化酵素)Qo部位(cyt b遺伝子)','C呼吸','高(耐性管理ガイドライン有り)、耐性菌未発生、G143A突然変異株のコード11(QoI)剤と交差しない');
+insert into frac_mg values ('21','C4:複合体III:ユビキノン還元酵素Qi部位','C呼吸','中～高と推定(要耐性管理)');
+insert into frac_mg values ('29','C5:酸化的リン酸化の脱共役','C呼吸','低、フルアジナム耐性ボトリチス属');
+insert into frac_mg values ('30','C6:酸化的リン酸化、ATP合成酵素の阻害','C呼吸','低～中、耐性菌有り');
+insert into frac_mg values ('38','C7:ATP輸送(提案中)','C呼吸','低、耐性菌有り');
+insert into frac_mg values ('45','C8:複合体III:ユビキノン還元酵素(Qi,Qo部位、スチグマテリン結合様式)','C呼吸','中～高と推定(要耐性管理)(QoIと交差しない)'); --2024.4.5 標的部位 Qi 追加、2024.5.1JCPA翻訳版で修正
+insert into frac_mg values ('9','D1:メチオニン生合成(cgs遺伝子)(提案中)','Dアミノ酸および蛋白質合成','中(耐性管理ガイドライン有り)、灰色かび病、黒星病で耐性');
+insert into frac_mg values ('23','D2:蛋白質合成(リボソーム翻訳終了段階)','Dアミノ酸および蛋白質合成','低～中(要耐性管理)');
+insert into frac_mg values ('24','D3:蛋白質合成(リボソーム翻訳開始段階)','Dアミノ酸および蛋白質合成','中(要耐性管理)、糸状菌・細菌で耐性');
+insert into frac_mg values ('25','D4:蛋白質合成(リボソーム翻訳開始段階)','Dアミノ酸および蛋白質合成','高(要耐性管理)、耐性菌有り');
+insert into frac_mg values ('41','D5:蛋白質合成(リボソームポリペプチド伸長段階)','Dアミノ酸および蛋白質合成','高(要耐性管理)、耐性菌有り');
+insert into frac_mg values ('54','D6:ロイシル-tRNA合成酵素(LeuRNA)','Dアミノ酸および蛋白質合成','低(収穫後使用剤のため)');
+insert into frac_mg values ('13','E1:シグナル伝達(作用機序不明)','Eシグナル伝達','中(要耐性管理)、キノキシフェン耐性菌有り');
+insert into frac_mg values ('12','E2:浸透圧シグナル伝達におけるMAP/ヒスチジンキナーゼ(os-2,HOG1)','Eシグナル伝達','低～中(要耐性管理)、散発的に耐性');
+insert into frac_mg values ('2','E3:浸透圧シグナル伝達におけるMAP/ヒスチジンキナーゼ(os-1,Daf1)','Eシグナル伝達','中～高(耐性管理ガイドライン有り)、ボトリチス属で耐性');
+insert into frac_mg values ('6','F2:リン脂質生合成、メチルトランスフェラーゼ','F脂質生合成または輸送/細胞膜の構造または機能','低～中(耐性リスクがある病原菌での使用では要耐性管理)、耐性菌有り');
+insert into frac_mg values ('14','F3:細胞の過酸化(提案中)','F脂質生合成または輸送/細胞膜の構造または機能','低～中、耐性菌有り');
+insert into frac_mg values ('28','F4:細胞膜透過性、脂肪酸(提案中)','F脂質生合成または輸送/細胞膜の構造または機能','低～中(要耐性管理)');
+--insert into frac_mg values ('44','F6:病原菌細胞膜の微生物撹乱','F脂質生合成または輸送/細胞膜の構造または機能','耐性菌未発生'); -- reclassified to MB02 in 2020
+--insert into frac_mg values ('46','F7:細胞膜の撹乱','F脂質生合成または輸送/細胞膜の構造または機能','耐性菌未発生'); -- reclassified to BM01 in 2021
+insert into frac_mg values ('48','F8:エルゴステロール結合','F脂質生合成または輸送/細胞膜の構造または機能','耐性菌未発生');
+insert into frac_mg values ('49','F9:脂質恒常性および輸送/貯蔵','F脂質生合成または輸送/細胞膜の構造または機能','中～高と推定(要耐性管理)');
+insert into frac_mg values ('51','F10:細胞膜脂質画分との相互作用、細胞膜への複数の作用','F脂質生合成または輸送/細胞膜の構造または機能','耐性菌未発生'); --2022.5.31追加
+insert into frac_mg values ('3','G1:ステロール生合成におけるC14位の脱メチル化(erg11/cyp51)','G細胞膜のステロール生合成','中(耐性管理ガイドライン有り)(他のSBIクラスと交差しない)、各種の菌で耐性');
+insert into frac_mg values ('5','G2:ステロール生合成における還元酵素及びイソメラーゼ(erg24,erg2)','G細胞膜のステロール生合成','低～中(耐性管理ガイドライン有り)(他のSBIクラスと交差しない)、感受性低下うどんこ病');
+insert into frac_mg values ('17','G3:ステロール生合成系のC4位脱メチル化における3-ケト還元酵素(erg27)','G細胞膜のステロール生合成','低～中(要耐性管理)');
+insert into frac_mg values ('18','G4:ステロール生合成系のスクワレンエポキシダーゼ(erg1)','G細胞膜のステロール生合成','耐性菌未発生');
+insert into frac_mg values ('19','H4:キチン合成酵素','H細胞壁生合成','中(要耐性管理)、耐性菌有り');
+insert into frac_mg values ('40','H5:セルロース合成酵素','H細胞壁生合成','低～中(耐性管理ガイドライン有り)、ブドウべと病で耐性');
+insert into frac_mg values ('16.1','I1:メラニン生合成の還元酵素','I細胞壁のメラニン合成','耐性菌未発生');
+insert into frac_mg values ('16.2','I2:メラニン生合成の脱水酵素','I細胞壁のメラニン合成','中(要耐性管理)、耐性菌有り');
+insert into frac_mg values ('16.3','I3:メラニン生合成のポリケタイド合成酵素','I細胞壁のメラニン合成','耐性菌未発生(抵抗性誘導付与)');
+insert into frac_mg values ('P01','P01:サリチル酸シグナル伝達','P宿主植物の抵抗性誘導','耐性菌未発生');
+insert into frac_mg values ('P02','P02:サリチル酸シグナル伝達','P宿主植物の抵抗性誘導','耐性菌未発生');
+insert into frac_mg values ('P03','P03:サリチル酸シグナル伝達','P宿主植物の抵抗性誘導','耐性菌未発生');
+insert into frac_mg values ('P04','P04:多糖類エリシター','P宿主植物の抵抗性誘導','耐性菌未発生');
+insert into frac_mg values ('P05','P05:アントラキノンエリシター','P宿主植物の抵抗性誘導','耐性菌未発生');
+insert into frac_mg values ('P06','P06:微生物エリシター','P宿主植物の抵抗性誘導','耐性菌未発生');
+insert into frac_mg values ('P07','P07:ホスホナート','P宿主植物の抵抗性誘導','低、耐性菌有り');
+insert into frac_mg values ('P08','P08:サリチル酸シグナル伝達','P宿主植物の抵抗性誘導','耐性菌未発生'); --2021.4.5追加
+insert into frac_mg values ('P09','P09:ペプチドエリシター ','P宿主植物の抵抗性誘導','耐性菌未発生'); --2025.8.6追加
+insert into frac_mg values ('P10','P10:ディフェンスプライミング物質','P宿主植物の抵抗性誘導','耐性菌未発生'); --2025.8.6追加
+insert into frac_mg values ('27','不明','U作用機構不明','低～中(要耐性管理)、耐性菌有り');
+insert into frac_mg values ('34','不明','U作用機構不明','耐性菌未発生');
+insert into frac_mg values ('35','不明','U作用機構不明','耐性菌未発生');
+insert into frac_mg values ('36','不明','U作用機構不明','耐性菌未発生');
+insert into frac_mg values ('37','不明','U作用機構不明','耐性菌未発生');
+insert into frac_mg values ('U06','不明','U作用機構不明','うどんこ病(Sphaerotheca)で耐性(要耐性管理)');
+insert into frac_mg values ('U12','細胞膜の崩壊(提案中)','U作用機構不明','低～中(要耐性管理)、リンゴ黒星病で耐性');
+insert into frac_mg values ('U13','不明','U作用機構不明','うどんこ病(Sphaerotheca 及び Podosphaera xanthii)で耐性(要耐性管理)');
+insert into frac_mg values ('U14','不明','U作用機構不明','耐性菌未発生');
+insert into frac_mg values ('U16','複合体III：チトクロームbc1(結合部位不明)(提案中)','U作用機構不明','中と推定(要耐性管理)(QoIと交差しない)');
+insert into frac_mg values ('U17','不明','U作用機構不明','耐性菌未発生(PA,QoI,CAAと交差しない)');
+insert into frac_mg values ('U18','不明(トレハラーゼ阻害)、トレハロースによる抵抗性誘導(提案中)','U作用機構不明','耐性菌未発生');
+insert into frac_mg values ('U19','不明','U作用機構不明','耐性菌未発生'); --2025.8.6追加
+insert into frac_mg values ('NC','不明','NC未分類','耐性菌未発生');
+insert into frac_mg values ('M','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M01','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M02','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M03','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M04','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M05','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M06','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M07','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M08','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M09','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M10','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M11','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('M12','多作用点接触活性','M多作用点接触活性','低');
+insert into frac_mg values ('BM01','ポリペプチド:細胞壁、膜を介したイオン輸送における複数の効果(キレート効果)、フェノール等:真菌胞子と発芽生殖管への影響・抵抗性誘導、テルペン類:細胞膜破壊、細胞壁、植物防御機構の誘導','BM複数の作用機構を有する生物農薬/植物抽出物','耐性菌未発生');
+insert into frac_mg values ('BM02','競合、菌寄生、抗菌作用、殺菌性リポペプチドによる膜破壊、溶菌酵素及び誘導抵抗性','BM複数の作用機構を有する生物農薬/微生物農薬','耐性菌未発生');
+insert into frac_mg values ('BM03','β(1,3)グルカン合成酵素・キチン合成酵素の阻害とそれに伴う細胞壁生合成阻害、膜・膜機能・ミトコンドリア及び酸化過程の破壊','BM植物または微生物由来の代謝産物、またはこれらの合成物','耐性菌未発生'); --2024.4.5追加、2025.8.6CLJ翻訳版で修正
+insert into frac_mg values ('未','未分類','未分類',NULL);-- FRAC Uncategorized
+commit;
+/* Chemical Family */
+drop table if exists spec.frac_sg;
+create table spec.frac_sg (mid varchar, sid varchar primary key, keito varchar, fgroup varchar);
+begin transaction;
+insert into frac_sg values ('4','4a','アシルアラニン','PA殺菌剤(フェニルアミド)');
+insert into frac_sg values ('4','4b','オキサゾリジノン','PA殺菌剤(フェニルアミド)');
+insert into frac_sg values ('4','4c','ブチロラクトン','PA殺菌剤(フェニルアミド)');
+insert into frac_sg values ('8','8a','ヒドロキシピリミジン','ヒドロキシ-(2-アミノ-)ピリミジン');
+insert into frac_sg values ('32','32a','イソオキサゾール','芳香族ヘテロ環');
+insert into frac_sg values ('32','32b','イソチアゾロン','芳香族ヘテロ環');
+insert into frac_sg values ('32','32c','イミノトシルピリミジノン','芳香族ヘテロ環'); --2025.8.6追加
+insert into frac_sg values ('31','31a','カルボン酸','カルボン酸');
+insert into frac_sg values ('52','52a','フェニルプロパノール','DHODHI殺菌剤'); --2021.5.31追加
+insert into frac_sg values ('52','52b','ジヒドロイソキノリン','DHODHI殺菌剤'); --2024.4.5追加
+insert into frac_sg values ('1','1a','ベンゾイミダゾール','MBC殺菌剤(メチルベンゾイミダゾールカーバメート)');
+insert into frac_sg values ('1','1b','チオファネート','MBC殺菌剤(メチルベンゾイミダゾールカーバメート)');
+insert into frac_sg values ('10','10a','N-フェニルカーバメート','N-フェニルカーバメート');
+insert into frac_sg values ('22','22a','トルアミド','ベンズアミド');
+insert into frac_sg values ('22','22b','エチルアミノチアゾールカルボキサミド','チアゾールカルボキサミド');
+insert into frac_sg values ('20','20a','フェニルウレア','フェニルウレア');
+insert into frac_sg values ('43','43a','ピリジニルメチルベンゾアミド','ベンズアミド');
+insert into frac_sg values ('47','47a','アミノシアノアクリレート','シアノアクリレート');
+insert into frac_sg values ('50','50a','ベンゾフェノン','アリルフェニルケトン');
+insert into frac_sg values ('50','50b','ベンゾイルピリジン','アリルフェニルケトン');
+insert into frac_sg values ('53','53a','ピリダジン','ピリダジン'); --2021.5.31追加
+insert into frac_sg values ('39','39a','ピリミジンアミン','ピリミジンアミン');
+insert into frac_sg values ('39','39b','ピラゾールカルボキサミド','ピラゾールカルボキサミド');
+insert into frac_sg values ('39','39c','キナゾリン','キナゾリン');
+insert into frac_sg values ('7','7a','フェニルベンズアミド','SDHI(コハク酸脱水素酵素阻害剤)');
+insert into frac_sg values ('7','7b','フェニルオキソエチルチオフェンアミド類','SDHI(コハク酸脱水素酵素阻害剤)');
+insert into frac_sg values ('7','7c','ピリジニルエチルベンズアミド','SDHI(コハク酸脱水素酵素阻害剤)');
+insert into frac_sg values ('7','7l','フェニルシクロブチルピリジンアミド','SDHI(コハク酸脱水素酵素阻害剤)'); --2021.4.5追加
+insert into frac_sg values ('7','7d','フランカルボキサミド','SDHI(コハク酸脱水素酵素阻害剤)');
+insert into frac_sg values ('7','7e','オキサチインカルボキサミド','SDHI(コハク酸脱水素酵素阻害剤)');
+insert into frac_sg values ('7','7f','チアゾールカルボキサミド','SDHI(コハク酸脱水素酵素阻害剤)');
+insert into frac_sg values ('7','7g','ピラゾール-4-カルボキサミド','SDHI(コハク酸脱水素酵素阻害剤)');
+insert into frac_sg values ('7','7k','N-シクロプロピル-N-ベンジルピラゾールカルボキサミド','SDHI(コハク酸脱水素酵素阻害剤)');
+insert into frac_sg values ('7','7h','N-メトキシ(フェニルエチル)ピラゾールカルボキサミド','SDHI(コハク酸脱水素酵素阻害剤)');
+insert into frac_sg values ('7','7i','ピリジンカルボキサミド','SDHI(コハク酸脱水素酵素阻害剤)');
+insert into frac_sg values ('7','7j','ピラジンカルボキサミド','SDHI(コハク酸脱水素酵素阻害剤)');
+insert into frac_sg values ('11','11a','メトキシアクリレート','QoI殺菌剤(Qo阻害剤)');
+insert into frac_sg values ('11','11b','メトキシアセトアミド','QoI殺菌剤(Qo阻害剤)');
+insert into frac_sg values ('11','11c','メトキシカーバメート','QoI殺菌剤(Qo阻害剤)');
+insert into frac_sg values ('11','11d','オキシイミノ酢酸','QoI殺菌剤(Qo阻害剤)');
+insert into frac_sg values ('11','11e','オキシイミノアセトアミド','QoI殺菌剤(Qo阻害剤)');
+insert into frac_sg values ('11','11f','オキサゾリジンジオン','QoI殺菌剤(Qo阻害剤)');
+insert into frac_sg values ('11','11g','ジヒドロジオキサジン','QoI殺菌剤(Qo阻害剤)');
+insert into frac_sg values ('11','11h','イミダゾリノン','QoI殺菌剤(Qo阻害剤)');
+insert into frac_sg values ('11','11i','ベンジルカーバメート','QoI殺菌剤(Qo阻害剤)');
+insert into frac_sg values ('11A','11Aa','テトラゾリノン','QoI殺菌剤(Qo阻害剤サブグループA)');
+insert into frac_sg values ('21','21a','シアノイミダゾール','QiI殺菌剤(Qi阻害剤)');
+insert into frac_sg values ('21','21b','スルファモイルトリアゾール','QiI殺菌剤(Qi阻害剤)');
+insert into frac_sg values ('21','21c','ピコリナミド','QiI殺菌剤(Qi阻害剤)');
+insert into frac_sg values ('29','29a','ジニトロフェニルクロトン酸',NULL);
+insert into frac_sg values ('29','29b','2,6-ジニトロアニリン',NULL);
+insert into frac_sg values ('30','30a','トリフェニルスズ化合物','有機スズ化合物');
+insert into frac_sg values ('38','38a','チオフェンカルボキサミド','チオフェンカルボキサミド');
+insert into frac_sg values ('45','45a','トリアゾロピリミジルアミン','QioSI殺菌剤(Qi,Qo阻害剤、スチグマテリン結合様式)'); --2024.4.5 Qo から Qio に変更、2024.5.1JCPA翻訳版で修正
+insert into frac_sg values ('9','9a','アニリノピリミジン','AP殺菌剤(アニリノピリミジン)');
+insert into frac_sg values ('23','23a','エノピラヌロン酸抗生物質','エノピラヌロン酸抗生物質');
+insert into frac_sg values ('24','24a','ヘキソピラノシル抗生物質','ヘキソピラノシル抗生物質');
+insert into frac_sg values ('25','25a','グルコピラノシル抗生物質','グルコピラノシル抗生物質');
+insert into frac_sg values ('41','41a','テトラサイクリン抗生物質','テトラサイクリン抗生物質');
+insert into frac_sg values ('54','54a','ベンゾキサボロール','ベンゾキサボロール');
+insert into frac_sg values ('13','13a','アリルオキシキノリン','アザナフタレン');
+insert into frac_sg values ('13','13b','キナゾリノン','アザナフタレン');
+insert into frac_sg values ('12','12a','フェニルピロール','PP殺菌剤(フェニルピロール)');
+insert into frac_sg values ('2','2a','ジカルボキシイミド','ジカルボキシイミド');
+insert into frac_sg values ('6','6a','ホスホロチオレート','ホスホロチオレート');
+insert into frac_sg values ('6','6b','ジチオラン','ジチオラン');
+insert into frac_sg values ('14','14a','芳香族炭化水素','AH殺菌剤(芳香族炭化水素)(クロロフェニル、ニトロアニリン)');
+insert into frac_sg values ('14','14b','1,2,4-チアジアゾール','複素芳香族');
+insert into frac_sg values ('28','28a','カーバメート','カーバメート');
+--insert into frac_sg values ('44','44a','バチルス属および産生された殺菌性リポペプチド','微生物(バチルス属)');
+--insert into frac_sg values ('46','46a','テルペン炭化水素とテルペンアルコールとテンペルフェノール','植物抽出物');
+--insert into frac_sg values ('46','46b','テルペン炭化水素とテルペンアルコールとテンペルフェノール','植物抽出物');
+insert into frac_sg values ('48','48a','放線菌が産生する両性親媒マクロライド系抗真菌性抗生物質','ポリエン');
+insert into frac_sg values ('49','49a','ピペジニルチアゾールイソオキサゾリン','OSBPI殺菌剤(オキシステロール結合蛋白質阻害)');
+insert into frac_sg values ('51','51a','ポリペプチド','タンパク質画分'); --2022.5.31追加
+insert into frac_sg values ('3','3a','ピペラジン','DMI殺菌剤(脱メチル化阻害剤)(SBI:クラスI)');
+insert into frac_sg values ('3','3b','ピリジン','DMI殺菌剤(脱メチル化阻害剤)(SBI:クラスI)');
+insert into frac_sg values ('3','3c','ピリミジン','DMI殺菌剤(脱メチル化阻害剤)(SBI:クラスI)');
+insert into frac_sg values ('3','3d','イミダゾール','DMI殺菌剤(脱メチル化阻害剤)(SBI:クラスI)');
+insert into frac_sg values ('3','3e','トリアゾール','DMI殺菌剤(脱メチル化阻害剤)(SBI:クラスI)');
+insert into frac_sg values ('3','3f','トリアゾリンチオン','DMI殺菌剤(脱メチル化阻害剤)(SBI:クラスI)');
+insert into frac_sg values ('5','5a','モルフォリン','アミン(モルフォリン)(SBI:クラスII)');
+insert into frac_sg values ('5','5b','ピペリジン','アミン(モルフォリン)(SBI:クラスII)');
+insert into frac_sg values ('5','5c','スピロケタールアミン','アミン(モルフォリン)(SBI:クラスII)');
+insert into frac_sg values ('17','17a','ヒドロキシアニリド','KRI殺菌剤(ケト還元酵素阻害剤)(SBI:クラスIII)');
+insert into frac_sg values ('17','17b','アミノピラゾリノン','KRI殺菌剤(ケト還元酵素阻害剤)(SBI:クラスIII)');
+insert into frac_sg values ('18','18a','チオカーバメート','(SBI:クラスIV)');
+insert into frac_sg values ('18','18b','アリルアミン','(SBI:クラスIV)');
+insert into frac_sg values ('19','19a','ペプチジルピリミジンヌクレオシド','ポリオキシン');
+insert into frac_sg values ('40','40a','桂皮酸アミド','CAA殺菌剤(カルボン酸アミド類)');
+insert into frac_sg values ('40','40b','バリンアミドカーバメート','CAA殺菌剤(カルボン酸アミド類)');
+insert into frac_sg values ('40','40c','マンデル酸アミド','CAA殺菌剤(カルボン酸アミド類)');
+insert into frac_sg values ('16.1','16.1a','イソベンゾフラノン','MBI-R(メラニン生合成阻害剤-還元酵素)');
+insert into frac_sg values ('16.1','16.1b','ピロロキノリノン','MBI-R(メラニン生合成阻害剤-還元酵素)');
+insert into frac_sg values ('16.1','16.1c','トリアゾロベンゾチアゾール','MBI-R(メラニン生合成阻害剤-還元酵素)');
+insert into frac_sg values ('16.2','16.2a','シクロプロパンカルボキサミド','MBI-D(メラニン生合成阻害剤-脱水酵素)');
+insert into frac_sg values ('16.2','16.2b','カルボキサミド','MBI-D(メラニン生合成阻害剤-脱水酵素)');
+insert into frac_sg values ('16.2','16.2c','プロピオンアミド','MBI-D(メラニン生合成阻害剤-脱水酵素)');
+insert into frac_sg values ('16.3','16.3a','トリフルオロエチルカーバメート','MBI-P(メラニン生合成阻害剤-ポリケタイド合成酵素)');
+insert into frac_sg values ('P01','P1a','ベンゾチアジアゾールBTH','ベンゾチアジアゾールBTH');
+insert into frac_sg values ('P02','P2a','ベンゾイソチアゾール','ベンゾイソチアゾール');
+insert into frac_sg values ('P03','P3a','チアジアゾールカルボキサミド','チアジアゾールカルボキサミド');
+insert into frac_sg values ('P04','P4a','多糖類','天然物');
+insert into frac_sg values ('P05','P5a','混合物、エタノール抽出物','植物抽出物');
+insert into frac_sg values ('P06','P6a','細菌:バチルス属','微生物');
+insert into frac_sg values ('P06','P6b','真菌:サッカロミセス属','微生物');
+insert into frac_sg values ('P07','P7a','エチルホスホナート','ホスホナート');
+insert into frac_sg values ('P07','P7b',NULL,'ホスホナート'); --2025.8.6修正
+insert into frac_sg values ('P08','P8a','イソチアゾリルメチルエーテル','イソチアゾール'); --2025.8.6修正
+insert into frac_sg values ('P09','P9a','バチルス・チューリンゲンシス由来ペプチド ','フラジェリンペプチド'); --2025.8.6追加
+insert into frac_sg values ('P10','P10a','アスカロサイド','天然低分子代謝産物'); --2025.8.6追加
+insert into frac_sg values ('27','27a','シアノアセトアミドオキシム','シアノアセトアミドオキシム');
+insert into frac_sg values ('34','34a','フタラミン酸','フタラミン酸');
+insert into frac_sg values ('35','35a','ベンゾトリアジン','ベンゾトリアジン');
+insert into frac_sg values ('36','36a','ベンゼンスルホンアミド','ベンゼンスルホンアミド');
+insert into frac_sg values ('37','37a','ピリダジノン','ピリダジノン');
+insert into frac_sg values ('U06','U6a','フェニルアセトアミド','フェニルアセトアミド');
+insert into frac_sg values ('U12','U12a','グアニジン','グアニジン');
+insert into frac_sg values ('U13','U13a','シアノメチレンチアゾリジン','チアゾリジン');
+insert into frac_sg values ('U14','U14a','ピリミジノンヒドラゾン','ピリミジノンヒドラゾン');
+insert into frac_sg values ('U16','U16a','4-キノリル酢酸','4-キノリル酢酸'); --2025.8.6修正
+insert into frac_sg values ('U17','U17a','テトラゾリルオキシム','テトラゾリルオキシム');
+insert into frac_sg values ('U18','U18a','グルコピラノシル抗生物質','グルコピラノシル抗生物質');
+insert into frac_sg values ('U19','U19a','ネライストキシンアナログ','ネライストキシンアナログ'); --2025.8.6追加
+insert into frac_sg values ('NC','NCa','種々','種々');
+insert into frac_sg values ('M','Ma','無機化合物','無機化合物');
+insert into frac_sg values ('M01','M1a','無機化合物','無機化合物(求電子剤)');
+insert into frac_sg values ('M02','M2a','無機化合物','無機化合物(求電子剤)');
+insert into frac_sg values ('M03','M3a','ジチオカーバメート及び類縁体','ジチオカーバメート及び類縁体(求電子剤)');
+insert into frac_sg values ('M04','M4a','フタルイミド','フタルイミド(求電子剤)');
+insert into frac_sg values ('M05','M5a','クロロニトリル(フタロニトリル)','クロロニトリル(フタロニトリル)(作用点不明)');
+insert into frac_sg values ('M06','M6a','スルファミド','スルファミド(求電子剤)');
+insert into frac_sg values ('M07','M7a','ビスグアニジン','ビスグアニジン(細胞膜攪乱剤、界面活性剤)');
+insert into frac_sg values ('M08','M8a','トリアジン','トリアジン(作用点不明)');
+insert into frac_sg values ('M09','M9a','キノン(アントラキノン)','キノン(アントラキノン)(求電子剤)');
+insert into frac_sg values ('M10','M10a','キノキサリン','キノキサリン(求電子剤)');
+insert into frac_sg values ('M11','M11a','マレイミド','マレイミド(求電子剤');
+insert into frac_sg values ('M12','M12a','チオカーバメート','チオカーバメート(求電子剤)');
+insert into frac_sg values ('BM01','BM1a','ポリペプチド(レクチン)','植物抽出物');
+insert into frac_sg values ('BM01','BM1b','フェノール、セスキテルペン、トリテルペン、クマリン','植物抽出物');
+insert into frac_sg values ('BM01','BM1c','テルペン炭化水素とテルペンアルコールとテンペルフェノール','植物抽出物');
+insert into frac_sg values ('BM02','BM2a','真菌:トリコデルマ属','微生物(生存微生物またはその抽出物、代謝物)');
+--insert into frac_sg values ('BM02','BM2b','真菌:グリオクラディウム属','微生物(生存微生物またはその抽出物、代謝物)'); --2022.5.31削除
+insert into frac_sg values ('BM02','BM2b','真菌:クロノスタキス属','微生物(生存微生物またはその抽出物、代謝物)');
+insert into frac_sg values ('BM02','BM2f','真菌:コニオチリウム属','微生物(生存微生物またはその抽出物、代謝物)');
+insert into frac_sg values ('BM02','BM2i','真菌:ハンゼニアスポラ属','微生物(生存微生物またはその抽出物、代謝物)'); --2022.5.31追加
+insert into frac_sg values ('BM02','BM2g','真菌:タラロマイセス属','微生物(生存微生物またはその抽出物、代謝物)');
+insert into frac_sg values ('BM02','BM2h','真菌:サッカロマイセス属','微生物(生存微生物またはその抽出物、代謝物)');
+insert into frac_sg values ('BM02','BM2c','細菌:バチルス属','微生物(生存微生物またはその抽出物、代謝物)');
+insert into frac_sg values ('BM02','BM2j','細菌:エルウィニア属(ペプチド)','微生物(生存微生物またはその抽出物、代謝物)'); --2022.5.31追加
+insert into frac_sg values ('BM02','BM2k','細菌:グルコノバクター属','微生物(生存微生物またはその抽出物、代謝物)'); --2022.5.31追加
+insert into frac_sg values ('BM02','BM2d','細菌:シュードモナス属','微生物(生存微生物またはその抽出物、代謝物)');
+insert into frac_sg values ('BM02','BM2e','細菌:ストレプトミセス属','微生物(生存微生物またはその抽出物、代謝物)');
+insert into frac_sg values ('BM02','BM2l','原生動物','微生物(生存微生物またはその抽出物、代謝物)'); --2025.8.6追加
+insert into frac_sg values ('BM03','BM3a','植物(または他の生物)由来の分子または同一分子','植物または微生物由来の代謝産物、またはこれらの合成物'); --2024.4.5追加、2025.8.6CLJ翻訳版で修正
+insert into frac_sg values ('未','xa','未分類:微生物(生存微生物またはその抽出物、代謝物)','未分類'); -- FRAC Uncategorized
+insert into frac_sg values ('未','xb','未分類:植物抽出物','未分類'); --2025.8.6追加 FRAC Uncategorized
+insert into frac_sg values ('未','xc','未分類:その他','未分類'); -- FRAC Uncategorized
+commit;
+/* Active Ingredient */
+drop table if exists spec.frac_ai;
+create table spec.frac_ai (sid varchar, ippanmei varchar primary key);
+begin transaction;
+insert into frac_ai values ('4a','ベナラキシル');
+insert into frac_ai values ('4a','ベナラキシルM');
+insert into frac_ai values ('4a','フララキシル');
+insert into frac_ai values ('4a','メタラキシル');
+insert into frac_ai values ('4a','メタラキシルM');
+insert into frac_ai values ('4b','オキサジキシル');
+insert into frac_ai values ('4c','オフラセ');
+insert into frac_ai values ('8a','ブピリメート');
+insert into frac_ai values ('8a','ジメチリモール');
+insert into frac_ai values ('8a','エチリモール');
+insert into frac_ai values ('32a','ヒドロキシイソキサゾール');
+insert into frac_ai values ('32a','ヒドロキシイソキサゾールカリウム');
+insert into frac_ai values ('32a','ヒメキサゾール');
+insert into frac_ai values ('32b','オクチリノン');
+insert into frac_ai values ('32c','フルメチルスルホリム'); --2025.8.6追加
+insert into frac_ai values ('31a','オキソリニック酸');
+insert into frac_ai values ('52a','イプフルフェノキン'); --2022.5.31追加
+insert into frac_ai values ('52b','キノフメリン'); --2024.4.5追加
+insert into frac_ai values ('1a','ベノミル');
+insert into frac_ai values ('1a','カルベンダゾール');
+insert into frac_ai values ('1a','カルベンダジム');
+insert into frac_ai values ('1a','フベリダゾール');
+insert into frac_ai values ('1a','チアベンダゾール');
+insert into frac_ai values ('1b','チオファネート');
+insert into frac_ai values ('1b','チオファネートメチル');
+insert into frac_ai values ('10a','ジエトフェンカルブ');
+insert into frac_ai values ('22a','ゾキサミド');
+insert into frac_ai values ('22b','エタボキサム');
+insert into frac_ai values ('20a','ペンシクロン');
+insert into frac_ai values ('43a','フルオピコリド');
+insert into frac_ai values ('43a','フルオピモミド');
+insert into frac_ai values ('47a','フェナマクリル');
+insert into frac_ai values ('50a','メトラフェノン');
+insert into frac_ai values ('50b','ピリオフェノン');
+insert into frac_ai values ('53a','ピリダクロメチル'); --2022.5.31追加
+insert into frac_ai values ('39a','ジフルメトリム');
+insert into frac_ai values ('39b','トルフェンピラド');
+insert into frac_ai values ('39c','フェナザキン');
+insert into frac_ai values ('7a','ベノダニル');
+insert into frac_ai values ('7a','フルトラニル');
+insert into frac_ai values ('7a','メプロニル');
+insert into frac_ai values ('7b','イソフェタミド');
+insert into frac_ai values ('7c','フルオピラム');
+insert into frac_ai values ('7l','シクロブトリフルラム');
+insert into frac_ai values ('7d','フェンフラム');
+insert into frac_ai values ('7e','カルボキシン');
+insert into frac_ai values ('7e','オキシカルボキシン');
+insert into frac_ai values ('7f','チフルザミド');
+insert into frac_ai values ('7g','ベンゾビンジフルピル');
+insert into frac_ai values ('7g','ビキサフェン');
+insert into frac_ai values ('7g','フルインダピル');
+insert into frac_ai values ('7g','フルキサピロキサド');
+insert into frac_ai values ('7g','フラメトピル');
+insert into frac_ai values ('7g','インピルフルキサム');
+insert into frac_ai values ('7g','イソピラザム');
+insert into frac_ai values ('7g','ペンフルフェン');
+insert into frac_ai values ('7g','ペンチオピラド');
+insert into frac_ai values ('7g','セダキサン');
+insert into frac_ai values ('7k','イソフルシプラム');
+insert into frac_ai values ('7h','ピジフルメトフェン');
+insert into frac_ai values ('7i','ボスカリド');
+insert into frac_ai values ('7j','ピラジフルミド');
+insert into frac_ai values ('11a','アゾキシストロビン');
+insert into frac_ai values ('11a','ビフェメトストロビン'); --2025.8.6追加
+insert into frac_ai values ('11a','クモキシストロビン');
+insert into frac_ai values ('11a','エノキサストロビン');
+insert into frac_ai values ('11a','フルフェノキシストロビン');
+insert into frac_ai values ('11a','ピコキシストロビン');
+insert into frac_ai values ('11a','ピラオキシストロビン');
+insert into frac_ai values ('11b','マンデストロビン');
+insert into frac_ai values ('11c','ピラクロストロビン');
+insert into frac_ai values ('11c','ピラメトストロビン');
+insert into frac_ai values ('11c','トリクロピリカルブ');
+insert into frac_ai values ('11d','クレソキシムメチル');
+insert into frac_ai values ('11d','トリフロキシストロビン');
+insert into frac_ai values ('11e','ジモキシストロビン');
+insert into frac_ai values ('11e','フェナミンストロビン');
+insert into frac_ai values ('11e','メトミノストロビン');
+insert into frac_ai values ('11e','オリサストロビン');
+insert into frac_ai values ('11f','ファモキサドン');
+insert into frac_ai values ('11g','フルオキサストロビン');
+insert into frac_ai values ('11h','フェンアミドン');
+insert into frac_ai values ('11i','ピリベンカルブ');
+insert into frac_ai values ('11Aa','メチルテトラプロール');
+insert into frac_ai values ('21a','シアゾファミド');
+insert into frac_ai values ('21b','アミスルブロム');
+insert into frac_ai values ('21c','フェンピコキサミド');
+insert into frac_ai values ('21c','フロリルピコキサミド');
+insert into frac_ai values ('29a','ビナパクリル');
+insert into frac_ai values ('29a','メプチルジノカップ');
+insert into frac_ai values ('29a','DPC');
+insert into frac_ai values ('29a','ジノカップ');
+insert into frac_ai values ('29b','フルアジナム');
+insert into frac_ai values ('30a','有機スズ');
+insert into frac_ai values ('30a','フェンチン');
+insert into frac_ai values ('30a','酢酸トリフェニルスズ');
+insert into frac_ai values ('30a','塩化トリフェニルスズ');
+insert into frac_ai values ('30a','水酸化トリフェニルスズ');
+insert into frac_ai values ('38a','シルチオファム');
+insert into frac_ai values ('45a','アメトクトラジン');
+insert into frac_ai values ('9a','シプロジニル');
+insert into frac_ai values ('9a','メパニピリム');
+insert into frac_ai values ('9a','ピリメタニル');
+insert into frac_ai values ('23a','ブラストサイジンS');
+insert into frac_ai values ('24a','カスガマイシン');
+insert into frac_ai values ('25a','ストレプトマイシン');
+insert into frac_ai values ('25a','ストレプトマイシン硫酸塩');
+insert into frac_ai values ('41a','オキシテトラサイクリン');
+insert into frac_ai values ('54a','タバボロール'); --2024.4.5追加
+insert into frac_ai values ('13a','キノキシフェン');
+insert into frac_ai values ('13b','プロキナジド');
+insert into frac_ai values ('12a','フェンピクロニル');
+insert into frac_ai values ('12a','フルジオキソニル');
+insert into frac_ai values ('2a','クロゾリネート');
+insert into frac_ai values ('2a','ジメタクロン');
+insert into frac_ai values ('2a','イプロジオン');
+insert into frac_ai values ('2a','プロシミドン');
+insert into frac_ai values ('2a','ビンクロゾリン');
+insert into frac_ai values ('6a','EDDP');
+insert into frac_ai values ('6a','エジフェンホス');
+insert into frac_ai values ('6a','IBP');
+insert into frac_ai values ('6a','イプロベンホス');
+insert into frac_ai values ('6a','ピラゾホス');
+insert into frac_ai values ('6b','イソプロチオラン');
+insert into frac_ai values ('14a','ビフェニル');
+insert into frac_ai values ('14a','クロロネブ');
+insert into frac_ai values ('14a','CNA');
+insert into frac_ai values ('14a','ジクロラン');
+insert into frac_ai values ('14a','PCNB');
+insert into frac_ai values ('14a','キントゼン');
+insert into frac_ai values ('14a','テクナゼン');
+insert into frac_ai values ('14a','トルクロホスメチル');
+insert into frac_ai values ('14b','エクロメゾール');
+insert into frac_ai values ('14b','エトリジアゾール');
+insert into frac_ai values ('28a','ヨードカルブ');
+insert into frac_ai values ('28a','プロパモカルブ');
+insert into frac_ai values ('28a','プロパモカルブ塩酸塩');
+insert into frac_ai values ('28a','プロチオカルブ');
+insert into frac_ai values ('48a','ナタマイシン');
+insert into frac_ai values ('48a','ピリマイシン');
+insert into frac_ai values ('49a','オキサチアピプロリン');
+insert into frac_ai values ('49a','フルオキサピプロリン');
+insert into frac_ai values ('51a','ポリペプチドASFBIOF01-02'); --2022.5.31追加
+insert into frac_ai values ('3a','トリホリン');
+insert into frac_ai values ('3b','ピリフェノックス');
+insert into frac_ai values ('3b','ピリソキサゾール');
+insert into frac_ai values ('3c','フェナリモル');
+insert into frac_ai values ('3c','ヌアリモール');
+insert into frac_ai values ('3d','イマザリル');
+insert into frac_ai values ('3d','オキスポコナゾール');
+insert into frac_ai values ('3d','オキスポコナゾールフマル酸塩');
+insert into frac_ai values ('3d','ペフラゾエート');
+insert into frac_ai values ('3d','プロクロラズ');
+insert into frac_ai values ('3d','トリフルミゾール');
+insert into frac_ai values ('3e','アザコナゾール');
+insert into frac_ai values ('3e','ビテルタノール');
+insert into frac_ai values ('3e','ブロムコナゾール');
+insert into frac_ai values ('3e','シプロコナゾール');
+insert into frac_ai values ('3e','ジフェノコナゾール');
+insert into frac_ai values ('3e','ジニコナゾール');
+insert into frac_ai values ('3e','エポキシコナゾール');
+insert into frac_ai values ('3e','エタコナゾール');
+insert into frac_ai values ('3e','フェンブコナゾール');
+insert into frac_ai values ('3e','フルキンコナゾール');
+insert into frac_ai values ('3e','フルシラゾール');
+insert into frac_ai values ('3e','フルトリアホール');
+insert into frac_ai values ('3e','ヘキサコナゾール');
+insert into frac_ai values ('3e','イミベンコナゾール');
+insert into frac_ai values ('3e','イプコナゾール');
+insert into frac_ai values ('3e','メフェントリフルコナゾール');
+insert into frac_ai values ('3e','メトコナゾール');
+insert into frac_ai values ('3e','ミクロブタニル');
+insert into frac_ai values ('3e','ペンコナゾール');
+insert into frac_ai values ('3e','プロピコナゾール');
+insert into frac_ai values ('3e','シメコナゾール');
+insert into frac_ai values ('3e','テブコナゾール');
+insert into frac_ai values ('3e','テトラコナゾール');
+insert into frac_ai values ('3e','トリアジメホン');
+insert into frac_ai values ('3e','トリアジメノール');
+insert into frac_ai values ('3e','トリチコナゾール');
+insert into frac_ai values ('3f','プロチオコナゾール');
+insert into frac_ai values ('5a','アルジモルフ');
+insert into frac_ai values ('5a','ドデモルフ');
+insert into frac_ai values ('5a','フェンプロピモルフ');
+insert into frac_ai values ('5a','トリデモルフ');
+insert into frac_ai values ('5b','フェンプロピジン');
+insert into frac_ai values ('5b','ピペラリン');
+insert into frac_ai values ('5c','スピロキサミン');
+insert into frac_ai values ('17a','フェンヘキサミド');
+insert into frac_ai values ('17b','フェンピラザミン');
+insert into frac_ai values ('18a','ピリブチカルブ');
+insert into frac_ai values ('18b','ナフチフィン');
+insert into frac_ai values ('18b','テルビナフィン');
+insert into frac_ai values ('19a','ポリオキシン');
+insert into frac_ai values ('19a','ポリオキシンD亜鉛塩');
+insert into frac_ai values ('19a','ポリオキシン複合体');
+insert into frac_ai values ('40a','ジメトモルフ');
+insert into frac_ai values ('40a','フルモルフ');
+insert into frac_ai values ('40a','ピリモルフ');
+insert into frac_ai values ('40b','ベンチアバリカルブ');
+insert into frac_ai values ('40b','ベンチアバリカルブイソプロピル');
+insert into frac_ai values ('40b','イプロバリカルブ');
+insert into frac_ai values ('40b','バリフェナレート');
+insert into frac_ai values ('40c','マンジプロパミド');
+insert into frac_ai values ('16.1a','フサライド');
+insert into frac_ai values ('16.1b','ピロキロン');
+insert into frac_ai values ('16.1c','トリシクラゾール');
+insert into frac_ai values ('16.2a','カルプロパミド');
+insert into frac_ai values ('16.2b','ジクロシメット');
+insert into frac_ai values ('16.2c','フェノキサニル');
+insert into frac_ai values ('16.3a','トルプロカルブ');
+insert into frac_ai values ('P1a','アシベンゾラルS-メチル');
+insert into frac_ai values ('P2a','プロベナゾール');
+insert into frac_ai values ('P3a','チアジニル');
+insert into frac_ai values ('P3a','イソチアニル');
+insert into frac_ai values ('P4a','ラミナリン');
+insert into frac_ai values ('P5a','オオイタドリ抽出液');
+insert into frac_ai values ('P6a','バチルス マイコイデス');
+insert into frac_ai values ('P6a','バチルス マイコイデス 分離株J');
+insert into frac_ai values ('P6b','サッカロミセス セレビシア'); --2025.8.6修正(P6a→P6b)
+insert into frac_ai values ('P6b','サッカロミセス セレビシアLAS117'); --2025.8.6修正(P6a→P6b)
+insert into frac_ai values ('P7a','ホセチル');
+insert into frac_ai values ('P7b','亜リン酸');
+insert into frac_ai values ('P7b','亜リン酸塩');
+insert into frac_ai values ('P8a','ジクロベンチアゾクス');
+insert into frac_ai values ('P9a','Flg22-Btペプチド'); --2025.8.6追加
+insert into frac_ai values ('P10a','ascr#18'); --2025.8.6追加
+insert into frac_ai values ('27a','シモキサニル');
+insert into frac_ai values ('34a','テクロフタラム');
+insert into frac_ai values ('35a','トリアゾキシド');
+insert into frac_ai values ('36a','フルスルファミド');
+insert into frac_ai values ('37a','ジクロメジン');
+insert into frac_ai values ('U6a','シフルフェナミド');
+insert into frac_ai values ('U12a','グアニジン');
+insert into frac_ai values ('U12a','ドジン');
+insert into frac_ai values ('U13a','フルチアニル');
+insert into frac_ai values ('U14a','フェリムゾン');
+insert into frac_ai values ('U16a','テブフロキン');
+insert into frac_ai values ('U17a','ピカルブトラゾクス');
+insert into frac_ai values ('U18a','バリダマイシン');
+insert into frac_ai values ('U19a','カルタップ'); --2025.8.6追加
+insert into frac_ai values ('NCa','マシン油');
+insert into frac_ai values ('NCa','有機油');
+insert into frac_ai values ('NCa','炭酸水素カリウム');
+insert into frac_ai values ('NCa','炭酸水素ナトリウム');
+insert into frac_ai values ('NCa','シイタケ菌糸体抽出物');
+insert into frac_ai values ('NCa','天然物起源');
+insert into frac_ai values ('Ma','金属銀');
+insert into frac_ai values ('M1a','銅');
+insert into frac_ai values ('M1a','水酸化第二銅');
+insert into frac_ai values ('M1a','塩基性塩化銅');
+insert into frac_ai values ('M1a','塩基性硫酸銅');
+insert into frac_ai values ('M1a','無水硫酸銅');
+insert into frac_ai values ('M1a','硫酸銅');
+insert into frac_ai values ('M1a','硫酸銅五水塩');
+insert into frac_ai values ('M1a','有機銅');
+insert into frac_ai values ('M1a','ノニルフェノールスルホン酸銅');
+insert into frac_ai values ('M1a','DBEDC');
+insert into frac_ai values ('M2a','硫黄');
+insert into frac_ai values ('M2a','石灰硫黄合剤');
+insert into frac_ai values ('M3a','アンバム');
+insert into frac_ai values ('M3a','ファーバム');
+insert into frac_ai values ('M3a','マンゼブ');
+insert into frac_ai values ('M3a','マンネブ');
+insert into frac_ai values ('M3a','メチラム');
+insert into frac_ai values ('M3a','プロピネブ');
+insert into frac_ai values ('M3a','チウラム');
+insert into frac_ai values ('M3a','チアゾール亜鉛');
+insert into frac_ai values ('M3a','ジネブ');
+insert into frac_ai values ('M3a','ジラム');
+insert into frac_ai values ('M3a','ダゾメット');
+insert into frac_ai values ('M4a','キャプタン');
+insert into frac_ai values ('M4a','ダイホルタン');
+insert into frac_ai values ('M4a','カプタホール');
+insert into frac_ai values ('M4a','ホルペット');
+insert into frac_ai values ('M5a','TPN');
+insert into frac_ai values ('M5a','クロロタロニル');
+insert into frac_ai values ('M6a','スルフェン酸系');
+insert into frac_ai values ('M6a','ジクロフルアニド');
+insert into frac_ai values ('M6a','トリルフルアニド');
+insert into frac_ai values ('M7a','グアザチン');
+insert into frac_ai values ('M7a','イミノクタジン');
+insert into frac_ai values ('M7a','イミノクタジン酢酸塩');
+insert into frac_ai values ('M7a','イミノクタジンアルベシル酸塩');
+insert into frac_ai values ('M8a','トリアジン');
+insert into frac_ai values ('M8a','アニラジン');
+insert into frac_ai values ('M9a','ジチアノン');
+insert into frac_ai values ('M10a','キノキサリン系');
+insert into frac_ai values ('M10a','キノキサリン');
+insert into frac_ai values ('M10a','キノメチオナート');
+insert into frac_ai values ('M11a','フルオルイミド');
+insert into frac_ai values ('M12a','メタスルホカルブ');
+insert into frac_ai values ('BM1a','ハウチワマメ苗木の子葉からの抽出物');
+insert into frac_ai values ('BM1a','BLAD');
+insert into frac_ai values ('BM1b','スイングレア・グルティノーサからの抽出物');
+insert into frac_ai values ('BM1c','ゴセイカユプテの抽出物');
+insert into frac_ai values ('BM1c','ティーツリーの抽出物');
+insert into frac_ai values ('BM1c','ティーツリーオイル');
+insert into frac_ai values ('BM1c','植物油類(混合物)');
+insert into frac_ai values ('BM1c','オイゲノール');
+insert into frac_ai values ('BM1c','ゲラニオール');
+insert into frac_ai values ('BM1c','チモール');
+insert into frac_ai values ('BM2a','トリコデルマ アトロビリデ');
+insert into frac_ai values ('BM2a','トリコデルマ アトロビリデI-1237');
+insert into frac_ai values ('BM2a','トリコデルマ アトロビリデLU132');
+insert into frac_ai values ('BM2a','トリコデルマ アトロビリデSC1');
+insert into frac_ai values ('BM2a','トリコデルマ アトロビリデSKT-1');
+insert into frac_ai values ('BM2a','トリコデルマ アトロビリデ77B');
+insert into frac_ai values ('BM2a','トリコデルマ アスペレラム');
+insert into frac_ai values ('BM2a','トリコデルマ アスペレラムT34');
+insert into frac_ai values ('BM2a','トリコデルマ アスペレラムkd');
+insert into frac_ai values ('BM2a','トリコデルマ ハルジアナム');
+insert into frac_ai values ('BM2a','トリコデルマ ハルジアナムT-22');
+insert into frac_ai values ('BM2a','トリコデルマ ビレンズ');
+insert into frac_ai values ('BM2a','トリコデルマ ビレンズG-41');
+--insert into frac_ai values ('BM2b','グリオクラディウム カテナタラム'); --2022.5.31削除
+--insert into frac_ai values ('BM2b','グリオクラディウム カテナタラムJ1446'); --2022.5.31クロノスタキス ロゼアに移動
+insert into frac_ai values ('BM2b','クロノスタキス ロゼア');
+insert into frac_ai values ('BM2b','クロノスタキス ロゼアCR-7');
+insert into frac_ai values ('BM2b','クロノスタキス ロゼアJ1446'); --2022.5.31グリオクラディウム カテナタラムから移動
+insert into frac_ai values ('BM2f','コニオチリウム ミニタンス');
+insert into frac_ai values ('BM2f','コニオチリウム ミニタンスCON/M/91-08');
+insert into frac_ai values ('BM2i','ハンゼニアスポラ ウバルム'); --2022.5.31追加
+insert into frac_ai values ('BM2i','ハンゼニアスポラ ウバルムBC18Y'); --2022.5.31追加
+insert into frac_ai values ('BM2g','タラロマイセス フラバス');
+insert into frac_ai values ('BM2g','タラロマイセス フラバスSAY-Y-94-01');
+insert into frac_ai values ('BM2h','サッカロマイセス セレビシエ');
+insert into frac_ai values ('BM2h','サッカロマイセス セレビシエLAS02');
+insert into frac_ai values ('BM2h','サッカロマイセス セレビシエDDFS623'); --2022.5.31追加
+insert into frac_ai values ('BM2c','バチルス アミロリクエファシエンス');
+insert into frac_ai values ('BM2c','バチルス ズブチリス');
+insert into frac_ai values ('BM2c','バチルス ズブチリスD747');
+insert into frac_ai values ('BM2c','バチルス ズブチリスFZB24');
+insert into frac_ai values ('BM2c','バチルス ズブチリスHAI-0404');
+insert into frac_ai values ('BM2c','バチルス ズブチリスMBI600');
+insert into frac_ai values ('BM2c','バチルス ズブチリスQST-713');
+insert into frac_ai values ('BM2c','バチルス ズブチリスY1336');
+insert into frac_ai values ('BM2c','バチルス ズブチリスAFS032321');
+insert into frac_ai values ('BM2c','バチルス ズブチリスF727');
+insert into frac_ai values ('BM2c','バチルス ズブチリスAT-322');
+insert into frac_ai values ('BM2c','バチルス ズブチリスRTI477'); --2024.4.5追加
+insert into frac_ai values ('BM2c','バチルス ベレツェンシス'); --2024.4.5追加、2024.5.1JCPA翻訳版で修正
+insert into frac_ai values ('BM2c','バチルス ベレツェンシスRTI301'); --2024.4.5追加、2024.5.1JCPA翻訳版で修正
+insert into frac_ai values ('BM2c','バチルス ベレツェンシス11604'); --2025.8.6追加
+insert into frac_ai values ('BM2j','エルウィニアPHC25279'); --2022.5.31追加
+insert into frac_ai values ('BM2j','PHC25279'); --2022.5.31追加
+insert into frac_ai values ('BM2k','グルコノバクター セリヌス'); --2022.5.31追加
+insert into frac_ai values ('BM2k','グルコノバクター セリヌスBC18B'); --2022.5.31追加
+insert into frac_ai values ('BM2d','シュードモナス クロロラフィス');
+insert into frac_ai values ('BM2d','シュードモナス クロロラフィスAFS009');
+insert into frac_ai values ('BM2d','シュードモナス シリンゲ'); --2025.8.6追加
+insert into frac_ai values ('BM2d','シュードモナス シリンゲESC-10'); --2025.8.6追加
+insert into frac_ai values ('BM2e','ストレプトミセス グリセオビリデス');
+insert into frac_ai values ('BM2e','ストレプトミセス グリセオビリデスK61');
+insert into frac_ai values ('BM2e','ストレプトミセス リディクス');
+insert into frac_ai values ('BM2e','ストレプトミセス リディクスWYEC108');
+insert into frac_ai values ('BM2l','ウィラーティア マグナ'); --2025.8.6追加
+insert into frac_ai values ('BM2l','ウィラーティア マグナC2c Maky'); --2025.8.6追加
+insert into frac_ai values ('BM3a','シンナムアルデヒド'); --2024.4.5追加
+--FRAC未掲載
+insert into frac_ai values ('xa','アグロバクテリウム ラジオバクター');
+insert into frac_ai values ('xa','シュードモナス フルオレッセンス');
+insert into frac_ai values ('xa','シュードモナス ロデシア');
+insert into frac_ai values ('xa','ズッキーニ黄斑モザイクウイルス弱毒株');
+insert into frac_ai values ('xa','トウガラシマイルドモットルウイルス弱毒株');
+insert into frac_ai values ('xa','バチルス シンプレクス');
+insert into frac_ai values ('xa','バリオボラックス パラドクス');
+insert into frac_ai values ('xa','非病原性エルビニア カロトボーラ');
+insert into frac_ai values ('xa','ラクトバチルス プランタラム');
+insert into frac_ai values ('xa','ビール酵母抽出グルカン');
+insert into frac_ai values ('xa','醸造酢');
+insert into frac_ai values ('xa','青枯病菌感染性バクテリオファージRKP181'); --2025.8.6追加
+insert into frac_ai values ('xa','非病原性リゾビウム ビティス'); --2025.8.6追加
+insert into frac_ai values ('xb','発芽スイートルーピン抽出たんぱく質'); --2025.8.6追加
+insert into frac_ai values ('xc','酸化亜鉛'); --2025.8.6追加
+commit;
+/* パーマネント統合テーブル＆ビュー作成 */
+create table if not exists spec.rac_mg (cid integer, mid varchar primary key, sayoten varchar, sayokiko varchar, risk varchar);
+delete from spec.rac_mg where mid like 'F:%';
+insert into spec.rac_mg select 1, 'F:'||mid, sayoten, sayokiko, risk from frac_mg;
+create table if not exists spec.rac_sg (mid varchar, sid varchar primary key, keito varchar, fgroup varchar);
+delete from spec.rac_sg where sid like 'F:%';
+insert into spec.rac_sg select 'F:'||mid as mid, 'F:'||sid as sid, keito, 'FRAC系統名: '||fgroup from frac_sg;
+create table if not exists spec.rac_ai (sid varchar, ippanmei varchar);
+delete from spec.rac_ai where sid like 'F:%';
+insert into spec.rac_ai select 'F:'||sid as sid, ippanmei from frac_ai;
+drop index if exists spec.idxrac;
+create index spec.idxRac on rac_ai (ippanmei);
+drop view if exists spec.rac;
+drop view if exists spec.rac2;
+drop view if exists spec.raccode;
+create view if not exists spec.rac as select ippanmei, concat2(', ', keito) as keito, concat2(', ', mid) as mid, concat2(', ', sayoten) as sayoten, concat2(', ', ifnullstr(sayokiko, '-')) as sayokiko, concat2(', ', fgroup) as fgroup, concat2(', ', risk) as risk from rac_ai left join rac_sg using(sid) left join rac_mg using(mid) group by ippanmei;
+create view if not exists spec.rac2 as select ippanmei, keito, cid, mid, sayoten, sayokiko, fgroup, risk from rac_ai left join rac_sg using(sid) left join rac_mg using(mid);
+create view if not exists spec.raccode as select cid, mid, ippanmei from rac_ai left join rac_sg using(sid) left join rac_mg using(mid);

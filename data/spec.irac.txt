@@ -1,0 +1,606 @@
+--/d
+/* IRAC MoA Classification http://www.irac-online.org */
+create table if not exists spec.info (item varchar primary key, value varchar);
+insert or replace into spec.info (item, value) values ('irac', 'CLI2025.05.15 v11.4|CLJ2025.05.19 v11.3');
+/* Main Group and Primary Site of Action */
+drop table if exists spec.irac_mg;
+create table spec.irac_mg (mid varchar primary key, sayoten varchar, sayokiko varchar);
+begin transaction;
+insert into irac_mg values ('1(A)','アセチルコリンエステラーゼ(AChE)阻害','神経作用');
+insert into irac_mg values ('1(B)','アセチルコリンエステラーゼ(AChE)阻害','神経作用');
+insert into irac_mg values ('2(A)','GABA作動性塩素イオンチャネル遮断','神経作用'); --2025.8.6変更(CLJ2025.5の表記)
+insert into irac_mg values ('2(B)','GABA作動性塩素イオンチャネル遮断','神経作用'); --2025.8.6変更(CLJ2025.5の表記)
+insert into irac_mg values ('3(A)','ナトリウムチャネル調節','神経作用');
+insert into irac_mg values ('3(B)','ナトリウムチャネル調節','神経作用');
+insert into irac_mg values ('4A','ニコチン性アセチルコリン受容体(nAChR)競合的調節','神経作用');
+insert into irac_mg values ('4B','ニコチン性アセチルコリン受容体(nAChR)競合的調節','神経作用');
+insert into irac_mg values ('4C','ニコチン性アセチルコリン受容体(nAChR)競合的調節','神経作用');
+insert into irac_mg values ('4D','ニコチン性アセチルコリン受容体(nAChR)競合的調節','神経作用');
+insert into irac_mg values ('4E','ニコチン性アセチルコリン受容体(nAChR)競合的調節','神経作用');
+insert into irac_mg values ('4F','ニコチン性アセチルコリン受容体(nAChR)競合的調節','神経作用'); --2022.5.31追加
+insert into irac_mg values ('4','ニコチン性アセチルコリン受容体(nAChR)競合的調節','神経作用');
+insert into irac_mg values ('5','ニコチン性アセチルコリン受容体(nAChR)アロステリック調節-部位I','神経作用');
+insert into irac_mg values ('6','グルタミン酸作動性塩素イオンチャネル(GluCl)アロステリック調節','神経・筋肉作用'); --2025.8.6変更(CLJ2025.1の表記)
+insert into irac_mg values ('7(A)','幼若ホルモン受容体調節','生育調節'); --2025.8.6変更(CLJ2025.1の表記)
+insert into irac_mg values ('7(B)','幼若ホルモン受容体調節','生育調節'); --2025.8.6変更(CLJ2025.1の表記)
+insert into irac_mg values ('7(C)','幼若ホルモン受容体調節','生育調節'); --2025.8.6変更(CLJ2025.1の表記)
+insert into irac_mg values ('8A','多様な非特異的(多部位)阻害',NULL); --2025.8.6変更(CLJ2025.1の表記)
+insert into irac_mg values ('8B','多様な非特異的(多部位)阻害',NULL); --2025.8.6変更(CLJ2025.1の表記)
+insert into irac_mg values ('8C','多様な非特異的(多部位)阻害',NULL); --2025.8.6変更(CLJ2025.1の表記)
+insert into irac_mg values ('8D','多様な非特異的(多部位)阻害',NULL); --2025.8.6変更(CLJ2025.1の表記)
+insert into irac_mg values ('8E','多様な非特異的(多部位)阻害',NULL); --2025.8.6変更(CLJ2025.1の表記)
+insert into irac_mg values ('8F','多様な非特異的(多部位)阻害',NULL); --2025.8.6変更(CLJ2025.1の表記)
+--insert into irac_mg values ('8x','多様な非特異的(多部位)阻害',NULL);
+insert into irac_mg values ('9(B)','弦音器官TRPVチャンネル調節','神経作用');
+insert into irac_mg values ('9(D)','弦音器官TRPVチャンネル調節','神経作用');
+insert into irac_mg values ('10(A)','CHS1に作用するダニ類成長阻害','生育調節');
+insert into irac_mg values ('10(B)','CHS1に作用するダニ類成長阻害','生育調節');
+insert into irac_mg values ('11(A)','微生物由来昆虫中腸内膜破壊',NULL);
+insert into irac_mg values ('11(B)','微生物由来昆虫中腸内膜破壊',NULL);
+insert into irac_mg values ('12(A)','ミトコンドリアATP合成酵素阻害','エネルギー代謝');
+insert into irac_mg values ('12(B)','ミトコンドリアATP合成酵素阻害','エネルギー代謝');
+insert into irac_mg values ('12(C)','ミトコンドリアATP合成酵素阻害','エネルギー代謝');
+insert into irac_mg values ('12(D)','ミトコンドリアATP合成酵素阻害','エネルギー代謝');
+insert into irac_mg values ('13*','プロトン勾配を撹乱する酸化的リン酸化脱共役','エネルギー代謝');
+insert into irac_mg values ('14','ニコチン性アセチルコリン受容体(nAChR)チャネル遮断','神経作用');
+insert into irac_mg values ('15','CHS1に作用するキチン生合成阻害','生育調節');
+insert into irac_mg values ('16','キチン生合成阻害タイプ1','生育調節');
+insert into irac_mg values ('17','ハエ目脱皮阻害','生育調節');
+insert into irac_mg values ('18','脱皮ホルモン(エクダイソン)受容体作動','生育調節');
+insert into irac_mg values ('19','オクトパミン受容体作動','神経作用');
+insert into irac_mg values ('20(A)','ミトコンドリア電子伝達系複合体III阻害(Qo部位)','エネルギー代謝'); --2022.5.31変更
+insert into irac_mg values ('20(B)','ミトコンドリア電子伝達系複合体III阻害(Qo部位)','エネルギー代謝');
+insert into irac_mg values ('20(C)','ミトコンドリア電子伝達系複合体III阻害(Qo部位)','エネルギー代謝');
+insert into irac_mg values ('20(D)','ミトコンドリア電子伝達系複合体III阻害(Qo部位)','エネルギー代謝');
+insert into irac_mg values ('21(A)','ミトコンドリア電子伝達系複合体I阻害(METI)','エネルギー代謝');
+insert into irac_mg values ('21(B)','ミトコンドリア電子伝達系複合体I阻害(METI)','エネルギー代謝');
+insert into irac_mg values ('22A','電位依存性ナトリウムチャネル遮断','神経作用');
+insert into irac_mg values ('22B','電位依存性ナトリウムチャネル遮断','神経作用');
+insert into irac_mg values ('23','アセチルCoAカルボキシラーゼ阻害','脂質合成・生育調節');
+insert into irac_mg values ('24(A)','ミトコンドリア電子伝達系複合体IV阻害','エネルギー代謝');
+insert into irac_mg values ('24(B)','ミトコンドリア電子伝達系複合体IV阻害','エネルギー代謝');
+insert into irac_mg values ('25A','ミトコンドリア電子伝達系複合体II阻害','エネルギー代謝');
+insert into irac_mg values ('25B','ミトコンドリア電子伝達系複合体II阻害','エネルギー代謝');
+insert into irac_mg values ('28','リアノジン受容体調節','神経・筋肉作用');
+insert into irac_mg values ('29','弦音器官ニコチンアミダーゼ阻害','神経作用'); --2023.6.8変更 v10.5
+insert into irac_mg values ('30','GABA作動性塩素イオンチャネルアロステリック調節','神経作用'); --2025.8.6変更(CLJ2025.5の表記)
+insert into irac_mg values ('31','バキュロウイルス','宿主特異的閉塞性病原ウイルス');
+insert into irac_mg values ('32','ニコチン性アセチルコリン受容体(nAChR)アロステリック調節-部位II','神経作用');
+insert into irac_mg values ('33','カルシウム活性化カリウムチャンネル(KCa2)調節','神経作用'); --2022.5.31追加
+insert into irac_mg values ('34','ミトコンドリア電子伝達系複合体III阻害(Qi部位)','エネルギー代謝'); --2022.5.31追加
+insert into irac_mg values ('35','RNA干渉を介した標的抑制','RNAi作用活性化'); --2022.12.26追加 v10.3; 2025.8.6変更 v11.3
+insert into irac_mg values ('36','弦音器官調節(標的部位未特定)','神経作用'); --2023.6.8追加 v10.5
+insert into irac_mg values ('37','小胞アセチルコリントランスポーター(VAChT)阻害','神経作用'); --2024.8.22追加 v11.2
+insert into irac_mg values ('UN*','作用機構不明・不確定','不明・未特定');
+insert into irac_mg values ('UNB*','作用機構不明・不確定な細菌(非BT)','不明・未特定');
+insert into irac_mg values ('UNE*','作用機構不明・不確定な植物性エキス(合成物、抽出物あるいは未精製油を含む)','不明・未特定');
+insert into irac_mg values ('UNF*','作用機構不明・不確定な真菌','不明・未特定');
+insert into irac_mg values ('UNM*','作用機構不明・不確定な非特異的な機械的・物理的攪乱','不明・未特定');
+insert into irac_mg values ('UNP*','作用機構不明・不確定なペプチド','不明・未特定');
+insert into irac_mg values ('UNV*','作用機構不明・不確定なウイルス(バキュロウイルスを除く)','不明・未特定');
+insert into irac_mg values ('未','未分類','未分類');-- IRAC Uncategorized
+commit;
+/* Chemical Family */
+drop table if exists spec.irac_sg;
+create table spec.irac_sg (mid varchar, sid varchar primary key, keito varchar);
+begin transaction;
+insert into irac_sg values ('1(A)','1A','カーバメート系');
+insert into irac_sg values ('1(B)','1B','有機リン系');
+insert into irac_sg values ('2(A)','2A','環状ジエン有機塩素系');
+insert into irac_sg values ('2(B)','2B','フェニルピラゾール系');
+insert into irac_sg values ('3(A)','3A','ピレスロイド系');
+insert into irac_sg values ('3(B)','3B','有機塩素[全農分類]');
+insert into irac_sg values ('4A','4A','ネオニコチノイド系');
+insert into irac_sg values ('4B','4B','ニコチン');
+insert into irac_sg values ('4C','4C','スルホキシイミン系');
+insert into irac_sg values ('4D','4D','ブテノライド系');
+insert into irac_sg values ('4E','4E','メソイオン系');
+insert into irac_sg values ('4F','4F','ピリジリデン系'); --2022.5.31追加
+insert into irac_sg values ('4','4x','その他');
+insert into irac_sg values ('5','5','スピノシン系');
+--insert into irac_sg values ('6','6','アベルメクチン、ミルベマイシン');
+insert into irac_sg values ('6','6','マクロライド系[農薬インデックス分類]');
+insert into irac_sg values ('7(A)','7A','幼若ホルモン類縁体');
+insert into irac_sg values ('7(B)','7B','フェノキシカルブ');
+--insert into irac_sg values ('7(C)','7C','ピリプロキシフェン');
+insert into irac_sg values ('7(C)','7C','フェノキシ系(IGR)[NIHS分類]');
+insert into irac_sg values ('8A','8A','ハロゲン化アルキル系');
+insert into irac_sg values ('8B','8B','有機塩素[農薬インデックス分類]');
+insert into irac_sg values ('8C','8C','フルオライド系');
+insert into irac_sg values ('8D','8D','ホウ酸塩');
+insert into irac_sg values ('8E','8E','吐酒石');
+insert into irac_sg values ('8F','8F','メチルイソチオシアネートジェネレータ');
+--insert into irac_sg values ('8x','8x','その他');
+insert into irac_sg values ('9(B)','9B','ピリジンアゾメチン誘導体');
+insert into irac_sg values ('9(D)','9D','ピロペン系');
+insert into irac_sg values ('10(A)','10A','ヘテロサイクリック系(IGRダニ類)[NIHS分類]');
+insert into irac_sg values ('10(B)','10B','オキサゾリン系[農薬インデックス分類]');
+insert into irac_sg values ('11(A)','11A','BT');
+insert into irac_sg values ('11(B)','11B','バチルス スファエリクス');
+insert into irac_sg values ('12(A)','12A','ウレア[農薬インデックス分類]');
+insert into irac_sg values ('12(B)','12B','有機スズ系');
+insert into irac_sg values ('12(C)','12C','亜硫酸エステル[農薬インデックス分類]');
+insert into irac_sg values ('12(D)','12D','有機硫黄[農薬インデックス分類]');
+insert into irac_sg values ('13*','13a','ピロール系');
+insert into irac_sg values ('13*','13b','ジニトロフェノール系');
+insert into irac_sg values ('13*','13c','フッ素系[特許記載分類]');
+insert into irac_sg values ('14','14','ネライストキシン類縁体');
+insert into irac_sg values ('15','15','ベンゾイル尿素系');
+insert into irac_sg values ('16','16','ヘテロサイクリック(IGRキチン生合成阻害1)');
+insert into irac_sg values ('17','17','ヘテロサイクリック(IGR脱皮阻害)[全農分類]');
+insert into irac_sg values ('18','18','ジアシルヒドラジン系(IGR脱皮促進)');
+insert into irac_sg values ('19','19','フェニル系[農薬インデックス分類]');
+insert into irac_sg values ('20(A)','20A','アミジノヒドラゾン[特許記載分類]');
+insert into irac_sg values ('20(B)','20B','キノリン系[農薬評価書分類]');
+insert into irac_sg values ('20(C)','20C','ピリミジニルオキシ[全農分類]');
+insert into irac_sg values ('20(D)','20D','ヒドラジン系[中央環境審議会分類]');
+insert into irac_sg values ('21(A)','21A','METI殺ダニ・殺虫');
+insert into irac_sg values ('21(B)','21B','ロテノン');
+insert into irac_sg values ('22A','22A','オキサジアジン系');
+insert into irac_sg values ('22B','22B','セミカルバゾン系');
+insert into irac_sg values ('23','23','テトロン酸･テトラミン酸誘導体');
+--insert into irac_sg values ('23','23','環状ケトエノール[全農分類]');
+insert into irac_sg values ('24(A)','24A','ホスフィン系');
+insert into irac_sg values ('24(B)','24B','シアニド類');
+insert into irac_sg values ('25A','25A','βケトニトリル誘導体');
+insert into irac_sg values ('25B','25B','カルボキサニリド系');
+insert into irac_sg values ('28','28','ジアミド系');
+insert into irac_sg values ('29','29','ピリジンカルボキサミド系[全農分類]');
+insert into irac_sg values ('30','30a','メタジアミド系');
+insert into irac_sg values ('30','30b','イソオキサゾリン系');
+insert into irac_sg values ('31','31a','顆粒病ウイルス(GVs)');
+insert into irac_sg values ('31','31b','核多角体病ウイルス(NPVs)');
+insert into irac_sg values ('32','32',NULL);
+insert into irac_sg values ('33','33','環状アミン[中央環境審議会分類]'); --2022.5.31追加
+insert into irac_sg values ('34','34','キノリン系[農薬抄録分類]'); --2022.5.31追加
+insert into irac_sg values ('35','35','RNA農薬'); --2022.12.26追加 v10.3
+insert into irac_sg values ('36','36','ピリダジン'); --2023.6.8追加 v10.5
+insert into irac_sg values ('37','37','スルフィル'); --2024.8.22追加(植物防疫第76巻第4号記載の分類)
+insert into irac_sg values ('UN*','UN','その他');
+insert into irac_sg values ('UN*','UNa','プロペニルオキシフェニル');
+insert into irac_sg values ('UN*','UNb','キノキサリン');
+insert into irac_sg values ('UNB*','UNB','細菌');
+insert into irac_sg values ('UNE*','UNE','植物抽出物等');
+insert into irac_sg values ('UNF*','UNF','真菌');
+insert into irac_sg values ('UNM*','UNM','物理的攪乱剤');
+insert into irac_sg values ('UNP*','UNP','ペプチド');
+insert into irac_sg values ('UNV*','UNV','ウイルス');
+insert into irac_sg values ('未','xa','未分類:気門封鎖系');-- IRAC Uncategorized
+insert into irac_sg values ('未','xb','未分類:微生物');-- IRAC Uncategorized
+insert into irac_sg values ('未','xc','未分類:天敵');-- IRAC Uncategorized
+insert into irac_sg values ('未','xz','未分類:その他');-- IRAC Uncategorized
+commit;
+/* Active Ingredient */
+drop table if exists spec.irac_ai;
+create table spec.irac_ai (sid varchar, ippanmei varchar primary key);
+begin transaction;
+insert into irac_ai values ('1A','BPMC');
+insert into irac_ai values ('1A','MIPC');
+insert into irac_ai values ('1A','MPMC');
+insert into irac_ai values ('1A','MTMC');
+insert into irac_ai values ('1A','NAC');
+insert into irac_ai values ('1A','PHC');
+insert into irac_ai values ('1A','XMC');
+insert into irac_ai values ('1A','アラニカルブ');
+insert into irac_ai values ('1A','アルジカルブ');
+insert into irac_ai values ('1A','ベンダイオカルブ');
+insert into irac_ai values ('1A','ベンフラカルブ');
+insert into irac_ai values ('1A','ブトカルボキシム');
+insert into irac_ai values ('1A','ブトキシカルボキシム');
+insert into irac_ai values ('1A','カルバリル');
+insert into irac_ai values ('1A','カルボフラン');
+insert into irac_ai values ('1A','カルボスルファン');
+insert into irac_ai values ('1A','エチオフェンカルブ');
+insert into irac_ai values ('1A','フェノブカルブ');
+insert into irac_ai values ('1A','ホルメタネート');
+insert into irac_ai values ('1A','フラチオカルブ');
+insert into irac_ai values ('1A','イソプロカルブ');
+insert into irac_ai values ('1A','メチオカルブ');
+insert into irac_ai values ('1A','メソミル');
+insert into irac_ai values ('1A','メトルカルブ');
+insert into irac_ai values ('1A','オキサミル');
+insert into irac_ai values ('1A','ピリミカーブ');
+insert into irac_ai values ('1A','ピリミカルブ');
+insert into irac_ai values ('1A','フェノチオカルブ'); --2022.12.26 UN から移動 (JPP)
+insert into irac_ai values ('1A','プロポキスル');
+insert into irac_ai values ('1A','チオジカルブ');
+insert into irac_ai values ('1A','チオファノクス');
+insert into irac_ai values ('1A','チオファノクッス');
+insert into irac_ai values ('1A','トリアザメート');
+insert into irac_ai values ('1A','トリメタカルブ');
+insert into irac_ai values ('1A','キシリルカルブ');
+insert into irac_ai values ('1B','BRP');
+insert into irac_ai values ('1B','CVMP');
+insert into irac_ai values ('1B','CVP');
+insert into irac_ai values ('1B','CYAP');
+insert into irac_ai values ('1B','DDVP');
+insert into irac_ai values ('1B','DEP');
+insert into irac_ai values ('1B','DMTP');
+insert into irac_ai values ('1B','EPN');
+insert into irac_ai values ('1B','MEP');
+insert into irac_ai values ('1B','MPP');
+insert into irac_ai values ('1B','PAP');
+insert into irac_ai values ('1B','PMP');
+insert into irac_ai values ('1B','アセフェート');
+insert into irac_ai values ('1B','アザメチホス');
+insert into irac_ai values ('1B','アジンホスエチル');
+insert into irac_ai values ('1B','アジンホスメチル');
+insert into irac_ai values ('1B','カズサホス');
+insert into irac_ai values ('1B','クロレトキシホス');
+insert into irac_ai values ('1B','クロルフェンビンホス');
+insert into irac_ai values ('1B','クロルメホス');
+insert into irac_ai values ('1B','クロルピリホス');
+insert into irac_ai values ('1B','クロルピリホスメチル');
+insert into irac_ai values ('1B','クマホス');
+insert into irac_ai values ('1B','シアノホス');
+insert into irac_ai values ('1B','ジメトン-S-メチル');
+insert into irac_ai values ('1B','ダイアジノン');
+insert into irac_ai values ('1B','ジクロトホス');
+insert into irac_ai values ('1B','ジクロルボス');
+insert into irac_ai values ('1B','ジメトエート');
+insert into irac_ai values ('1B','ジメチルビンホス');
+insert into irac_ai values ('1B','エチルチオメトン');
+insert into irac_ai values ('1B','ジスルホトン');
+insert into irac_ai values ('1B','エチオン');
+insert into irac_ai values ('1B','エトプロホス');
+insert into irac_ai values ('1B','ファンフル');
+insert into irac_ai values ('1B','フェナミホス');
+insert into irac_ai values ('1B','フェニトロチオン');
+insert into irac_ai values ('1B','フェンチオン');
+insert into irac_ai values ('1B','ホスチアゼート');
+insert into irac_ai values ('1B','ヘプテノホス');
+insert into irac_ai values ('1B','イミシアホス');
+insert into irac_ai values ('1B','イソフェンホス');
+insert into irac_ai values ('1B','イソプロピル=O-(メトキシアミノチオホスホリル)サリチラート');
+insert into irac_ai values ('1B','イソキサチオン');
+insert into irac_ai values ('1B','マラソン');
+insert into irac_ai values ('1B','マラチオン');
+insert into irac_ai values ('1B','メカルバム');
+insert into irac_ai values ('1B','メタミドホス');
+insert into irac_ai values ('1B','メチダチオン');
+insert into irac_ai values ('1B','メビンホス');
+insert into irac_ai values ('1B','モノクロトホス');
+insert into irac_ai values ('1B','ナレッド');
+insert into irac_ai values ('1B','オメトエート');
+insert into irac_ai values ('1B','オキシジメトンメチル');
+insert into irac_ai values ('1B','パラチオン');
+insert into irac_ai values ('1B','パラチオンメチル');
+insert into irac_ai values ('1B','メチルパラチオン');
+insert into irac_ai values ('1B','フェントエート');
+insert into irac_ai values ('1B','ホレート');
+insert into irac_ai values ('1B','ホサロン');
+insert into irac_ai values ('1B','ホスメット');
+insert into irac_ai values ('1B','ホスファミドン');
+insert into irac_ai values ('1B','ホキシム');
+insert into irac_ai values ('1B','ピリミホスメチル');
+insert into irac_ai values ('1B','プロフェノホス');
+insert into irac_ai values ('1B','プロペタムホス');
+insert into irac_ai values ('1B','プロチオホス');
+insert into irac_ai values ('1B','ピラクロホス');
+insert into irac_ai values ('1B','ピリダフェンチオン');
+insert into irac_ai values ('1B','キナルホス');
+insert into irac_ai values ('1B','スルホテップ');
+insert into irac_ai values ('1B','テブピリムホス');
+insert into irac_ai values ('1B','テメホス');
+insert into irac_ai values ('1B','テルブホス');
+insert into irac_ai values ('1B','テトラクロルビンホス');
+insert into irac_ai values ('1B','チオメトン');
+insert into irac_ai values ('1B','トリアゾホス');
+insert into irac_ai values ('1B','トリクロルホン');
+insert into irac_ai values ('1B','バミドチオン');
+insert into irac_ai values ('2A','クロルデン');
+insert into irac_ai values ('2A','ベンゾエピン');
+insert into irac_ai values ('2A','エンドスルファン');
+insert into irac_ai values ('2A','ジエノクロル');
+insert into irac_ai values ('2B','エチプロール');
+insert into irac_ai values ('2B','フィプロニル');
+insert into irac_ai values ('3A','アクリナトリン');
+insert into irac_ai values ('3A','アレスリン');
+insert into irac_ai values ('3A','ビフェントリン');
+insert into irac_ai values ('3A','ビオアレスリン');
+insert into irac_ai values ('3A','ビオレスメトリン');
+insert into irac_ai values ('3A','シクロプロトリン');
+insert into irac_ai values ('3A','シフルトリン');
+insert into irac_ai values ('3A','シハロトリン');
+insert into irac_ai values ('3A','シペルメトリン');
+insert into irac_ai values ('3A','シフェノトリン');
+insert into irac_ai values ('3A','デルタメトリン');
+insert into irac_ai values ('3A','エンペントリン');
+insert into irac_ai values ('3A','エスフェンバレレート');
+insert into irac_ai values ('3A','エトフェンプロックス');
+insert into irac_ai values ('3A','フェンプロパトリン');
+insert into irac_ai values ('3A','フェンバレレート');
+insert into irac_ai values ('3A','フルシトリネート');
+insert into irac_ai values ('3A','フルメトリン');
+insert into irac_ai values ('3A','フルバリネート');
+--insert into irac_ai values ('3A','ハルフェンプロクス');
+insert into irac_ai values ('3A','ハルフェンプロックス');
+insert into irac_ai values ('3A','イミプロトリン');
+insert into irac_ai values ('3A','カデスリン');
+insert into irac_ai values ('3A','ペルメトリン');
+insert into irac_ai values ('3A','フェノトリン');
+insert into irac_ai values ('3A','プラレトリン');
+insert into irac_ai values ('3A','ピレトリン');
+insert into irac_ai values ('3A','レスメトリン');
+insert into irac_ai values ('3A','シラフルオフェン');
+insert into irac_ai values ('3A','テフルトリン');
+insert into irac_ai values ('3A','フタルスリン');
+insert into irac_ai values ('3A','テトラメスリン');
+insert into irac_ai values ('3A','テトラメトリン');
+insert into irac_ai values ('3A','トラロメトリン');
+insert into irac_ai values ('3A','トランスフルトリン');
+insert into irac_ai values ('3B','DDT');
+insert into irac_ai values ('3B','メトキシクロル');
+insert into irac_ai values ('4A','アセタミプリド');
+insert into irac_ai values ('4A','クロチアニジン');
+insert into irac_ai values ('4A','ジノテフラン');
+insert into irac_ai values ('4A','イミダクロプリド');
+insert into irac_ai values ('4A','ニテンピラム');
+insert into irac_ai values ('4A','チアクロプリド');
+insert into irac_ai values ('4A','チアメトキサム');
+insert into irac_ai values ('4B','ニコチン');
+insert into irac_ai values ('4B','硫酸ニコチン');
+insert into irac_ai values ('4C','スルホキサフロル');
+insert into irac_ai values ('4D','フルピラジフロン');
+--insert into irac_ai values ('4E','トリフルピリム'); --2024.4.3削除
+insert into irac_ai values ('4E','トリフルメゾピリム');
+insert into irac_ai values ('4E','ジクロロメゾチアズ'); --2022.5.31追加 v10.5正式採用
+insert into irac_ai values ('4E','フェンメゾジチアズ'); --2024.4.3追加 v11.1
+insert into irac_ai values ('4F','フルピリミン'); --2022.5.31追加
+insert into irac_ai values ('4x','酒石酸モランテル');
+insert into irac_ai values ('5','スピネトラム');
+insert into irac_ai values ('5','スピノサド');
+insert into irac_ai values ('6','アバメクチン');
+insert into irac_ai values ('6','エマメクチン安息香酸塩');
+insert into irac_ai values ('6','ミルベマイシン');
+insert into irac_ai values ('6','ミルベメクチン');
+insert into irac_ai values ('6','レピメクチン');
+insert into irac_ai values ('6','ネマデクチン');
+insert into irac_ai values ('7A','ヒドロプレン');
+insert into irac_ai values ('7A','キノプレン');
+insert into irac_ai values ('7A','メトプレン');
+insert into irac_ai values ('7B','フェノキシカルブ');
+insert into irac_ai values ('7C','ピリプロキシフェン');
+insert into irac_ai values ('8A','1,3-ジクロロプロペン'); --2024.4.3追加 v11.1
+insert into irac_ai values ('8A','D-D');
+insert into irac_ai values ('8A','DCIP');
+insert into irac_ai values ('8A','臭化メチル');
+insert into irac_ai values ('8A','ヨウ化メチル');
+insert into irac_ai values ('8B','クロルピクリン');
+insert into irac_ai values ('8C','フッ化アルミニウムナトリウム');
+insert into irac_ai values ('8C','フッ化スルフリル');
+insert into irac_ai values ('8D','ホウ砂');
+insert into irac_ai values ('8D','ホウ酸');
+insert into irac_ai values ('8D','オクタホウ酸二ナトリウム');
+insert into irac_ai values ('8D','メタホウ酸ナトリウム塩');
+insert into irac_ai values ('8E','吐酒石');
+insert into irac_ai values ('8F','ダゾメット');
+insert into irac_ai values ('8F','カーバム');
+insert into irac_ai values ('8F','カーバムナトリウム塩');
+insert into irac_ai values ('8F','メチルイソチオシアネート'); --以前から記載済みだが、V11.1から採用？
+insert into irac_ai values ('9B','ピメトロジン');
+insert into irac_ai values ('9B','ピリフルキナゾン');
+insert into irac_ai values ('9D','アフィドピロペン');
+insert into irac_ai values ('10A','クロフェンテジン');
+insert into irac_ai values ('10A','ジフロビダジン');
+insert into irac_ai values ('10A','ヘキシチアゾクス');
+insert into irac_ai values ('10B','エトキサゾール');
+insert into irac_ai values ('11A','BT');
+insert into irac_ai values ('11A','BT(生菌)');
+insert into irac_ai values ('11A','BT(死菌)');
+insert into irac_ai values ('11B','バチルス スファエリクス');
+insert into irac_ai values ('12A','ジアフェンチウロン');
+insert into irac_ai values ('12B','アゾシクロチン');
+insert into irac_ai values ('12B','シヘキサチン');
+insert into irac_ai values ('12B','水酸化トリシクロヘキシルスズ');
+insert into irac_ai values ('12B','酸化フェンブタスズ');
+insert into irac_ai values ('12C','BPPS');
+insert into irac_ai values ('12C','プロパルギット');
+insert into irac_ai values ('12D','テトラジホン');
+insert into irac_ai values ('13a','クロルフェナピル');
+insert into irac_ai values ('13b','DNOC');
+insert into irac_ai values ('13c','スルフルラミド');
+insert into irac_ai values ('14','ベンスルタップ');
+insert into irac_ai values ('14','カルタップ');
+insert into irac_ai values ('14','チオシクラム');
+insert into irac_ai values ('14','チオスルタップ');
+insert into irac_ai values ('14','チオスルタップナトリウム塩');
+insert into irac_ai values ('15','ビストリフルロン');
+insert into irac_ai values ('15','クロルフルアズロン');
+insert into irac_ai values ('15','ジフルベンズロン');
+insert into irac_ai values ('15','フルシクロクスロン');
+insert into irac_ai values ('15','フルフェノクスロン');
+insert into irac_ai values ('15','ヘキサフルムロン');
+insert into irac_ai values ('15','ルフェヌロン');
+insert into irac_ai values ('15','ノバルロン');
+insert into irac_ai values ('15','ノビフルムロン');
+insert into irac_ai values ('15','テフルベンズロン');
+insert into irac_ai values ('15','トリフルムロン');
+insert into irac_ai values ('16','ブプロフェジン');
+insert into irac_ai values ('17','シロマジン');
+insert into irac_ai values ('18','クロマフェノジド');
+insert into irac_ai values ('18','ハロフェノジド');
+insert into irac_ai values ('18','メトキシフェノジド');
+insert into irac_ai values ('18','テブフェノジド');
+insert into irac_ai values ('18','ジアシルヒドラジン');
+insert into irac_ai values ('19','アミトラズ');
+insert into irac_ai values ('20A','ヒドラメチルノン');
+insert into irac_ai values ('20B','アセキノシル');
+insert into irac_ai values ('20C','フルアクリピリム');
+insert into irac_ai values ('20D','ビフェナゼート');
+insert into irac_ai values ('21A','フェナザキン');
+insert into irac_ai values ('21A','フェンピロキシメート');
+insert into irac_ai values ('21A','ピリダベン');
+insert into irac_ai values ('21A','ピリミジフェン');
+insert into irac_ai values ('21A','テブフェンピラド');
+insert into irac_ai values ('21A','トルフェンピラド');
+insert into irac_ai values ('21B','デリス');
+insert into irac_ai values ('21B','ロテノン');
+insert into irac_ai values ('22A','インドキサカルブ');
+insert into irac_ai values ('22A','インドキサカルブMP');
+insert into irac_ai values ('22B','メタフルミゾン');
+insert into irac_ai values ('23','スピドキサマト'); --2024.4.3追加 v11.1 (スピドザマトかも？)
+insert into irac_ai values ('23','スピロジクロフェン');
+insert into irac_ai values ('23','スピロメシフェン');
+insert into irac_ai values ('23','スピロピジオン');
+insert into irac_ai values ('23','スピロテトラマト');
+insert into irac_ai values ('24A','リン化アルミニウム');
+insert into irac_ai values ('24A','リン化カルシウム');
+insert into irac_ai values ('24A','リン化亜鉛');
+insert into irac_ai values ('24A','リン化水素');
+insert into irac_ai values ('24B','青酸');
+insert into irac_ai values ('24B','シアン化カルシウム');
+insert into irac_ai values ('24B','シアン化ナトリウム');
+insert into irac_ai values ('24B','シアン化カリウム');
+insert into irac_ai values ('25A','シエノピラフェン');
+insert into irac_ai values ('25A','シフルメトフェン');
+insert into irac_ai values ('25B','ピフルブミド');
+insert into irac_ai values ('28','クロラントラニリプロール');
+insert into irac_ai values ('28','シアントラニリプロール');
+insert into irac_ai values ('28','シクラニリプロール');
+insert into irac_ai values ('28','フルベンジアミド');
+insert into irac_ai values ('28','テトラニリプロール');
+insert into irac_ai values ('29','フロニカミド');
+insert into irac_ai values ('30a','ブロフラニリド');
+insert into irac_ai values ('30a','シプロフラニド'); --2025.8.6追加 v11.4
+insert into irac_ai values ('30a','フルキサメタミド'); --2025.8.6変更(30b→30a) v11.4
+insert into irac_ai values ('30b','イソシクロセラム'); --2022.5.31追加
+insert into irac_ai values ('31a','コドリンガ顆粒病ウイルス');
+insert into irac_ai values ('31a','コドリンガモドキ顆粒病ウイルス');
+insert into irac_ai values ('31a','チャハマキ顆粒病ウイルス');
+insert into irac_ai values ('31a','リンゴコカクモンハマキ顆粒病ウイルス');
+insert into irac_ai values ('31b','ビロードマメケムシ核多角体病ウイルス');
+insert into irac_ai values ('31b','オオタバコガ核多角体病ウイルス');
+insert into irac_ai values ('31b','ハスモンヨトウ核多角体病ウイルス');
+insert into irac_ai values ('32','GS-オメガ/カッパHXTX-Hvlaペプチド');
+insert into irac_ai values ('33','アシノナピル'); --2022.5.31追加
+insert into irac_ai values ('34','フロメトキン'); --2022.5.31追加
+insert into irac_ai values ('35','レドプロナ'); --2022.12.26追加 v10.3pendeing V10.5正式採用
+insert into irac_ai values ('36','ジンプロピリダズ'); --2023.6.8追加 v10.5 ディンプロピリダズ → 2026.2.16 ジンプロピリダズ
+insert into irac_ai values ('37','オキサゾスルフィル'); --2024.8.22 UN から移動 v11.2
+insert into irac_ai values ('UN','アザジラクチン');
+--insert into irac_ai values ('UN','ベンゾメート'); --2024.4.3削除
+insert into irac_ai values ('UN','ベンゾキシメート');
+insert into irac_ai values ('UN','ベンズピリモキサン'); --2022.12.26 xz から移動 v10.3
+--insert into irac_ai values ('UN','フェニソブロモレート'); --2022.12.26削除
+insert into irac_ai values ('UN','ブロモプロピレート');
+--insert into irac_ai values ('UN','クリオライト'); --2022.12.26削除
+--insert into irac_ai values ('UN','ケルセン'); --2022.12.26削除
+insert into irac_ai values ('UN','ジコホル');
+insert into irac_ai values ('UN','硫黄');
+insert into irac_ai values ('UN','石灰硫黄合剤');
+insert into irac_ai values ('UN','マンゼブ'); --2022.12.26追加
+insert into irac_ai values ('UNa','ピリダリル');
+insert into irac_ai values ('UNb','キノキサリン系');
+insert into irac_ai values ('UNb','キノメチオナート'); --2022.12.26追加
+insert into irac_ai values ('UNB','バークホリデリア属菌');
+insert into irac_ai values ('UNB','ボルバキア ピピエンティス');
+insert into irac_ai values ('UNB','パスツーリア ペネトランス');
+insert into irac_ai values ('UNE','アリタソウ抽出物');
+insert into irac_ai values ('UNE','ニームオイル');
+insert into irac_ai values ('UNE','脂肪酸モノエステル');
+insert into irac_ai values ('UNE','ペラルゴン酸'); --2025.8.6追加 v11.3
+insert into irac_ai values ('UNE','サバジラエキス'); --2025.8.6追加 v11.2
+insert into irac_ai values ('UNE','チョウマメ抽出物'); --2025.8.6追加 v11.4
+insert into irac_ai values ('UNF','アカントマイセス マスカリウス'); --2024.4.3追加 v11.1 (アカントミセスかも？)
+insert into irac_ai values ('UNF','アカントマイセス マスカリウスVe6'); --2024.4.3追加 v11.1 (アカントミセスかも？)
+insert into irac_ai values ('UNF','ボーベリア バシアーナ');
+insert into irac_ai values ('UNF','ボーベリア バシアーナF-263');
+insert into irac_ai values ('UNF','ボーベリア バシアーナGHA');
+insert into irac_ai values ('UNF','ボーベリア バシアーナATCC'); --2024.4.11追加
+insert into irac_ai values ('UNF','ボーベリア ブロンニアティ');
+insert into irac_ai values ('UNF','メタリジウム アニソプリエ');
+insert into irac_ai values ('UNF','メタリジウム アニソプリエF52'); --2022.12.26追加
+insert into irac_ai values ('UNF','ペキロマイセス テヌイペス');
+insert into irac_ai values ('UNF','ペキロマイセス フモソロセウス');
+insert into irac_ai values ('UNF','ペキロマイセス フモソロセウス アポプカ97'); --2022.12.26追加
+insert into irac_ai values ('UNM','ケイソウ土');
+insert into irac_ai values ('UNM','珪藻土');
+insert into irac_ai values ('UNM','鉱物油'); --2022.5.31追加
+insert into irac_ai values ('UNM','ポリジメチルシロキサン'); --2025.8.6追加 v11.2
+insert into irac_ai values ('UNM','PDMS'); --2025.8.6追加 v11.2
+insert into irac_ai values ('UNP','U1-AGTX-Ta1b-QAペプチド'); --2023.6.8追加 v10.5-V11.1pending
+insert into irac_ai values ('UNM','パーライト'); --2024.8.22追加 v11.2pending
+insert into irac_ai values ('35','バデスカナ'); --2024.8.22追加 v11.2pending
+--IRAC未掲載
+insert into irac_ai values ('xa','オレイン酸ナトリウム');
+insert into irac_ai values ('xa','カプリン酸グリセリル');
+insert into irac_ai values ('xa','還元澱粉糖化物');
+insert into irac_ai values ('xa','脂肪酸グリセリド');
+insert into irac_ai values ('xa','脂肪酸グリセリド(虫)');
+insert into irac_ai values ('xa','ソルビタン脂肪酸エステル');
+insert into irac_ai values ('xa','ソルビタン脂肪酸エステル(殺虫)');
+insert into irac_ai values ('xa','デンプン');
+insert into irac_ai values ('xa','調合油');
+insert into irac_ai values ('xa','なたね油');
+insert into irac_ai values ('xa','マシン油');
+insert into irac_ai values ('xa','ヒドロキシプロピルデンプン');
+insert into irac_ai values ('xa','ヒドロキシプロピル化リン酸架橋デンプン');
+--insert into irac_ai values ('xa','グリセリン'); --2022.12.26 UNE から移動
+insert into irac_ai values ('xa','グリセリン酢酸脂肪酸エステル'); --2022.12.26 UNE から移動
+insert into irac_ai values ('xa','ポリグリセリン脂肪酸エステル'); --2022.12.26 UNE から移動
+insert into irac_ai values ('xa','グリセリンクエン酸脂肪酸エステル'); --2022.12.26 UNE から移動
+insert into irac_ai values ('xa','プロピレングリコールモノ脂肪酸エステル'); --2022.12.26 UNE から移動
+insert into irac_ai values ('xb','スタイナーネマ カーポカプサエ');
+insert into irac_ai values ('xb','スタイナーネマ グラセライ');
+insert into irac_ai values ('xb','バーティシリウム レカニ'); --2022.12.26 UNF から移動
+insert into irac_ai values ('xc','アリガタシマアザミウマ');
+insert into irac_ai values ('xc','イサエアヒメコバチ');
+insert into irac_ai values ('xc','イサエアヒメコバチ羽化成虫');
+insert into irac_ai values ('xc','イサエアヒメコバチ成虫');
+insert into irac_ai values ('xc','オンシツツヤコバチ');
+insert into irac_ai values ('xc','キイカブリダニ');
+insert into irac_ai values ('xc','ククメリスカブリダニ');
+insert into irac_ai values ('xc','コレマンアブラバチ');
+insert into irac_ai values ('xc','サバクツヤコバチ');
+insert into irac_ai values ('xc','サバクツヤコバチ羽化成虫');
+insert into irac_ai values ('xc','サバクツヤコバチ成虫');
+insert into irac_ai values ('xc','ショクガタマバエ');
+insert into irac_ai values ('xc','スワルスキーカブリダニ');
+insert into irac_ai values ('xc','タイリクヒメハナカメムシ');
+insert into irac_ai values ('xc','チチュウカイツヤコバチ');
+insert into irac_ai values ('xc','チャバラアブラコバチ');
+insert into irac_ai values ('xc','チリカブリダニ');
+insert into irac_ai values ('xc','ナミテントウ');
+insert into irac_ai values ('xc','ナミテントウ2および3齢幼虫');
+insert into irac_ai values ('xc','ナミテントウ2齢幼虫');
+insert into irac_ai values ('xc','ナミテントウ成虫');
+insert into irac_ai values ('xc','ハモグリコマユバチ');
+insert into irac_ai values ('xc','ハモグリミドリヒメコバチ');
+insert into irac_ai values ('xc','ミヤコカブリダニ');
+insert into irac_ai values ('xc','ヤマトクサカゲロウ');
+insert into irac_ai values ('xc','ヒメカメノコテントウ');
+insert into irac_ai values ('xc','ヨーロッパトビチビアメバチ');
+insert into irac_ai values ('xc','リモニカスカブリダニ');
+insert into irac_ai values ('xc','アカメガシワクダアザミウマ');
+insert into irac_ai values ('xc','タバコカスミカメ');
+insert into irac_ai values ('xc','ギフアブラバチ');
+insert into irac_ai values ('xc','ヤマウチアシボソトゲダニ'); --2025.8.5追加
+insert into irac_ai values ('xz','二酸化炭素');
+insert into irac_ai values ('xz','メタアルデヒド');
+insert into irac_ai values ('xz','フルエンスルホン');
+insert into irac_ai values ('xz','ポリブテン');
+insert into irac_ai values ('xz','塩酸レバミゾール'); --2022.12.26 UN から移動
+insert into irac_ai values ('xz','燐酸第二鉄'); --2022.12.26 UN から移動
+commit;
+/* パーマネント統合テーブル＆ビュー作成 */
+create table if not exists spec.rac_mg (cid integer, mid varchar primary key, sayoten varchar, sayokiko varchar, risk varchar);
+delete from spec.rac_mg where mid like 'I:%';
+insert into spec.rac_mg select 2, 'I:'||mid, sayoten, sayokiko, null from irac_mg;
+create table if not exists spec.rac_sg (mid varchar, sid varchar primary key, keito varchar, fgroup varchar);
+delete from spec.rac_sg where sid like 'I:%';
+insert into spec.rac_sg select 'I:'||mid as mid, 'I:'||sid as sid, keito, null from irac_sg;
+create table if not exists spec.rac_ai (sid varchar, ippanmei varchar);
+delete from spec.rac_ai where sid like 'I:%';
+insert into spec.rac_ai select 'I:'||sid as sid, ippanmei from irac_ai;
+drop index if exists spec.idxrac;
+create index spec.idxRac on rac_ai (ippanmei);
+/*
+drop view if exists spec.rac;
+drop view if exists spec.rac2;
+drop view if exists spec.raccode;
+*/
+create view if not exists spec.rac as select ippanmei, concat2(', ', keito) as keito, concat2(', ', mid) as mid, concat2(', ', sayoten) as sayoten, concat2(', ', ifnullstr(sayokiko, '-')) as sayokiko, concat2(', ', fgroup) as fgroup, concat2(', ', risk) as risk from rac_ai left join rac_sg using(sid) left join rac_mg using(mid) group by ippanmei;
+create view if not exists spec.rac2 as select ippanmei, keito, cid, mid, sayoten, sayokiko, fgroup, risk from rac_ai left join rac_sg using(sid) left join rac_mg using(mid);
+create view if not exists spec.raccode as select cid, mid, ippanmei from rac_ai left join rac_sg using(sid) left join rac_mg using(mid);
+	

@@ -1,0 +1,687 @@
+--/d
+create table if not exists spec.info (item varchar primary key, value varchar);
+insert or replace into spec.info (item, value) values ('feedrice', '2024.3.8');
+insert or replace into spec.info (item, value) values ('wcs', '2024.2.20 5畜産第2444号');
+insert or replace into spec.info (item, value) values ('momi', '2024.2.20 5消安第6726号 5畜産第2443号 5農産第4251号');
+drop table if exists spec.feedrice;
+create table spec.feedrice (shurui varchar, yoto varchar, ishoku integer, chokuha integer, ine integer, momi integer, jogaiseibun varchar, jogainodo real, jogaisiki varchar, biko varchar);
+begin transaction;
+insert into spec.feedrice values("BPMC乳剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL); --2024.03wcs削除(バッサの単剤がないため)
+insert into spec.feedrice values("BPMC粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL); --2024.03wcs削除(バッサの単剤がないため)
+insert into spec.feedrice values("BPMC・MEP粉剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("BPMC・PAP粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("PAP乳剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("PAP粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("MEP乳剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("MEP粉剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("MEPマイクロカプセル剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イミダクロプリド水和剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12籾追加
+insert into spec.feedrice values("イミダクロプリド粒剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12籾追加
+insert into spec.feedrice values("エチプロール水和剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("エチプロール粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("エチプロール粉粒剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("エチプロール粒剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("エチプロール・シラフルオフェン水和剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("エチプロール・シラフルオフェン粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("エトフェンプロックス水和剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12籾追加
+insert into spec.feedrice values("エトフェンプロックス乳剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12籾米追加
+insert into spec.feedrice values("エトフェンプロックス粉剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12籾追加
+insert into spec.feedrice values("エトフェンプロックスマイクロカプセル剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12籾追加
+insert into spec.feedrice values("エトフェンプロックス油剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("エトフェンプロックス粒剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12籾追加
+insert into spec.feedrice values("エトフェンプロックス・ジノテフラン水和剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12籾追加
+insert into spec.feedrice values("エトフェンプロックス・ジノテフラン乳剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2021.1追加
+insert into spec.feedrice values("エトフェンプロックス・ジノテフラン粉剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12籾追加
+insert into spec.feedrice values("カルタップ水溶剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("カルタップ粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("カルボスルファン粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("カルボスルファン・フィプロニル粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロチアニジン水溶剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.01使用制限削除
+insert into spec.feedrice values("クロチアニジン水和剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.01使用制限削除
+insert into spec.feedrice values("クロチアニジン粉剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12WCS削除 2022.01wcs追加
+insert into spec.feedrice values("クロチアニジン粒剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロチアニジン・スピネトラム粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("クロマフェノジド水和剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロマフェノジド・シラフルオフェン粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロラントラニリプロール粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロラントラニリプロール・ジノテフラン粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロラントラニリプロール・トリフルメゾピリム粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01追加
+insert into spec.feedrice values("クロラントラニリプロール・ピメトロジン粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロラントラニリプロール・ベンフラカルブ粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("シアントラニリプロール水和剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("シアントラニリプロール粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("シアントラニリプロール・トリフルメゾピリム粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("シアントラニリプロール・ピメトロジン水和剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("ジノテフラン液剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2016.08変更
+insert into spec.feedrice values("ジノテフラン剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2016.08変更
+insert into spec.feedrice values("ジノテフラン水溶剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2016.08変更
+insert into spec.feedrice values("ジノテフラン粉剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2016.08変更
+insert into spec.feedrice values("ジノテフラン粒剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2016.08変更
+insert into spec.feedrice values("ジノテフラン・ブプロフェジン水和剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2016.08籾追加,2017.12WCS追加
+insert into spec.feedrice values("ジノテフラン・ベンズピリモキサン水和剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.01wcs追加
+--insert into spec.feedrice values("ジノテフラン・ベンフラカルブ粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12削除
+insert into spec.feedrice values("シラフルオフェン乳剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL); --2016.08変更
+insert into spec.feedrice values("シラフルオフェン粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL); --2016.08変更
+insert into spec.feedrice values("スピネトラム水和剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("スピノサド粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("スピノサド・フィプロニル粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("スルホキサフロル水和剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.12追加
+insert into spec.feedrice values("スルホキサフロル粉剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.12追加
+insert into spec.feedrice values("チアクロプリド粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("チアメトキサム水和剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("チアメトキサム粒剤","殺虫剤",1,1,1,0,"チアメトキサム",2,NULL,"有効成分含有量が2.0%以下の農薬に限る");
+insert into spec.feedrice values("テトラニリプロール水和剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("テトラニリプロール粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("テブフェノジド水和剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.12籾追加
+insert into spec.feedrice values("テブフェノジド粉剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.01wcs追加、2022.12籾追加(「ロムダン粉剤DL」有り)
+--insert into spec.feedrice values("テブフェノジド・ブプロフェジン水和剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12削除
+insert into spec.feedrice values("トリフルメゾピリム水和剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,"ただし、灌水に限る。"); --2024.03wcs追加
+insert into spec.feedrice values("トリフルメゾピリム粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+--insert into spec.feedrice values("ニテンピラム水溶剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2021.01削除
+--insert into spec.feedrice values("ニテンピラム粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL); --2021.01削除
+--insert into spec.feedrice values("ニテンピラム粒剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2021.01削除
+insert into spec.feedrice values("ピメトロジン粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("フィプロニル粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ブプロフェジン水和剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ブプロフェジン粉剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ブプロフェジン粒剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2017.12WCS追加
+--insert into spec.feedrice values("ブプロフェジン・BPMC粉剤","殺虫剤",1,1,1,0,"ブプロフェジン",1,NULL,"有効成分含有量がブプロフェジン1％(以下)の農薬に限る"); --2024.03wcs削除(本剤がないため)
+insert into spec.feedrice values("ブプロフェジン・BPMC粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("フルピリミン水和剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL); --2020.01籾追加
+insert into spec.feedrice values("ベンズピリモキサン水和剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.01wcs追加、2022.12籾追加
+insert into spec.feedrice values("ベンフラカルブ粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("マラソン乳剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("マラソン粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("マラソン・BPMC乳剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("マラソン・BPMC粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("メタアルデヒド粒剤","殺虫剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("メトキシフェノジド水和剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2021.01籾削除だが「ランナーフロアブル」登録有 2022.01wcs使用制限削除
+insert into spec.feedrice values("メトキシフェノジド粉剤","殺虫剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("燐酸第二鉄粒剤","殺虫剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("TPN水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("TPN粉剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("アゾキシストロビン水和剤","殺菌剤",1,1,1,0,NULL,NULL,"baisu in ('8倍','30倍','300倍','1000倍','1000～1500倍')","希釈倍数8倍、30倍、300倍、1000倍、1000～1500倍の使用方法に限る"); --2020.01変更
+insert into spec.feedrice values("アゾキシストロビン水和剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("アゾキシストロビン粉剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("アゾキシストロビン粉粒剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("アゾキシストロビン粒剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イソチアニル水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イソチアニル粒剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イソプロチオラン水和剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イソプロチオラン乳剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イソプロチオラン粉剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2024.03wcs削除(フジワン粉剤がないため)
+insert into spec.feedrice values("イソプロチオラン粉粒剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イソプロチオラン粒剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("イソプロチオラン・ピロキロン粒剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("イソプロチオラン・フルトラニル粒剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イプコナゾール水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イプコナゾール・銅水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("オキソリニック酸水和剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("オキソリニック酸粉剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("オキソリニック酸・プロクロラズ水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("オリサストロビン粒剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2021.01削除
+insert into spec.feedrice values("シメコナゾール粒剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("シメコナゾール・メトミノストロビン粒剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2022.12削除
+insert into spec.feedrice values("タラロマイセス フラバス水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("チアジニル水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("チアジニル粒剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("チウラム水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("チウラム・ベノミル水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("チウラム・ペフラゾエート水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("チオファネートメチル水和剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2021.01wcs制限解除
+insert into spec.feedrice values("チオファネートメチル粉剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("テブフロキン水和剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12追加 2022.01wcs追加
+insert into spec.feedrice values("テブフロキン粉剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("トリコデルマ アトロビリデ水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("トリフルミゾール水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("トリフルミゾール乳剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("トルプロカルブ粒剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("バチルス シンプレクス水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("バチルス ズブチリス水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ヒドロキシイソキサゾール液剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ヒドロキシイソキサゾール粉剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("ヒドロキシイソキサゾール・メタラキシル液剤","殺菌剤",1,0,1,0,NULL,NULL,"hoho like '%育苗箱%'","育苗箱での使用に限る"); --2020.01削除
+--insert into spec.feedrice values("ヒドロキシイソキサゾール・メタラキシル粉剤","殺菌剤",1,0,1,0,NULL,NULL,"hoho like '%育苗箱%'","育苗箱での使用に限る"); --2020.01削除
+insert into spec.feedrice values("ヒドロキシイソキサゾール・メタラキシルM液剤","殺菌剤",1,0,1,0,NULL,NULL,"hoho like '%育苗箱%'","育苗箱での使用に限る");
+insert into spec.feedrice values("ヒドロキシイソキサゾール・メタラキシルM粉剤","殺菌剤",1,0,1,0,NULL,NULL,"hoho like '%育苗箱%'","育苗箱での使用に限る");
+insert into spec.feedrice values("ピカルブトラゾクス水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ピカルブトラゾクス粉剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ピロキロン剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("ピロキロン粉粒剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピロキロン粒剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("ピロキロン・フラメトピル粒剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12変更、2021.01籾削除(出穂前までの使用)
+--insert into spec.feedrice values("フェノキサニル粉剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2024.03wcs削除(本剤がないため)
+--insert into spec.feedrice values("フェノキサニルマイクロカプセル剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("フェリムゾン水和剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("フェリムゾン・フサライド水和剤","殺菌剤",1,1,1,0,NULL,NULL,"(tusho like '%ゾル' or '%フロアブル') or (baisu in('8倍','30倍','300倍','1000倍')","ゾル剤及びフロアブル剤の希釈倍数8倍、30倍、300倍及び1000倍の使用方法に限る"); --2020.01変更
+insert into spec.feedrice values("フェリムゾン・フサライド粉剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("フサライド水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12制限解除
+--insert into spec.feedrice values("フサライド・フルトラニル水和剤","殺菌剤",1,1,1,0,NULL,NULL,"baisu = '1000～1500培'","希釈倍数1000～1500倍の使用方法に限る"); -- 2018.12変更
+insert into spec.feedrice values("フサライド・フルトラニル水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2024.03wcs制限削除
+--insert into spec.feedrice values("フラメトピル粉剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12削除
+insert into spec.feedrice values("フラメトピル粒剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("フラメトピル・プロベナゾール粒剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("フラメトピル・メトミノストロビン粒剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2021.01削除
+insert into spec.feedrice values("フルジオキソニル水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("フルジオキソニル・ペフラゾエート乳剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+--insert into spec.feedrice values("フルトラニル水和剤","殺菌剤",1,1,1,0,NULL,NULL,"baisu in ('300倍','1000倍','1000～1500倍','2000倍','2000～2500倍')","希釈倍数300倍、1000倍、1000～1500倍、2000倍及び2000～2500倍の使用方法に限る"); --2018.12変更
+insert into spec.feedrice values("フルトラニル水和剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2024.03wcs制限削除
+insert into spec.feedrice values("フルトラニル乳剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("フルトラニル粉剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("フルトラニル粒剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("フルトラニル油剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("プロクロラズ乳剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("プロベナゾール水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("プロベナゾール粉粒剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2022.03削除
+insert into spec.feedrice values("プロベナゾール粒剤","殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ベノミル水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ベノミル・TPN水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("ペフラゾエート乳剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ペンフルフェン水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("ペンフルフェン粒剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("メタラキシルM液剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加(現状箱育苗または直播種子粉衣)
+insert into spec.feedrice values("メトミノストロビン剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("メトミノストロビン粒剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("メプロニル水和剤","殺菌剤",1,1,1,0,NULL,NULL,"baisu in ('1000倍','1000～1500倍')","希釈倍数1000倍及び1000～1500倍の使用方法に限る"); --2018.12変更
+insert into spec.feedrice values("メプロニル水和剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("メプロニル粉剤","殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("醸造酢液剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("銅水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("銅粉剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("銅・フルジオキソニル・ペフラゾエート水和剤","殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イミダクロプリド・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イミダクロプリド・イソチアニル・ペンフルフェン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("イミダクロプリド・クロラントラニリプロール・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イミダクロプリド・クロラントラニリプロール・イソチアニル・ペンフルフェン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("イミダクロプリド・スピノサド・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("イミダクロプリド・スピノサド・イソチアニル・チフルザミド粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("イミダクロプリド・スピノサド・イソチアニル・ペンフルフェン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("イミダクロプリド・チアジニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+--insert into spec.feedrice values("イミダクロプリド・フィプロニル・オリサストロビン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("エチプロール・イソプロチオラン粒剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("エチプロール・オリサストロビン粒剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2021.01削除
+insert into spec.feedrice values("エチプロール・テブフロキン水和剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("エチプロール・テブフロキン粉剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("エチプロール・メトミノストロビン剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("エチプロール・メトミノストロビン粒剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("エトフェンプロックス・アゾキシストロビン水和剤","殺虫殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2018.12籾追加、2020.01WCS制限解除
+insert into spec.feedrice values("エトフェンプロックス・テブフロキン粉剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("エトフェンプロックス・ピロキロン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("エトフェンプロックス・フェノキサニル粉剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+--insert into spec.feedrice values("エトフェンプロックス・フェノキサニル・フルトラニル粉剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+--insert into spec.feedrice values("エトフェンプロックス・フサライド水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS制限解除、2022.12削除
+--insert into spec.feedrice values("カルボスルファン・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("クロチアニジン・イソチアニル水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロチアニジン・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロチアニジン・イソチアニル・フラメトピル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("クロチアニジン・イソプロチオラン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+--insert into spec.feedrice values("クロチアニジン・オリサストロビン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01削除
+insert into spec.feedrice values("クロチアニジン・クロラントラニリプロール・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロチアニジン・クロラントラニリプロール・イソチアニル・フラメトピル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロチアニジン・シアンントラニリプロール・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("クロチアニジン・スピネトラム・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("クロチアニジン・スピネトラム・イソチアニル・フラメトピル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+--insert into spec.feedrice values("クロチアニジン・ピロキロン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("クロチアニジン・フィプロニル・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("クロチアニジン・フェリムゾン・フサライド水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01変更、2022.12制限解除
+insert into spec.feedrice values("クロチアニジン・フェリムゾン・フサライド粉剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("クロチアニジン・フサライド水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12変更、2022.12制限解除
+--insert into spec.feedrice values("クロチアニジン・フラメトピル粒剤","殺虫殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.01削除
+--insert into spec.feedrice values("クロチアニジン・プロベナゾール水和剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12削除
+insert into spec.feedrice values("クロチアニジン・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロラントラニリプロール・イソプロチオラン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロラントラニリプロール・ジノテフラン・トルプロカルブ粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("クロラントラニリプロール・ジノテフラン・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロラントラニリプロール・チアジニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("クロラントラニリプロール・チフルザミド・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("クロラントラニリプロール・トリフルメゾピリム・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("クロラントラニリプロール・トリフルメゾピリム・イソチアニル・フラメトピル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("クロラントラニリプロール・トリフルメゾピリム・イソチアニル・ペンフルフェン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("クロラントラニリプロール・トリフルメゾピリム・ジクロベンチアゾクス粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01WCS追加
+insert into spec.feedrice values("クロラントラニリプロール・トリフルメゾピリム・チアジニル・チフルザミド粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("クロラントラニリプロール・トリフルメゾピリム・チアジニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("クロラントラニリプロール・トリフルメゾピリム・トルプロカルブ粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("クロラントラニリプロール・トリフルメゾピリム・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("クロラントラニリプロール・ピメトロジン・チアジニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("クロラントラニリプロール・ピメトロジン・チフルザミド・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("クロラントラニリプロール・ピメトロジン・ピロキノン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロラントラニリプロール・ピメトロジン・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロラントラニリプロール・プロベナゾール水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロラントラニリプロール・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("クロラントラニリプロール・ベンフラカルブ・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("シアントラニリプロール・イソチアニル水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("シアントラニリプロール・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("シアントラニリプロール・イソチアニル・ペンフルフェン水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加(現状箱剤のみ)
+insert into spec.feedrice values("シアントラニリプロール・イソチアニル・ペンフルフェン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("シアントラニリプロール・ジクロベンチアゾクス水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2024.03wcs追加
+insert into spec.feedrice values("シアントラニリプロール・チアジニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("シアントラニリプロール・トリフルメゾピリム・イソチアニル・ペンフルフェン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("シアントラニリプロール・トルプロカルブ粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("シアントラニリプロール・ピロキロン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("シアントラニリプロール・プロぺナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+--insert into spec.feedrice values("ジノテフラン・オリサストロビン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01削除
+insert into spec.feedrice values("ジノテフラン・チオファネートメチル水和剤","殺虫殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2020.01WCS追加、2021.01wcs制限解除
+insert into spec.feedrice values("ジノテフラン・チオファネートメチル粉剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2016.08追加
+insert into spec.feedrice values("ジノテフラン・テブフェノジド・ブプロフェジン・フサライド・フルトラニル粉剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("ジノテフラン・テブフロキン粉剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ジノテフラン・トルプロカルブ粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("ジノテフラン・フサライド粉剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+--insert into spec.feedrice values("ジノテフラン・フィプロニル・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+--insert into spec.feedrice values("ジノテフラン・フェノキサニル粉剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("ジノテフラン・フェリムゾン・フサライド水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("ジノテフラン・フェリムゾン・フサライド粉剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01wcs追加
+insert into spec.feedrice values("ジノテフラン・ピロキロン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ジノテフラン・フサライド水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS制限解除
+insert into spec.feedrice values("ジノテフラン・ブプロフェジン・フルトラニル粉剤","殺虫殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2016.08籾追加,2017.12WCS追加
+--insert into spec.feedrice values("ジノテフラン・プロベナゾール水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2024.03wcs削除(水和剤がないため)
+insert into spec.feedrice values("ジノテフラン・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("ジノテフラン・フラメトピル粒剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2016.08追加、2022.12削除
+--insert into spec.feedrice values("ジノテフラン・メトミノストロビン剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12追加,2020.01削除
+insert into spec.feedrice values("ジノテフラン・メトミノストロビン粒剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2016.08追加
+--insert into spec.feedrice values("シラフルオフェン・テブフロキン粉剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12追加、2023.03削除
+insert into spec.feedrice values("スピノサド・フィプロニル・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("チアクロプリド・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01WCS追加
+insert into spec.feedrice values("チアクロプリド・チアジニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("チアメトキサム・アゾキシストロビン水和剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("チアメトキサム・ピロキロン粒剤","殺虫殺菌剤",1,1,1,0,"チアメトキサム",2,NULL,"チアメトキサム有効成分含有量が2.0%以下の農薬に限る");
+insert into spec.feedrice values("テトラニリプロール・イソチアニル・ペンフルフェン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("テトラニリプロール・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("テトラニリプロール・ジクロベンチアゾクス粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加(現状箱剤のみ)
+insert into spec.feedrice values("テトラニリプロール・ジクロベンチアゾクス・ペンフルフェン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("テトラニリプロール・ピメトロジン・イソチアニル・ペンフルフェン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("テトラニリプロール・ピメトロジン・イソチアニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+--insert into spec.feedrice values("テブフェノジド・ブプロフェジン・フルトラニル水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,"baisu = '750倍'","希釈倍数750倍の使用方法に限る"); --2017.12追加
+insert into spec.feedrice values("テブフェノジド・ブプロフェジン・フルトラニル水和剤","殺虫殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.12籾追加、2024.03wcs制限削除
+insert into spec.feedrice values("テブフェノジド・ブプロフェジン・フルトラニル粉剤","殺虫殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.01wcs追加、2022.12籾追加(「アプロードロムダンモンカットF粉剤DL」有り)
+--insert into spec.feedrice values("テブフェノジド・ベンズピリモキサン・フルトラニル水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,"baisu = '1000倍'","希釈倍数1000倍の使用方法に限る"); --2022.12wcs追加
+insert into spec.feedrice values("テブフェノジド・ベンズピリモキサン・フルトラニル水和剤","殺虫殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.12籾追加、2024.03wcs制限削除
+insert into spec.feedrice values("テブフェノジド・ベンズピリモキサン・フルトラニル粉剤","殺虫殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.01wcs追加、2022.12籾追加(「オーケストラロムダンモンカット粉剤DL」有り)
+--insert into spec.feedrice values("ピメトロジン・フィプロニル・オリサストロビン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+--insert into spec.feedrice values("ピメトロジン・フィプロニル・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01削除
+--insert into spec.feedrice values("フィプロニル・アゾキシストロビン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01削除
+insert into spec.feedrice values("フィプロニル・イソプロチオラン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("フィプロニル・イソプロチオラン・ピロキロン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("フィプロニル・オリサストロビン粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01削除
+--insert into spec.feedrice values("フィプロニル・オリサストロビン・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+--insert into spec.feedrice values("フィプロニル・オリサストロビン・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("フィプロニル・チアジニル・フラメトピル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("フィプロニル・チアジニル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("フィプロニル・チフルザミド・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("フィプロニル・フラメトピル粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("フィプロニル・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("ブプロフェジン・BPMC・イソプロチオラン粉剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2021.01削除
+insert into spec.feedrice values("ブプロフェジン・BPMC・フルトラニル粉剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2024.03wcs削除(本剤がないため)
+--insert into spec.feedrice values("ブプロフェジン・イソプロチオラン・フラメトピル粒剤","殺虫殺菌剤",1,1,0,1,NULL,NULL,NULL,NULL); --2020.01削除
+--insert into spec.feedrice values("ブプロフェジン・フルトラニル水和剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,"baisu = '1000倍'","希釈倍数1000倍の使用方法に限る"); --2018.12変更
+insert into spec.feedrice values("ブプロフェジン・フルトラニル水和剤","殺虫殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2024.03wcs制限削除
+--insert into spec.feedrice values("ブプロフェジン・フルトラニル粒剤","殺虫殺菌剤",1,1,1,1,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("ベンフラカルブ・ジクロベンチアゾクス粒剤","殺虫殺菌剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs追加(現状箱粒剤のみ)
+insert into spec.feedrice values("ベンフラカルブ・プロベナゾール粒剤","殺虫殺菌剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ウニコナゾールP複合肥料","農薬肥料",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ヒドロキシイソキサゾール複合肥料","農薬肥料",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("プロベナゾール複合肥料","農薬肥料",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ウニコナゾールP液剤","植物生長調整剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ウニコナゾールP粒剤","植物生長調整剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("過酸化カルシウム粉粒剤","植物生長調整剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ACN剤","除草剤",1,0,0,1,NULL,NULL,NULL,NULL); --モゲトンジャンボは移植のみ
+insert into spec.feedrice values("ACN粒剤","除草剤",1,1,1,1,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("アジムスルフロン・カルフェントラゾンエチル・フルセトスルフロン粒剤","除草剤",1,0,0,1,NULL,NULL,NULL,NULL); --2021.01削除
+insert into spec.feedrice values("アジムスルフロン・シハロホップブチル粒剤","除草剤",1,1,0,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イプフェンカルバゾン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs移植追加
+insert into spec.feedrice values("イプフェンカルバゾン・イマゾスルフロン・ブロモブチド水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("イプフェンカルバゾン・イマゾスルフロン・ブロモブチド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("イプフェンカルバゾン・イマゾスルフロン・ベンゾビシクロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("イプフェンカルバゾン・イマゾスルフロン・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("イプフェンカルバゾン・テフリルトリオン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("イプフェンカルバゾン・テフリルトリオン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("イプフェンカルバゾン・テフリルトリオン・プロピリスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs移植追加、2024.03wcs直播追加
+insert into spec.feedrice values("イプフェンカルバゾン・テフリルトリオン・プロピリスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs移植追加、2022.12wcs直播追加
+insert into spec.feedrice values("イプフェンカルバゾン・テフリルトリオン・フロルピラウキシフェンベンジル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs移植追加、2024.03wcs直播追加
+insert into spec.feedrice values("イプフェンカルバゾン・テフリルトリオン・ベンスルフロンメチル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("イプフェンカルバゾン・テフリルトリオン・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("イプフェンカルバゾン・ブロモブチド・ベンスルフロンメチル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("イプフェンカルバゾン・ブロモブチド・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("イプフェンカルバゾン・ベンゾビシクロン・ベンゾフェナップ水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("イプフェンカルバゾン・ベンゾビシクロン・ベンゾフェナップ粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("イマゾスルフロン・エトベンザニド・ダイムロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イマゾスルフロン・オキサジクロメホン・クロメプロップ・ダイムロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イマゾスルフロン・オキサジクロメホン・ダイムロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イマゾスルフロン・オキサジクロメホン・ピラクロニル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09変更
+insert into spec.feedrice values("イマゾスルフロン・オキサジクロメホン・ピラクロニル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09変更
+insert into spec.feedrice values("イマゾスルフロン・オキサジクロメホン・ピラクロニル・ブロモブチド水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12直播WCS追加
+insert into spec.feedrice values("イマゾスルフロン・オキサジクロメホン・ピラクロニル・ブロモブチド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12直播WCS追加
+--insert into spec.feedrice values("イマゾスルフロン・オキサジクロメホン・ベンゾビシクロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加、2024.03wcs削除
+--insert into spec.feedrice values("イマゾスルフロン・オキサジクロメホン・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12変更、2024.03wcs削除
+insert into spec.feedrice values("イマゾスルフロン・カフェンストロール・ダイムロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イマゾスルフロン・ダイムロン・ペントキサゾン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イマゾスルフロン・ダイムロン・ペントキサゾン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イマゾスルフロン・テフリルトリオン・ピラクロニル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("イマゾスルフロン・テフリルトリオン・ピラクロニル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("イマゾスルフロン・ピラクロニル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09変更
+insert into spec.feedrice values("イマゾスルフロン・ピラクロニル・ブロモブチド水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イマゾスルフロン・ピラクロニル・ブロモブチド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イマゾスルフロン・ピリミノバックメチル・フェンキノトリオン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("イマゾスルフロン・ピリミノバックメチル・フェンキノトリオン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.2追加
+insert into spec.feedrice values("イマゾスルフロン・ピリミノバックメチル・ブロモブチド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イマゾスルフロン・フェントラザミド・ブロモブチド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イマゾスルフロン・ブロモブチド・ペントキサゾン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("イマゾスルフロン・ブロモブチド・ペントキサゾン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("インダノファン・クロメプロップ・ダイムロン・ベンスルフロンメチル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("インダノファン・クロメプロップ・ダイムロン・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("インダノファン・クロメプロップ・ベンスルフロンメチル粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("インダノファン・ピラクロニル・ベンゾビシクロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加,2017.12直播WCS追加
+insert into spec.feedrice values("インダノファン・ピラクロニル・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("エスプロカルブ・ジメタメトリン・ピラゾスルフロンエチル・プレチラクロール粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+--insert into spec.feedrice values("エスプロカルブ・ピラゾスルフロンエチル・ペノキススラム・ベンゾビシクロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2017.12追加、2022.12削除
+insert into spec.feedrice values("エトキシスルフロン・クロメプロップ・トリアファモン・フェントラザミド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加、2021.01wcs直播追加
+insert into spec.feedrice values("オキサジクロメホン・クロメプロップ・ダイムロン・ブロモブチド・ベンスルフロンメチル粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("オキサジクロメホン・クロメプロップ・ダイムロン・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("オキサジクロメホン・クロメプロップ・ピリミノバックメチル・ベンスルフロンメチル剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("オキサジクロメホン・クロメプロップ・ブロモブチド・ベンスルフロンメチル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01削除
+--insert into spec.feedrice values("オキサジクロメホン・クロメプロップ・ブロモブチド・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01削除
+insert into spec.feedrice values("オキサジクロメホン・クロメプロップ・ベンスルフロンメチル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("オキサジクロメホン・クロメプロップ・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("オキサジクロメホン・ジメタメトリン・ピラゾスルフロンエチル・ベンゾビシクロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("オキサジクロメホン・ジメタメトリン・ピラゾスルフロンエチル・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("オキサジクロメホン・テフリルトリオン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("オキサジクロメホン・テフリルトリオン粒剤","除草剤",1,1,1,0,"オキサジクロメホン",2.0,"baisu like '%小包装(パック)10個(300g)%","有効成分含有量がオキサジクロメホン2.0%で使用量が小包装（パック）10個（300g ）/10aであるものに限る"); --2016.09追加
+insert into spec.feedrice values("オキサジクロメホン・テフリルトリオン・ピラクロニル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("オキサジクロメホン・テフリルトリオン・ピラクロニル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12移植追加
+insert into spec.feedrice values("オキサジクロメホン・テフリルトリオン・ブロモブチド水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("オキサジクロメホン・テフリルトリオン・ブロモブチド粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("オキサジクロメホン・テフリルトリオン・メタゾスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("オキサジクロメホン・テフリルトリオン・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs移植追加 2022.01wcs直播追加
+insert into spec.feedrice values("オキサジクロメホン・ピラクロニル・ピラゾスルフロンエチル・ベンゾビシクロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("オキサジクロメホン・ピラクロニル・ピラゾスルフロンエチル・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+--insert into spec.feedrice values("オキサジクロメホン・ピリミスルファン剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2021.01削除
+--insert into spec.feedrice values("オキサジクロメホン・ピリミスルファン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2021.01削除
+insert into spec.feedrice values("オキサジクロメホン・ピリミスルファン・ベンゾビシクロン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("オキサジクロメホン・ピリミスルファン・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+--insert into spec.feedrice values("オキサジクロメホン・ピリミノバックメチル・ベンスルフロンメチル剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs削除
+insert into spec.feedrice values("オキサジクロメホン・フェンキノトリオン・プロピリスルフロン・ブロモブチド剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("オキサジクロメホン・フェンキノトリオン・プロピリスルフロン・ブロモブチド水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("オキサジクロメホン・フェンキノトリオン・プロピリスルフロン・ブロモブチド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("オキサジクロメホン・ブロモブチド・フロルピラウキシフェンベンジル粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2023.03wcs移植追加
+insert into spec.feedrice values("カフェンストロール・カルフェントラゾンエチル・フルセトスルフロン・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("カフェンストロール・シクロスルファムロン・ダイムロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("カフェンストロール・シクロスルファムロン・ダイムロン・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("カフェンストロール・シハロホップブチル・ダイムロン・ベンスルフロンメチル水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("カフェンストロール・シハロホップブチル・ダイムロン・ベンスルフロンメチル粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs削除
+insert into spec.feedrice values("カフェンストロール・ジメタメトリン・ダイムロン・ベンゾビシクロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("カフェンストロール・ダイムロン・ハルスルフロンメチル・ベンゾビシクロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("カフェンストロール・ダイムロン・ピラゾキシフェン・ベンゾビシクロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("カフェンストロール・ダイムロン・ベンスルフロンメチル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("カフェンストロール・ダイムロン・ベンスルフロンメチル粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("カフェンストロール・ダイムロン・ベンスルフロンメチル・ベンゾビシクロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("カフェンストロール・ダイムロン・ベンスルフロンメチル・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("カフェンストロール・ダイムロン・ベンスルフロンメチル・ペントキサゾン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("カフェンストロール・ダイムロン・メタゾスルフロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("カフェンストロール・ダイムロン・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12直播WCS追加
+--insert into spec.feedrice values("カフェンストロール・ピラゾスルフロンエチル水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("カフェンストロール・ピラゾレート・ブロモブチド粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("カフェンストロール・フロルピラウキシフェンベンジル・ベンズビシクロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs移植追加、2022.12wcs直播追加
+insert into spec.feedrice values("カフェンストロール・ベンスルフロンメチル・ベンゾビシクロン剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("カフェンストロール・ベンスルフロンメチル・ベンゾビシクロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("カフェンストロール・ベンスルフロンメチル・ベンゾビシクロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("カルフェントラゾンエチル・フルセトスルフロン粒剤","除草剤",1,1,1,1,NULL,NULL,NULL,NULL); --2021.01籾削除だが「フルチャージ」登録有
+--insert into spec.feedrice values("グリホサートアンモニウム塩液剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12削除
+insert into spec.feedrice values("グリホサートイソプロピルアミン塩液剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("グリホサートカリウム塩液剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("グルホシネート液剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("グルホシネートPナトリウム塩液剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("クロメプロップ・テフリルトリオン・フェントラザミド水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs移植追加、2022.12wcs直播追加
+insert into spec.feedrice values("クロメプロップ・テフリルトリオン・フェントラザミド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs移植追加、2022.12wcs直播追加
+insert into spec.feedrice values("シクロスルファムロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("シクロスルファムロン・ダイムロン・フェントラザミド粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.12削除
+insert into spec.feedrice values("シクロスルファムロン・プレチラクロール粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("シクロスルファムロン・ベンゾビシクロン・ペントキサゾン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("シクロピリモレート・シメトリン・テフリルトリオン・プロピリスルフロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs移植追加
+insert into spec.feedrice values("シクロピリモレート・シメトリン・テフリルトリオン・ペノキススラム粉粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs移植追加
+insert into spec.feedrice values("シクロピリモレート・テフリルトリオン・メタゾスルフロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs移植追加
+insert into spec.feedrice values("シクロピリモレート・トリアファモン・ピラゾレート水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("シクロピリモレート・トリアファモン・ピラゾレート粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("シクロピリモレート・トリアファモン・ベンゾビシクロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs移植追加
+insert into spec.feedrice values("シクロピリモレート・トリアファモン・ベンゾビシクロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs移植追加
+insert into spec.feedrice values("シクロピリモレート・ピラゾレート・フェントラザミド水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("シクロピリモレート・ピラゾレート・フェントラザミド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("シクロピリモレート・ピラゾレート・プロピリスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("シクロピリモレート・ピラゾレート・プロピリスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("ジクワット・パラコート液剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("シハロホップブチル乳剤","除草剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("シハロホップブチル粒剤","除草剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("シハロホップブチル・シメトリン・ベンフレセート・MCPB粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("シハロホップブチル・ジメタメトリン・ハロスルフロンメチル・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("シハロホップブチル・ジメタメトリン・ピラゾスルフロンエチル・プレチラクロール粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("シハロホップブチル・ピラゾスルフロンエチル・メフェナセット粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("シハロホップブチル・フロルピラウキシフェンベンジル乳剤","除草剤",1,1,1,1,NULL,NULL,NULL,NULL); --2024.03追加
+insert into spec.feedrice values("シハロホップブチル・ベンゾビシクロン・MCPB粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("シハロホップブチル・ベンタゾン液剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ジメタメトリン・ダイムロン・テフリルトリオン・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01追加
+insert into spec.feedrice values("ジメタメトリン・ピラクロニル粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs移植追加
+insert into spec.feedrice values("ジメタメトリン・ピラゾレート・プレチラクロール・ブロモブチド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ジメタメトリン・ピラゾレート・プレチラクロール・ベンフレセート水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ジメタメトリン・ピラゾレート・プレチラクロール・ベンフレセート粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ジメタメトリン・ブタクロール乳剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ジメタメトリン・ブタクロール粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("シメトリン・テフリルトリオン・トリアファモン・ベンフレセート粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2024.03wcs追加
+insert into spec.feedrice values("シメトリン・ピラゾキシフェン・プレチラクロール粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("シメトリン・ピリミスルファン・フェンキノトリオン剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2021.01wcs移植追加
+insert into spec.feedrice values("シメトリン・ピリミスルファン・フェンキノトリオン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01直播追加
+insert into spec.feedrice values("シメトリン・ピリミノバックメチル・ベンフレセート・MCPB粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("シメトリン・フルセトスルフロン・ベンフレセート粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("シメトリン・ペノキススラム・MCPB粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("シメトリン・ベンフレセート・MCPB粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("シメトリン・メフェナセット・MCPB粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+--insert into spec.feedrice values("シメトリン・モリネート粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12削除
+--insert into spec.feedrice values("シメトリン・モリネート・MCPB粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12削除
+--insert into spec.feedrice values("シメトリン・ACN・MCPB粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("シメトリン・MCPB粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ダイムロン・ピラクロニル・ブロモブチド・ベンスルフロンメチル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ダイムロン・ピラクロニル・ブロモブチド・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ダイムロン・ピラクロニル・ベンゾビシクロン・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01追加
+insert into spec.feedrice values("ダイムロン・ピラクロニル・メタゾスルフロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ダイムロン・ピラクロニル・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);  --2017.12直播WCS追加
+--insert into spec.feedrice values("ダイムロン・ピリミノバックメチル・ベンスルフロンメチル・ペントキサゾン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12削除
+insert into spec.feedrice values("ダイムロン・フェノキサスルホン・フェンキノトリオン・ベンスルフロンメチル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加
+insert into spec.feedrice values("ダイムロン・フェノキサスルホン・フェンキノトリオン・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加
+insert into spec.feedrice values("ダイムロン・フェントラザミド・ブロモブチド・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ダイムロン・プレチラクロール粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ダイムロン・ペノキススラム粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ダイムロン・ベンスルフロンメチル・メフェナセット粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ダイムロン・ペントキサゾン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("ダイムロン・ペントキサゾン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.12削除
+insert into spec.feedrice values("ダイムロン・ペントキサゾン・メタゾスルフロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ダイムロン・ペントキサゾン・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2024.03wcs直播追加
+insert into spec.feedrice values("ダイムロン・メタゾスルフロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ダイムロン・メタゾスルフロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("テフリルトリオン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.12wcs移植追加
+insert into spec.feedrice values("テフリルトリオン・トリアファモン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("テフリルトリオン・トリアファモン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("テフリルトリオン・トリアファモン・フロルピラウキシフェンベンジル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加
+insert into spec.feedrice values("テフリルトリオン・ピラクロニル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("テフリルトリオン・ピラクロニル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("テフリルトリオン・ピラクロニル・プロピリスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("テフリルトリオン・ピラクロニル・プロピリスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("テフリルトリオン・ピラクロニル・ペノキススラム粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("テフリルトリオン・ピラクロニル・メタゾスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加、2020.01直播追加
+insert into spec.feedrice values("テフリルトリオン・ピラクロニル・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+--insert into spec.feedrice values("テフリルトリオン・ピラクロニル・モリネート粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加、2022.12削除
+--insert into spec.feedrice values("テフリルトリオン・フェントラザミド剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("テフリルトリオン・フェントラザミド水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("テフリルトリオン・フェントラザミド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("テフリルトリオン・フェントラザミド・メタゾスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加、2020.01直播追加
+insert into spec.feedrice values("テフリルトリオン・フェントラザミド・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加、2020.01直播追加
+insert into spec.feedrice values("テフリルトリオン・プロピリスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("テフリルトリオン・プロピリスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("トリアファモン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.12wcs移植追加
+insert into spec.feedrice values("トリアファモン・ピラクロニル・ベンゾビシクロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01wcs移植追加 2022.01wcs直播追加
+insert into spec.feedrice values("トリアファモン・ピラクロニル・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("トリアファモン・フェンキノトリオン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加、2020.01直播追加
+insert into spec.feedrice values("トリアファモン・フェンキノトリオン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("トリアファモン・フェンキノトリオン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("トリアファモン・フェンキノトリオン・フェントラザミド水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加、2020.01直播追加
+insert into spec.feedrice values("トリアファモン・フェンキノトリオン・フェントラザミド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("トリアファモン・ベンゾビシクロン・ペントキサゾン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加、2024.03wcs直播追加
+insert into spec.feedrice values("トリアファモン・ベンゾビシクロン・ペントキサゾン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs移植追加、2024.03wcs直播追加
+insert into spec.feedrice values("ハロスルフロンメチル水和剤","除草剤",0,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ハロスルフロンメチル・メタゾスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加
+insert into spec.feedrice values("ビスピリバックナトリウム塩液剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピラクロニル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピラクロニル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("ピラクロニル・ピラゾスルフロンエチル・ブタクロール・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01削除
+insert into spec.feedrice values("ピラクロニル・ピラゾレート・ベンゾビシクロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピラクロニル・ピラゾレート・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピラクロニル・ピラゾレート・ベンフレセート粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピラクロニル・ピリミスルファン・フェノキサスルホン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("ピラクロニル・ピリミスルファン・フェノキサスルホン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("ピラクロニル・ピリミノバックメチル・フェンキノトリオン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加、2020.01直播追加
+insert into spec.feedrice values("ピラクロニル・ピリミノバックメチル・フェンキノトリオン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ピラクロニル・ピリミノバックメチル・フェンキノトリオン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ピラクロニル・フェンキノトリオン・プロピリスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加
+insert into spec.feedrice values("ピラクロニル・フルセトスルフロン・メソトリオン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピラクロニル・プロピリスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09変更
+insert into spec.feedrice values("ピラクロニル・プロピリスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピラクロニル・プロピリスルフロン・ブロモブチド水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加,2017.12直播WCS追加
+insert into spec.feedrice values("ピラクロニル・プロピリスルフロン・ブロモブチド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加,2017.12直播WCS追加
+insert into spec.feedrice values("ピラクロニル・ブロモブチド・ベンスルフロンメチル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピラクロニル・ブロモブチド・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピラクロニル・ベンゾビシクロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピラクロニル・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピラクロニル・ベンゾビシクロン・ベンゾフェナップ水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("ピラクロニル・ベンゾビシクロン・ベンゾフェナップ粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+--insert into spec.feedrice values("ピラクロニル・ベンゾビシクロン・ベンフレセート水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2018.12追加、2024.03wcs削除
+insert into spec.feedrice values("ピラクロニル・ベンゾビシクロン・ベンフレセート粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピラゾキシフェン・プレチラクロール粒剤","除草剤",1,0,1,0,"ピラゾキシフェン",6,NULL,"ただし、ピラゾキシフェン含有量が６％（以下）の製剤に限る");
+insert into spec.feedrice values("ピラゾキシフェン・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピラゾスルフロンエチル粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピラゾスルフロンエチル・ピリフタリド・プレチラクロール・メソトリオン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加、2021.01wcs直播追加
+--insert into spec.feedrice values("ピラゾスルフロンエチル・フェントラザミド水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("ピラゾスルフロンエチル・フェントラザミド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピラゾスルフロンエチル・フェントラザミド・ベンゾビシクロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("ピラゾスルフロンエチル・フェントラザミド・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("ピラゾスルフロンエチル・ブタクロール・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+--insert into spec.feedrice values("ピラゾスルフロンエチル・モリネート粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピラゾレート粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("ピラゾレート・フェントラザミド・ベンゾビシクロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+--insert into spec.feedrice values("ピラゾレート・フェントラザミド・ベンフレセート水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2021.01削除
+--insert into spec.feedrice values("ピラゾレート・フェントラザミド・ベンフレセート粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2021.01削除
+insert into spec.feedrice values("ピラゾレート・プレチラクロール・メソトリオン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピラゾレート・プロピリスルフロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピラゾレート・プロピリスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("ピラゾレート・ベンゾビシクロン・ペントキサゾン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2020.01削除
+insert into spec.feedrice values("ピラゾレート・ベンゾビシクロン・メタゾスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加,2017.12直播WCS追加
+insert into spec.feedrice values("ピラゾレート・ベンゾビシクロン・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加,2017.12直播WCS追加
+insert into spec.feedrice values("ピラゾレート・ペントキサゾン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピリフタリド・ピリミスルファン・メソトリオン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01移植追加、2021.01wcs直播追加
+insert into spec.feedrice values("ピリフタリド・ピリミスルファン・メソトリオン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2020.01移植追加、2021.01wcs直播追加
+insert into spec.feedrice values("ピリフタリド・プレチラクロール・ベンスルフロンメチル・メソトリオン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加
+insert into spec.feedrice values("ピリフタリド・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2024.03wcs直播追加
+insert into spec.feedrice values("ピリフタリド・メソトリオン・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピリミスルファン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピリミスルファン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピリミスルファン・フェノキサスルホン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加,2017.12直播WCS追加
+insert into spec.feedrice values("ピリミスルファン・フェノキサスルホン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加,2017.12直播WCS追加
+insert into spec.feedrice values("ピリミスルファン・フェノキサスルホン・フェンキノトリオン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ピリミスルファン・フェノキサスルホン・フェンキノトリオン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ピリミスルファン・フェノキサスルホン・ベンゾビシクロン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("ピリミスルファン・フェノキサスルホン・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピリミスルファン・フェントラザミド剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピリミスルファン・フェントラザミド粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピリミスルファン・フェントラザミド・ブロモブチド剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2024.03wcs追加
+insert into spec.feedrice values("ピリミスルファン・フェントラザミド・ブロモブチド粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs移植追加
+--insert into spec.feedrice values("ピリミスルファン・ベンゾビシクロン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01削除：「ザンテツ豆つぶ」登録有
+--insert into spec.feedrice values("ピリミスルファン・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01削除：「ザンテツ1kg粒剤」登録有
+insert into spec.feedrice values("ピリミスルファン・メタミホップ・MCPB粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加
+--insert into spec.feedrice values("ピリミスルファン・メフェナセット剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01削除
+--insert into spec.feedrice values("ピリミスルファン・メフェナセット粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01削除
+insert into spec.feedrice values("ピリミノバックメチル剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピリミノバックメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ピリミノバックメチル・フェンキノトリオン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs追加
+insert into spec.feedrice values("ピリミノバックメチル・フェンキノトリオン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ピリミノバックメチル・フェンキノトリオン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ピリミノバックメチル・ブロモブチド・ベンスルフロンメチル・ペントキサゾン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピリミノバックメチル・ブロモブチド・ベンスルフロンメチル・ペントキサゾン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ピリミノバックメチル・ブロモブチド・ベンスルフロンメチル・ペントキサゾン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("ピリミノバックメチル・ベンスルフロンメチル・メフェナセット粒剤","除草剤",0,1,1,0,NULL,NULL,NULL,NULL); --2016.09削除
+insert into spec.feedrice values("ピリミノバックメチル・ベンタゾン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("フェノキサスルホン・フェンキノトリオン剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.12wcs移植追加、2024.03wcs直播追加
+insert into spec.feedrice values("フェノキサスルホン・フェンキノトリオン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.12wcs移植追加
+insert into spec.feedrice values("フェノキサスルホン・フェンキノトリオン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.12wcs移植追加、2024.03wcs直播追加
+insert into spec.feedrice values("フェノキサスルホン・フェンキノトリオン・メタゾスルフロン剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs移植追加
+insert into spec.feedrice values("フェノキサスルホン・フェンキノトリオン・メタゾスルフロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.12wcs移植追加
+insert into spec.feedrice values("フェノキサスルホン・フェンキノトリオン・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs移植追加
+insert into spec.feedrice values("フェノキサスルホン・ブロモブチド・ベンスルフロンメチル剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("フェノキサスルホン・ブロモブチド・ベンスルフロンメチル水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("フェノキサスルホン・ブロモブチド・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+--insert into spec.feedrice values("フェノキサスルホン・ベンスルフロンメチル・ベンゾビシクロン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.01削除
+--insert into spec.feedrice values("フェノキサスルホン・ベンスルフロンメチル・ベンゾビシクロン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.01削除
+insert into spec.feedrice values("フェノキサスルホン・ベンゾビシクロン・ベンゾフェナップ水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("フェンキノトリオン・フェントラザミド剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs移植追加
+insert into spec.feedrice values("フェンキノトリオン・フェントラザミド水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs移植追加
+insert into spec.feedrice values("フェンキノトリオン・フェントラザミド粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2024.03wcs移植追加
+insert into spec.feedrice values("フェンキノトリオン・プロピリスルフロン・ブロモブチド水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2024.03wcs追加
+insert into spec.feedrice values("フェンキノトリオン・プロピリスルフロン・ブロモブチド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2024.03wcs追加
+insert into spec.feedrice values("フェンキノトリオン・プロピリスルフロン・ペントキサゾン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("フェンキノトリオン・プロピリスルフロン・ペントキサゾン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("フェンキノトリオン・プロピリスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs移植追加 2022.01wcs直播追加
+insert into spec.feedrice values("フェンキノトリオン・プロピリスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs移植追加 2022.01wcs直播追加
+insert into spec.feedrice values("フェンキノトリオン・ペントキサゾン・メタゾスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("フェンキノトリオン・ペントキサゾン・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("フェントラザミド水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.12wcs移植追加
+insert into spec.feedrice values("フェントラザミド・ブロモブチド・ベンスルフロンメチル水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("フェントラザミド・ブロモブチド・ベンスルフロンメチル粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("フェントラザミド・ベンスルフロンメチル・ベンゾビシクロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加,2017.12直播WCS追加
+insert into spec.feedrice values("フェントラザミド・ベンスルフロンメチル・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加,2017.12直播WCS追加
+--insert into spec.feedrice values("フェントラザミド・ベンゾビシクロン・ベンゾフェナップ水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加、2024.03wcs削除
+--insert into spec.feedrice values("フェントラザミド・ベンゾビシクロン・ベンゾフェナップ粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2017.12追加、2024.03wcs削除
+insert into spec.feedrice values("フェントラザミド・ベンゾビシクロン・メタゾスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加、2020.01直播追加
+insert into spec.feedrice values("フェントラザミド・ベンゾビシクロン・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2017.12追加、2020.01直播追加
+--insert into spec.feedrice values("フェントラザミド・ベンゾフェナップ・ベンフレセート水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2017.12追加、2022.12削除
+--insert into spec.feedrice values("フェントラザミド・ベンゾフェナップ・ベンフレセート粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2017.12追加、2022.12削除
+insert into spec.feedrice values("ブタクロール乳剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加、2021.01wcs直播制限解除
+insert into spec.feedrice values("ブタクロール粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ブタクロール・ACN粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2021.01wcs移植追加
+insert into spec.feedrice values("ブタクロール・ペントキサゾン乳剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("ブタクロール・ペントキサゾン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("フルセトスルフロン水和剤","除草剤",1,1,0,1,NULL,NULL,NULL,NULL); --2018.12追加
+insert into spec.feedrice values("フルセトスルフロン粒剤","除草剤",1,1,1,1,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("プレチラクロール乳剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("プレチラクロール粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("プレチラクロール・ベンゾフェナップ水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("プロチラクロール・メソトリオン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("プロパニル乳剤","除草剤",0,1,1,1,NULL,NULL,NULL,NULL); --2021.01直播追加
+insert into spec.feedrice values("プロピリスルフロン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09変更
+insert into spec.feedrice values("プロピリスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("プロピリスルフロン・ブロモブチド水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("プロピリスルフロン・ブロモブチド粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("プロピリスルフロン・ブロモブチド・ペントキサゾン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("プロピリスルフロン・ブロモブチド・ペントキサゾン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("プロピリスルフロン・ペントキサゾン水和剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("プロピリスルフロン・ペントキサゾン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2018.12直播追加
+insert into spec.feedrice values("ブロモブチド・ベンスルフロンメチル・ベンチオカーブ・メフェナセット粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+--insert into spec.feedrice values("ブロモブチド・ベンスルフロンメチル・ペントキサゾン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2022.12削除
+--insert into spec.feedrice values("ブロモブチド・ベンスルフロンメチル・ペントキサゾン粒剤","除草剤",1,0,1,0,"ベンスルフロンメチル",1.3,NULL,"ただし、ベンスルフロンメチル含有量が1.3%以下の製剤に限る"); --2022.12削除
+insert into spec.feedrice values("ブロモブチド・ペントキサゾン剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ブロモブチド・ペントキサゾン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ブロモブチド・ペントキサゾン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2017.12追加
+insert into spec.feedrice values("フロルピラウキシフェンベンジル乳剤","除草剤",1,1,1,1,NULL,NULL,NULL,NULL); --2021.01wcs移植追加 2022.01wcs直播追加
+insert into spec.feedrice values("フロルピラウキシフェンベンジル・ペノキススラム・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2021.01wcs移植追加 2022.01wcs直播追加
+insert into spec.feedrice values("ペノキススラム水和剤","除草剤",1,1,1,1,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ペノキススラム・ベンゾビシクロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ペノキススラム・ベンゾビシクロン・メタゾスルフロン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.01wcs追加
+insert into spec.feedrice values("ペノキススラム・ベンタゾン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ベンスルフロンメチル・ベンチオカーブ・メフェナセット粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ベンゾビシクロン・ペントキサゾン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ベンゾビシクロン・ペントキサゾン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL); --2016.09追加
+insert into spec.feedrice values("ベンゾビシクロン・メタミホップ粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加
+insert into spec.feedrice values("ベンタゾン液剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ベンタゾン粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ベンタゾン・メタミホップ粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12wcs追加
+insert into spec.feedrice values("ペントキサゾン水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ペントキサゾン粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ペントキサゾン・ACN水和剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("ベンフレセート粒剤","除草剤",1,0,1,0,NULL,NULL,NULL,NULL);
+insert into spec.feedrice values("メタミホップ粒剤","除草剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.12追加
+insert into spec.feedrice values("メタミホップ乳剤","除草剤",1,1,1,1,NULL,NULL,NULL,NULL); --2022.12追加
+--insert into spec.feedrice values("モリネート粒剤","除草剤",1,1,1,0,NULL,NULL,NULL,NULL); --2022.12削除
+commit;
