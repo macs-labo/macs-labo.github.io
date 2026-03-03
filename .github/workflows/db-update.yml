@@ -1,18 +1,14 @@
 name: Manual Database Update
 
 on:
-  # 手動実行を可能にする設定
   workflow_dispatch:
     inputs:
       target:
-        description: '更新するデータベースを選択してください'
+        description: 'Update Target'
         required: true
         default: 'both'
         type: choice
-        options:
-          - acis
-          - spec
-          - both
+        options: [acis, spec, both]
 
 jobs:
   update-db:
@@ -24,14 +20,34 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2' # サーバー環境に合わせて調整してください
+          php-version: '8.2'
+          #extensions: mbstring, sqlite3, pdo_sqlite
 
-      # acis.db の更新 (acis または both が選ばれたとき)
+      # ここを追加！
+      - name: Check PHP and SQLite Version
+        run: |
+          php -v
+          php -r 'echo "SQLite3 Library Version: " . SQLite3::version()["versionString"] . "\n";'
+          php -i | grep -i sqlite
+          # もし詳細が全部必要なら php -i だけでもOKです
+
       - name: Update acis.db
         if: ${{ github.event.inputs.target == 'acis' || github.event.inputs.target == 'both' }}
-        run: php cron/.make.acis.php
+        run: |
+          cd cron
+          php .make.acis.php
+        # 失敗してもエラーログを見たい場合はここをチェック
 
-      # spec.db の更新 (spec または both が選ばれたとき)
       - name: Update spec.db
         if: ${{ github.event.inputs.target == 'spec' || github.event.inputs.target == 'both' }}
-        run: php cron/.make.spec.php
+        run: |
+          cd cron
+          php .make.spec.php
+
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add cron/*.db
+          # ファイルに変更がある場合のみコミット
+          git diff --staged --quiet || (git commit -m "Update databases via GitHub Actions" && git push)
