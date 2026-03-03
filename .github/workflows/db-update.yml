@@ -21,7 +21,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: mbstring, sqlite3, pdo_sqlite
+          # extensions: mbstring, sqlite3, pdo_sqlite
 
       # ここを追加！
       - name: Check PHP and SQLite Version
@@ -34,14 +34,14 @@ jobs:
       - name: Update acis.db
         if: ${{ github.event.inputs.target == 'acis' || github.event.inputs.target == 'both' }}
         run: |
-          cd cron
+          # cd cron
           php .make.acis.php
         # 失敗してもエラーログを見たい場合はここをチェック
 
       - name: Update spec.db
         if: ${{ github.event.inputs.target == 'spec' || github.event.inputs.target == 'both' }}
         run: |
-          cd cron
+          # cd cron
           php .make.spec.php
 
       - name: Commit and Push changes
