@@ -1,18 +1,23 @@
-name: Manual Database Update
+name: Manual and Scheduled Database Update
 
 on:
-  # 手動実行を可能にする設定
+  # 手動実行用
   workflow_dispatch:
     inputs:
       target:
-        description: '更新するデータベースを選択してください'
+        description: 'Update Target'
         required: true
         default: 'both'
         type: choice
-        options:
-          - spec
-          - acis
-          - both
+        options: [acis, spec, both]
+  
+  # 自動実行用（例：毎日 日本時間 朝5時 / UTC 20:00）
+  # 設定を有効にする場合は下の2行のコメントアウト（#）を外してください
+  # schedule:
+  #   - cron: '0 20 * * *'
+
+permissions:
+  contents: write
 
 jobs:
   update-db:
@@ -24,23 +29,38 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2' # サーバー環境に合わせて調整してください
+          php-version: '8.2'
+          extensions: mbstring, sqlite3, pdo_sqlite
 
-      # spec.db の更新 (spec または both が選ばれたとき)
+      # 1. spec.db の更新 (acis の参照用)
       - name: Update spec.db
-        if: ${{ github.event.inputs.target == 'spec' || github.event.inputs.target == 'both' }}
-        run: php cron/.make.spec.php
+        if: ${{ github.event.inputs.target == 'spec' || github.event.inputs.target == 'both' || github.event == 'schedule' }}
+        run: |
+          cd cron
+          php .make.spec.php
 
-      # acis.db の更新 (acis または both が選ばれたとき)
-      - name: Update acis.db
-        if: ${{ github.event.inputs.target == 'acis' || github.event.inputs.target == 'both' }}
-        run: php cron/.make.acis.php
+      # 2. acis.db および data/ 内のファイル生成
+      - name: Update acis.db and Data files
+        if: ${{ github.event.inputs.target == 'acis' || github.event.inputs.target == 'both' || github.event == 'schedule' }}
+        run: |
+          cd cron
+          php .make.acis.php
 
-      # 更新されたDBファイルをコミットしてプッシュする設定
+      # 3. コミットとプッシュ (cron/*.db, data/*.zip, data/*.txt を対象)
       - name: Commit and Push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          
+          # 指定されたファイルをすべてステージング
           git add cron/*.db
-          # ファイルに変更がある場合のみコミット
-          git diff --staged --quiet || (git commit -m "Update databases via GitHub Actions" && git push)
+          git add data/*.zip
+          git add data/*.txt
+          
+          # 変更がある場合のみコミット
+          if ! git diff --staged --quiet; then
+            git commit -m "Update DB and data files via GitHub Actions"
+            git push
+          else
+            echo "No changes to commit"
+          fi
