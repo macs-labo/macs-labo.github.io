@@ -17,6 +17,16 @@ if ($debug) {
   header('Content-type: text/plain');
 }
 
+// 強制更新フラグ取得
+function getForceUpdate() {
+  global $argv; // CLI引数にアクセス
+  echo PHP_SAPI . "\n";
+  print_r($argv);
+  $fupdate = $_REQUEST['update'] ?? false;
+  if (PHP_SAPI === 'cli') $fupdate = isset($argv) && in_array('update=1', $argv);
+  return $fupdate;
+}
+
 function getResponseCode() {
   return intval(substr($http_response_header[0], 9, 3));
 }

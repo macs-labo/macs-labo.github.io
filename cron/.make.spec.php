@@ -7,7 +7,7 @@ require_once 'inc.sqlite.php';
 require_once 'inc.spec.php';
 
 $update = false;
-$fupdate = $_REQUEST['update'];
+$fupdate = getForceUpdate();
 
 $total = -microtime(true);
 
@@ -63,7 +63,6 @@ rename("./$subzip", "$datdir/$subzip");
   //touch("$dbpath/$subdb", filemtime($subdb));
   rmdir("$dbpath/$udflag");
 }
-$total += microtime(true);
 logputs('spec', "Created $total");
 if ($debug) echo "spec: Created $total\n";
 return 0;

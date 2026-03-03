@@ -13,7 +13,7 @@ $byochu    = 'byochu.txt';
 $sakumotsu = 'sakumotsu.txt';
 $total = null;
 $db = null;
-$fupdate = $_REQUEST['update'] ?? false;
+$fupdate = getForceUpdate();
 
 // トータルタイム開始時刻セット
 function SetTime(&$time) {
