@@ -6,17 +6,17 @@ on:
       target:
         description: 'Update Target'
         required: true
-        default: 'both'
+        default: 'spec'
         type: choice
-        options: [acis, spec, both]
+        options: [spec, acis, both]
       force_update:
         description: 'Force update (add update=1)'
         type: boolean
         default: false
 
-  # スケジュール実行（自動実行時は通常強制更新にしない設定にしています）
+  # スケジュール実行
   schedule:
-    - cron: '0 20 * * *'
+    - cron: '2 0-6 * * 1-5' # 月-金 9-17時 02分 (JST)
 
 permissions:
   contents: write
@@ -34,23 +34,23 @@ jobs:
           php-version: '8.2'
           extensions: mbstring, sqlite3, pdo_sqlite
 
-      # 1. spec.db の更新
+      # 1. spec.db の更新：手動実行時のみ（schedule時は実行しない）
       - name: Update spec.db
-        if: ${{ github.event.inputs.target == 'spec' || github.event.inputs.target == 'both' || github.event_name == 'schedule' }}
+        if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.target == 'spec' || github.event.inputs.target == 'both') }}
         run: |
           cd cron
-          # 手動実行でチェックが入っている場合は引数を付与
           if [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
             php .make.spec.php "update=1"
           else
             php .make.spec.php
           fi
 
-      # 2. acis.db の更新
+      # 2. acis.db の更新：スケジュール実行時、または手動で acis/both が選ばれた時
       - name: Update acis.db
-        if: ${{ github.event.inputs.target == 'acis' || github.event.inputs.target == 'both' || github.event_name == 'schedule' }}
+        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.target == 'acis' || github.event.inputs.target == 'both')) }}
         run: |
           cd cron
+          # スケジュール実行時は通常更新、手動の時だけチェックボックスを見る
           if [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
             php .make.acis.php "update=1"
           else
@@ -64,7 +64,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add cron/*.db data/*.zip data/*.txt
           if ! git diff --staged --quiet; then
-            git commit -m "Update DB and data files via GitHub Actions (Force: ${{ github.event.inputs.force_update }})"
+            git commit -m "Update DB and data files via GitHub Actions (Event: ${{ github.event_name }})"
             git push
           else
             echo "No changes to commit"
