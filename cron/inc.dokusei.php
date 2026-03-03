@@ -6,7 +6,7 @@ $txpage  = 'index.htm';
 $pdokusei = '.*href="(yukolist.+?\.zip)".*';
 $psuisan = '.*href="(suisaneikyou.+?\.zip)".*';
 $pseizai = '.*href="(tourokugaiyo.+?\.zip)".*';
-$dokusei = 'spec.dokusei.txt';
-$suisan  = 'spec.suisan.txt';
-$seizai = 'spec.seizai.txt'
+$dokusei = 'acis.dokusei.txt';
+$suisan  = 'acis.suisan.txt';
+$seizai = 'acis.seizai.txt'
 ?>

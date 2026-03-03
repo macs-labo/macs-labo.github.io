@@ -34,8 +34,8 @@ function http_headers($url, $headers = null) {
 }
 
 /* 更新されていれば mtime いなければ false を返す */
-function is_modified($url, $date) {
-  if ($date === false) {
+function is_modified($url, $date, $forceupdate = false) {
+  if ($date === false || $forceupdate) {
      $header = '';
   } else {
     if (!is_string($date)) $date = gmdate('D, d M Y H:i:s T', $date);

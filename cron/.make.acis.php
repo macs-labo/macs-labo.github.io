@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 
 //カレントディレクトリをスクリプトディレクトリに変更
 chdir(__DIR__);
@@ -13,6 +13,9 @@ $total = -microtime(true);
 
 // 毒性データ SQL 作成
 $ftoxic   = include_once 'inc.acis.dokusei.php';
+
+// CSV データ更新
+require_once 'inc.acis.csv.php';
 
 //メインデータベース更新
 $finfo   = include_once 'inc.acis.reginfo.php';

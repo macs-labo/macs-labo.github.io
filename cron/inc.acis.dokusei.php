@@ -18,10 +18,10 @@ $fseizai = preg_replace("/$pseizai/is", '\1', $body);
 
 // 毒性関連 ZIP ファイル取得・解凍
 function get_new_file($fname, $mtime) {
-  global $debug, $txpath, $date;
+  global $debug, $txpath, $date, $fupdate;
   $date = '';
   $url = "$txpath/$fname";
-  $modified = is_modified($url, $mtime);
+  $modified = is_modified($url, $mtime, $fupdate);
   if ($modified === false) {
     if ($debug) echo "$url: Not Modified\n";
     return false;
@@ -57,7 +57,7 @@ function read_excel($xfile) {
   $return = false;
 }
 
-$fupdated = false;
+$updated = false;
 
 //水産動植物への影響
 $time = -microtime(true);
@@ -108,7 +108,7 @@ if ($excel) {
   $time += microtime(true);
   logputs($suisan, "Created $time");
   if ($debug) echo "$suisan Created $time\n";
-  $fupdated = true;
+  $updated = true;
 }
 
 //製剤毒性
@@ -148,7 +148,7 @@ if ($excel) {
   $time += microtime(true);
   logputs($seizai, "Created $time");
   if ($debug) echo "$seizai Created $time\n";
-  $fupdated = true;
+  $updated = true;
 }
 
 // 有効成分毒性
@@ -208,9 +208,9 @@ if ($excel) {
   $time += microtime(true);
   logputs($dokusei, "Created $time");
   if ($debug) echo "$dokusei Created $time\n";
-  $fupdated = true;
+  $updated = true;
 }
 
-return $fupdated;
+return $updated;
 
 ?>
