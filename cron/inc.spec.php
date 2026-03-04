@@ -4,20 +4,20 @@
 require_once 'inc.setup.php';
 
 $subzip = 'spec.zip';
-$src['iso']     = 'https://macs.kabe.info/data/spec.iso.txt';
-$src['cvo']     = "$datdir/spec.cvo.utf8.txt";
-$src['frac']    = "$datdir/spec.frac.txt";
-$src['irac']    = "$datdir/spec.irac.txt";
-$src['hrac']    = "$datdir/spec.hrac.txt";
-$src['ojas']    = "$datdir/spec.ojas.txt";
-$src['bunrui']  = "$datdir/spec.bunrui.txt";
-$src['ryutsu']  = "$datdir/spec.ryutsu.txt";
-$src['shurui']  = "$datdir/spec.idshurui.txt";
-$src['beppyo1'] = "$datdir/spec.beppyo1.txt";
-$src['feedrice'] = "$datdir/spec.feedrice.txt";
-//$src['dokusei'] = "$datdir/spec.dokusei.txt";
-//$src['suisan']  = "$datdir/spec.suisan.txt";
-//$src['seizai']  = "$datdir/spec.seizai.txt";
-//$src['gun_odan'] = "$datdir/spec.gun_odan.txt";
-//$src['tsumajiro'] = "$datdir/spec.tsumajiro.txt";
+
+$specfiles['iso']      = 'spec.iso.txt';
+$specfiles['cvo']      = 'spec.cvo.utf8.txt';
+$specfiles['beppyo1']  = 'spec.beppyo1.txt';
+$specfiles['frac']     = 'spec.frac.txt';
+$specfiles['irac']     = 'spec.irac.txt';
+$specfiles['hrac']     = 'spec.hrac.txt';
+$specfiles['ojas']     = 'spec.ojas.txt';
+$specfiles['feedrice'] = 'spec.feedrice.txt';
+$specfiles['bunrui']   = 'spec.bunrui.txt';
+$specfiles['ryutsu']   = 'spec.ryutsu.txt';
+$specfiles['shurui']   = 'spec.idshurui.txt';
+
+foreach($specfiles as $item => $file) {
+  $src[$item] = "$datdir/$file";
+}
 ?>

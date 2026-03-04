@@ -35,6 +35,7 @@ function http_headers($url, $headers = null) {
     if ($headers != '') $opt['header'] = $headers;
   }
   $context = stream_context_create(array('http' => $opt));
+  clearstatcache();
   $res = get_headers($url, true, $context);
   $res['ResponseCode'] = intval(substr($res[0], 9, 3));
   return $res;
