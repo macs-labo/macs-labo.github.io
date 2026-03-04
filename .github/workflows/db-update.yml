@@ -59,13 +59,47 @@ jobs:
 
       # 3. コミットとプッシュ
       - name: Commit and Push changes
+        id: commit
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add cron/*.db cron/*.json data/*.zip data/*.txt
           if ! git diff --staged --quiet; then
-            git commit -m "Update DB and data files via GitHub Actions (Event: ${{ github.event_name }})"
+            git commit -m "Update DB and data files"
             git push
+            echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "No changes to commit"
+            echo "changed=false" >> $GITHUB_OUTPUT
           fi
+
+      # 4. update.json から情報を取得
+      - name: Read update info
+        id: info
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          # jq を使って JSON の値を環境変数に抽出
+          VERSION_TAG=$(jq -r '.version_tag' cron/update.json)
+          RAW_TITLE=$(jq -r '.raw_title' cron/update.json)
+          UPDATE_DATE=$(jq -r '.update_date' cron/update.json)
+          
+          # 後続のステップで使えるように出力にセット
+          echo "tag=$VERSION_TAG" >> $GITHUB_OUTPUT
+          echo "title=$RAW_TITLE" >> $GITHUB_OUTPUT
+          echo "date=$UPDATE_DATE" >> $GITHUB_OUTPUT
+
+      # 5. Release を作成/更新して zip をアップロード
+      - name: Create Release
+        if: steps.commit.outputs.changed == 'true' && (github.event_name == 'schedule' || github.event.inputs.target == 'acis' || github.event.inputs.target == 'both')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.info.outputs.tag }}  # "v2026.02.99"
+          name: ${{ steps.info.outputs.title }}     # "2026年02月失効反映分"
+          body: |
+            自動更新によるデータベースアップデート
+            更新日時: ${{ steps.info.outputs.date }}
+          files: data/acis.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
