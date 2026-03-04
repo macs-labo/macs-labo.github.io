@@ -2,7 +2,7 @@
 
 [![Manual and Scheduled Database Update](https://github.com/macs-labo/macs-labo.github.io/actions/workflows/db-update.yml/badge.svg)](https://github.com/macs-labo/macs-labo.github.io/actions/workflows/db-update.yml)
 
-本プロジェクトは、月〜金の 9～17 時に 1 時間に 1 回自動でデータベースを更新しています。
+本プロジェクトは、月〜金の9～17時に毎時1回自動でFAMICデータの更新チェックをしています。
 
 # 利用規約とデータ許諾に関する重要事項
 
@@ -31,7 +31,7 @@
 * **[MacsDB (SQLite/CSV)](./data/)** 本リポジトリ内で生成・配布されている農薬情報データベースの本体です。
 * **[自動更新スクリプト](./cron/)** FAMIC データを自動取得し、MacsDB を生成する心臓部。GitHub Actions で定期実行されます。
 * **[ACFinderBE](https://github.com/macs-labo/acfinder)** ブラウザ版 ACFinder の公開リポジトリです。
-* **[携帯農薬検索実験室（ポータル）](https://macs-labo.github.io/)** GitHub Pages で公開されている、本プロジェクトの総合案内所です。
-* **[携帯農薬検索実験室本室（メイン環境）](https://macs.xii.jp/)** 最新の動的機能が稼働している開発・運用メインサイトです。
+* **[携帯農薬検索実験室零分室](https://macs-labo.github.io/)** 本プロジェクトのサーバーレス運用デモです(構築中)。
+* **[携帯農薬検索実験室本室](https://macs.xii.jp/)** 最新の動的機能が稼働している開発・運用メインサイトです。
 
 **本プロジェクトは共同保守を歓迎しており、将来的に管理を引き継いでくれる方を募集しています。**
