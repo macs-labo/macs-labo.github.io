@@ -86,6 +86,36 @@ if ($debug) echo "csv: tekiyo: Converted $time\n";
 
 file_put_contents($update, mb_convert_encoding($title, 'SJIS-win', 'UTF-8'));
 
+// $title から最新の西暦日付を抽出し、GitHubタグ用JSONを生成する
+// 1. まず「失効」という文字があれば「99日」に置換しておく（正規表現を共通化するため）
+$tmpTitle = str_replace('失効', '99日', $title);
+
+// 2. 西暦・月・日を抽出
+preg_match_all('/(\d{4})[\s年\/-](\d{1,2})[\s月\/-](\d{1,2})/u', $tmpTitle, $matches, PREG_SET_ORDER);
+$dates = [];
+foreach ($matches as $match) {
+  // 文字列として 8桁 (YYYYMMDD) に整形
+  $dates[] = sprintf('%04d%02d%02d', $match[1], $match[2], $match[3]);
+}
+
+// 3. 文字列比較で最大値を取得
+$latest = max($dates); // 例: "20260299"
+
+// 4. GitHub タグ形式の生成
+// 99日のままだとタグとして少し特殊なので、一応そのまま出すか、00等にするかは好みですが
+// 文字列比較の整合性を保つため、ここでは抽出した数字をそのままドット区切りにします
+$tag = 'v' . substr($latest, 0, 4) . '.' . substr($latest, 4, 2) . '.' . substr($latest, 6, 2);
+
+$updateData = [
+    "version_tag" => $tag,
+    "raw_title"    => $title, // オリジナルの「〜失効反映」を残す
+    "update_date"  => date("Y-m-d H:i:s"),
+    "database_ver" => $latest
+];
+
+$jsonResult = json_encode($updateData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+if ($jsonResult) file_put_contents("update.json", $jsonResult);
+
 // ファイル圧縮と転送
 exec("zip -Dq $csvzip $update $kihon $tekiyo");
 touch($csvzip, filemtime($kihon));
