@@ -1,3 +1,9 @@
+# 農薬データベース(MacsDB)更新状況
+
+[![Manual and Scheduled Database Update](https://github.com/macs-labo/macs-labo.github.io/actions/workflows/db-update.yml/badge.svg)](https://github.com/macs-labo/macs-labo.github.io/actions/workflows/db-update.yml)
+
+本プロジェクトは、月〜金の 9～17 時に 1 時間に 1 回自動でデータベースを更新しています。
+
 # 利用規約とデータ許諾に関する重要事項
 
 ## 主旨
