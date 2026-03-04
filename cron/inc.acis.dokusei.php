@@ -166,7 +166,7 @@ DOKUSEI1;
 $sqlfoot = <<<DOKUSEI2
 commit;
 drop view if exists dokusei;
-create view dokusei as select ippanmei,seibunmei,yoto,dokusei,jogai, biko, ojas, rac, null as seibunEikyo from m_dokusei left join betsumei on dokuseimei = ippanmei;\n
+create view dokusei as select ippanmei,seibunmei,yoto,dokusei,jogai, biko, ojas, rac, null as seibunEikyo from m_dokusei left join (select distinct ippanmei, seibun as seibunmei from seibun) using(ippanmei);\n
 DOKUSEI2;
 $excel = read_excel($xfile);
 if ($excel) {
