@@ -9,7 +9,6 @@ $dlpage = "http://www.acis.famic.go.jp/ddata/index2.htm";
 mb_internal_encoding('utf8');
 mb_detect_order('UTF-8,sjis-win,eucjp-win');
 $debug = __DIR__ !== $crondir;
-$debug = 1;
 // debug モードの場合、エラー表示設定をして text/plain でヘッダ出力
 if ($debug) {
   error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
