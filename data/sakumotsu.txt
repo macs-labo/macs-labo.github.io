@@ -1,5 +1,5 @@
 --/d
-/* 2026.03.03 現在の農水省農薬登録情報提供システムに基づく作物マスター (2021.5.25) */
+/* 2026.03.04 現在の農水省農薬登録情報提供システムに基づく作物マスター (2021.5.25) */
 drop view if exists vg_sakumotsu;
 drop view if exists vg_sakumotsu2;
 drop view if exists vs_sakumotsu;
