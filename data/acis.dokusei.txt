@@ -517,4 +517,4 @@ insert into m_dokusei values ('’Y_ƒJƒ‹ƒVƒEƒ€','Calcium carbonate','‘¼',NULL,'›
 insert into m_dokusei values ('ƒƒ`ƒ‹ƒIƒCƒQƒm[ƒ‹','Methyl eugenol','‘¼',NULL,'›','-','•','-','-','-','-','1969.08.26',NULL);
 commit;
 drop view if exists dokusei;
-create view dokusei as select ippanmei,seibunmei,yoto,dokusei,jogai, biko, ojas, rac, null as seibunEikyo from m_dokusei left join betsumei on dokuseimei = ippanmei;
+create view dokusei as select ippanmei,seibunmei,yoto,dokusei,jogai, biko, ojas, rac, null as seibunEikyo from m_dokusei left join (select distinct ippanmei, seibun as seibunmei from seibun) using(ippanmei);
