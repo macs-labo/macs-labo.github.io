@@ -84,7 +84,7 @@ fclose($wh);
 $time += microtime(true);
 if ($debug) echo "csv: tekiyo: Converted $time\n";
 
-file_put_contents($update, mb_convert_encoding($title, 'SJIS-win', 'UTF-8'));
+file_put_contents($update, $crondir === '.' ? $title : mb_convert_encoding($title, 'SJIS-win', 'UTF-8'));
 
 // $title から最新の西暦日付を抽出し、GitHubタグ用JSONを生成する
 // 1. まず「失効」という文字があれば「99日」に置換しておく（正規表現を共通化するため）
