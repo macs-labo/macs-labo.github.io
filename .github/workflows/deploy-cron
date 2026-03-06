@@ -1,0 +1,58 @@
+name: Dynamic Version Deploy
+
+on:
+  push:
+    paths:
+      - 'header.js'
+  workflow_dispatch:
+    inputs:
+      run_mode:
+        description: '実行モードを選択してください'
+        type: choice
+        options:
+          - 'full_deploy'  # ZIP展開＋リポジトリ更新＋サーバー同期
+          - 'sync_only'    # サーバー同期のみ
+        default: 'full_deploy'
+      force_update:
+        description: 'cron ジョブを強制更新（?update=1）しますか？'
+        type: boolean
+        default: false
+
+jobs:
+  deploy-by-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract and Unzip (Conditional)
+        # Push時、または手動で full_deploy を選択した時だけ実行
+        if: github.event_name == 'push' || github.event.inputs.run_mode == 'full_deploy'
+        run: |
+          ZIP_FILE="cron.zip"
+          if [ -f "$ZIP_FILE" ]; then
+            unzip -o "$ZIP_FILE" -d ./
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            git add .
+            git diff --cached --quiet || git commit -m "Manual/Auto deploy version: $APP_VER"
+            git push
+          fi
+
+      - name: Trigger Remote Sync
+        run: |
+          # 手動実行でチェックを入れた場合のみ '?update=1' をセット
+          OPT=""
+          if [ "${{ github.event.inputs.force_update }}" == "true" ]; then
+            OPT="?update=1"
+          fi
+
+          echo "Syncing with option: $OPT"
+
+          # 全拠点にリクエスト（ここはどのモードでも実行）
+          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.xii.jp/acfinder/.sync.acfinder.php$OPT"
+          #curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.kabe.info/acfinder/.sync.acfinder.php$OPT"
+          #curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://noyaku.ebb.jp/acfinder/.sync.acfinder.php$OPT"
