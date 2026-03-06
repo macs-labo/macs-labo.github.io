@@ -14,7 +14,7 @@ $sites[] = $git;
 if (!$fupdate) {
   $sites[] = 'https://macs.xii.jp/data';
   $sites[] = 'https://macs.kabe.info/data';
-  //$sites[] = 'https://noyaku.ebb.jp/data'; // 大阪分室の CRON 同期が終わるまで巡回から外す
+  $sites[] = 'https://noyaku.ebb.jp/data';
 }
 
 $files1[] = $dokusei;
