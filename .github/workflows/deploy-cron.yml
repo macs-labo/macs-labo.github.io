@@ -3,7 +3,7 @@ name: MacsDB CRON Job Updater Global Deploy
 on:
   push:
     paths:
-      - 'cron/cron.zip'
+      - 'cron/**.zip'
   workflow_dispatch:
     inputs:
       run_mode:
