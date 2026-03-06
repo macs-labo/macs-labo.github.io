@@ -57,4 +57,4 @@ jobs:
           # 登録した Secret を使用して各拠点を叩く
           curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.xii.jp/acfinder/.sync.acfinder.php$OPT"
           #curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.kabe.info/acfinder/.sync.acfinder.php$OPT"
-          #curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://noyaku.ebb.jp/acfinder/.sync.acfinder.php$OPT"name: Dynamic Version Deploy
+          #curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://noyaku.ebb.jp/acfinder/.sync.acfinder.php$OPT"
