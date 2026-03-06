@@ -19,7 +19,7 @@ $files[0] = preg_replace('|.*<a\s+href="(.*?)"[^>]*>登録基本部.*|is', '$1',
 $files[1] = preg_replace('|.*<a\s+href="(.*?)"[^>]*>登録適用部一.*|is', '$1', $s);
 $files[2] = preg_replace('|.*<a\s+href="(.*?)"[^>]*>登録適用部二.*|is', '$1', $s);
 // http レスポンスヘッダで Last-Modified が取得できないので、$title と update.txt の内容が異なる場合は強制更新
-$fupdate = $fupdate || $title != mb_convert_encoding(file_get_contents("$datdir/$update"), 'UTF-8', 'SJIS-win');
+$fupdate = $fupdate || $title != mb_convert_encoding(file_get_contents("$datdir/$update"), 'UTF-8', $crondir === '.' ? 'UTF-8' : 'SJIS-win');
 // 登録基本部の .zip ファイルと toroku.zip ファイルで更新チェック
 $dlurl = dirname($dlpage);
 $mtime = filemtime("$datdir/$csvzip");
