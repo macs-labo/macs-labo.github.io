@@ -3,15 +3,15 @@ name: MacsDB CRON Job Updater Global Deploy
 on:
   push:
     paths:
-      - 'cron.zip' # cron.zip の push で発動
+      - 'cron.zip'
   workflow_dispatch:
     inputs:
       run_mode:
         description: '実行モード'
         type: choice
         options:
-          - 'full_deploy'  # ZIP展開 ＋ リポジトリ更新 ＋ サーバー同期
-          - 'sync_only'    # サーバー同期のみ
+          - 'full_deploy'
+          - 'sync_only'
         default: 'full_deploy'
       force_update:
         description: '強制更新（?update=1）しますか？'
@@ -31,22 +31,25 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Process ZIP and Update Repository
-        # Push時、または手動で full_deploy を選択した時のみ実行
         if: github.event_name == 'push' || github.event.inputs.run_mode == 'full_deploy'
         run: |
-          # ZIPを解凍してリポジトリを展開
-          unzip -o "$TARGET_ZIP" -d ./
-          
-          # GitHubにコミット（[skip ci] で無限ループを鉄壁にガード）
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add .
-          git diff --cached --quiet || git commit -m "Auto deploy from $TARGET_ZIP [skip ci]"
-          git push
+          # ファイルの存在確認をしてから解凍
+          cd cron
+          if [ -f "${{ env.TARGET_ZIP }}" ]; then
+            unzip -o "${{ env.TARGET_ZIP }}" -d ./
+            
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            git add .
+            git diff --cached --quiet || git commit -m "Auto deploy from ${{ env.TARGET_ZIP }} [skip ci]"
+            git push
+          else
+            echo "Error: ${{ env.TARGET_ZIP }} not found."
+            exit 1
+          fi
 
       - name: Trigger Remote Sync
         run: |
-          # 強制更新オプションの判定
           OPT=""
           if [ "${{ github.event.inputs.force_update }}" == "true" ]; then
             OPT="?update=1"
@@ -54,7 +57,7 @@ jobs:
 
           echo "Triggering sync with option: $OPT"
 
-          # 登録した Secret を使用して各拠点を叩く
+          # 各拠点を叩く（コメントアウトされた行も整理）
           curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.xii.jp/acfinder/.sync.acfinder.php$OPT"
-          #curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.kabe.info/acfinder/.sync.acfinder.php$OPT"
-          #curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://noyaku.ebb.jp/acfinder/.sync.acfinder.php$OPT"
+          # curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.kabe.info/acfinder/.sync.acfinder.php$OPT"
+          # curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://noyaku.ebb.jp/acfinder/.sync.acfinder.php$OPT"
