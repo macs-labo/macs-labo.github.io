@@ -48,11 +48,11 @@ if ($facis) {
     if ($debug) echo "acis: view: Created $time\n";
   }
   dbClose($db);
-  unset($db);
 }
 
 //毒性データベース更新
-if ($ftoxic) {
+//if ($ftoxic) {
+if ($ftoxic || $finfo) {
   $files = array();
   $files['dokusei'] = "$datdir/$dokusei";
   $files['suisan']  = "$datdir/$suisan";
