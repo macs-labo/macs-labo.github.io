@@ -1,4 +1,4 @@
-name: MACS-labo Top Page Global Deploy
+name: MACS-labo Site Global Deploy
 
 on:
   push:
