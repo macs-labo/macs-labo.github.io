@@ -48,6 +48,19 @@ jobs:
             echo "Notice: ${{ env.TARGET_ZIP }} not found. Skipping."
           fi
 
+      # 最後に Pages をデプロイするステップを追加
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './' # 公開したいディレクトリ（リポジトリルート）
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
       - name: Trigger Remote Sync
         run: |
           OPT=""
