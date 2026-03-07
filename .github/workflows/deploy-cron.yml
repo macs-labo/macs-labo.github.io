@@ -41,7 +41,7 @@ jobs:
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
             git add .
-            git diff --cached --quiet || git commit -m "Auto deploy from ${{ env.TARGET_ZIP }} [skip ci]"
+            git diff --cached --quiet || git commit -m "Auto deploy from ${{ env.TARGET_ZIP }} [skip ci] [pages skip]"
             git push
           else
             echo "Error: ${{ env.TARGET_ZIP }} not found."
