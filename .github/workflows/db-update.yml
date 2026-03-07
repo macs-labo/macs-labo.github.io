@@ -65,7 +65,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add cron/*.db cron/*.csv cron/*.json data/*.zip data/*.txt
           if ! git diff --staged --quiet; then
-            git commit -m "Update DB and data files"
+            git commit -m "Update DB and data files [skip ci]"
             git push
             echo "changed=true" >> $GITHUB_OUTPUT
           else
