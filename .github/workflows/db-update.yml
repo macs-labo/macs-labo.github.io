@@ -136,3 +136,21 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 7. 各拠点の同期スクリプトを叩く
+      - name: Trigger Remote Sync
+        # データが更新された時だけ通知を飛ばす
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          # update-db.yml の文脈でも force_update オプションを継承可能
+          OPT=""
+          if [ "${{ github.event.inputs.force_update }}" == "true" ]; then
+            OPT="?update=1"
+          fi
+
+          echo "Triggering sync with option: $OPT"
+
+          # 各拠点の同期用PHPを叩く（.netrc設定済みなら認証もスムーズですね）
+          #curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.coresv.net/cron/.sync.data.php$OPT"
+          #curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.kabe.info/cron/.sync.data.php$OPT"
+          #curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://noyaku.ebb.jp/cron/.sync.data.php$OPT"
