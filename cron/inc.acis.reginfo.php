@@ -20,15 +20,6 @@ $hdtekiyo = array(
   '総使用回数4' => 'kaisu4', '総使用回数5' => 'kaisu5'
 );
 
-// toroku.zip と kihon.csv のタイムスタンプを比較して、toroku.zip が新しければ解凍
-$fupdate |= filemtime("$datdir/$csvzip") > filemtime($kihon);
-if ($fupdate) {
-  exec("unzip -o $datdir/$csvzip");
-  clearstatcache(true, $kihon); // unzip で kihon.csv が変更されたのでキャッシュクリア
-}
-
-//屋号設定
-//require_once 'inc.acis.reginfo.tm.php';
 //屋号
 $tm1 = 'ACC|BASF|CBC|DAS(?!H)|DIC|FMC|GF|HCC|HJ|HUPL|inochio|ISK|JA|JC|MIC|MAI|OAT|SDS|ST|UBE|ZMCP';
 //2024.3.8 ZMCP 追加、F\.G\.|ICI|TG 削除
@@ -41,8 +32,14 @@ $tm3 = '旭|石原|一農|井筒屋|出光|永光|大塚|科研|兼商|京都微
      . '丸和|三井(東圧)?|三菱|明治|理研';
 //2024.3.8 (北海)?三共|武田|東ソー 削除、「信越」付きは実態としてはないが残した
 
+// kihon.csv がなければ、toroku.zip 解凍
+if (!file_exists($kihon)) {
+  exec("unzip -o $datdir/$csvzip");
+  if ($debug) echo "unzip: $csvzip\n";
+}
+
 // このスクリプトが acis.zip より新しければ $fupdate 設定
-$fupdate |= filemtime(__FILE__) > filemtime("$datdir/$mainzip");
+//$fupdate |= filemtime(__FILE__) > filemtime("$datdir/$mainzip");
 
 // acis.zip と kihon.csv のタイムスタンプを比較して、kihon.csv が新しければデータベース更新
 if (!$fupdate && filemtime("$datdir/$mainzip") > filemtime($kihon)) {
