@@ -1,0 +1,31 @@
+on:
+  push:
+    paths:
+      - 'index.html'
+      - '**.js'
+      - '**.css'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Artifact
+        run: |
+          mkdir -p staging/data
+          # ルートのファイル
+          find . -maxdepth 1 -type f -exec cp {} staging/ \;
+          # 既存のデータディレクトリ（リポジトリ内）をコピー
+          if [ -d "data" ]; then
+            cp -r data/* staging/data/
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './staging'
+      - name: Deploy
+        uses: actions/deploy-pages@v4
