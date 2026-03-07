@@ -1,4 +1,4 @@
-name: MacsDB CRON Job Updater Global Deploy
+name: MacsDB CRON Job Updater and Data Deploy
 
 on:
   push:
