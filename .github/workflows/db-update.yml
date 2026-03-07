@@ -15,8 +15,8 @@ on:
         default: false
 
   # スケジュール実行
-  #schedule:
-  #  - cron: '2 0-6 * * 1-5' # 月-金 9-17時 02分 (JST)
+  schedule:
+    - cron: '2 0-6 * * 1-5' # 月-金 9-17時 02分 (JST)
 
 permissions:
   contents: write
