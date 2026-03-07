@@ -18,22 +18,14 @@ $title = preg_replace('#.*(<p\s+class="bold"\s*>|<h4>)(.*?)</.*#is', '$2', $s);
 $files[0] = preg_replace('|.*<a\s+href="(.*?)"[^>]*>登録基本部.*|is', '$1', $s);
 $files[1] = preg_replace('|.*<a\s+href="(.*?)"[^>]*>登録適用部一.*|is', '$1', $s);
 $files[2] = preg_replace('|.*<a\s+href="(.*?)"[^>]*>登録適用部二.*|is', '$1', $s);
-echo "html: $title\n";
 // http レスポンスヘッダで Last-Modified が取得できないので、$title と update.txt の内容が異なる場合は強制更新
-if ($crondir === '.') { // gihub では update.txt 読み込みがうまく行かない？ので、update.json から取得
-  $json = json_decode(file_get_contents(str_replace('.txt', '.json', $update)), true);
-  $jtitle = $json['raw_title'];
-  echo "json: $jtitle\n";
-}
-$ttitle = mb_convert_encoding(file_get_contents("$datdir/$update"), 'UTF-8', 'SJIS-win');
-echo "text: $ttitle\n";
-exit;
-
-$fupdate = $fupdate || $title != $ttitle;
+$fupdate = $fupdate || $title != mb_convert_encoding(file_get_contents("$datdir/$update"), 'UTF-8', 'SJIS-win');
 // 登録基本部の .zip ファイルと toroku.zip ファイルで更新チェック
+// 登録機本部 .zip は If-Modified-Since が使えなくなったので、Last-Modified 取得方式に変更
 $dlurl = dirname($dlpage);
-$mtime = filemtime("$datdir/$csvzip");
-$res = $fupdate || !$mtime || $mtime <= filemtime(__FILE__) || is_modified("$dlurl/$files[0]", $mtime) !== false;
+$mtime = filemtime("$datdir/$csvzip") ?: 0;
+//$res = $fupdate || $mtime <= filemtime(__FILE__) || $mtime <= getLastModified("$dlurl/$files[0]");
+$res = $fupdate || $mtime <= getLastModified("$dlurl/$files[0]");
 if (!$res) {
   if ($debug) echo ("csv: Not Modified\n");
   return false;

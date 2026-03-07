@@ -4,7 +4,7 @@
 require_once 'inc.setup.php';
 
 $dopage = "https://pesticide.maff.go.jp/agricultural-chemicals";
-$dlpage = "http://www.acis.famic.go.jp/ddata/index2.htm";
+$dlpage = "https://www.acis.famic.go.jp/ddata/index2.htm";
 
 mb_internal_encoding('utf8');
 mb_detect_order('UTF-8,sjis-win,eucjp-win');
@@ -39,6 +39,12 @@ function http_headers($url, $headers = null) {
   $res = get_headers($url, true, $context);
   $res['ResponseCode'] = intval(substr($res[0], 9, 3));
   return $res;
+}
+
+/* ファイルの Last-Modified 取得 */
+function getLastModified($url) {
+  $res = http_headers($url);
+  return $res['ResponseCode'] == 200 ? strtotime($res['Last-Modified'] ?? 0) : false;
 }
 
 /* 更新されていれば mtime いなければ false を返す */
