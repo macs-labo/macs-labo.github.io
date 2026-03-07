@@ -20,11 +20,13 @@ on:
 
 jobs:
   deploy:
+    permissions:
+      contents: write      # リポジトリへの git push に必要
+      pages: write         # Pages のデプロイに必要
+      id-token: write      # GitHub Pages の認証（OIDC）に必要
     env:
       TARGET_ZIP: "cron.zip"
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout
