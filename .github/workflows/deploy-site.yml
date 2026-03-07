@@ -1,4 +1,4 @@
-name: MACS-labo Site Global Deploy
+name: MACS-labo Site Deploy
 
 on:
   push:
