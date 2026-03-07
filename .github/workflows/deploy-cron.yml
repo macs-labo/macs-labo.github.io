@@ -50,14 +50,27 @@ jobs:
             echo "Notice: ${{ env.TARGET_ZIP }} not found. Skipping."
           fi
 
-      # 最後に Pages をデプロイするステップを追加
+      - name: Prepare Pages Artifact
+        run: |
+          # 1. 空の公開用フォルダ（staging）を作成
+          mkdir -p staging/data
+          
+          # 2. ルートにあるファイル（index.html等）のみをコピー（cronディレクトリを除外）
+          find . -maxdepth 1 -type f -exec cp {} staging/ \;
+          
+          # 3. dataディレクトリの中身をコピー
+          if [ -d "data" ]; then
+            cp -r data/* staging/data/ 2>/dev/null || true
+          fi
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './' # 公開したいディレクトリ（リポジトリルート）
+          # リポジトリルートではなく、今作った staging を指定
+          path: './staging'
 
       - name: Deploy to GitHub Pages
         id: deployment
