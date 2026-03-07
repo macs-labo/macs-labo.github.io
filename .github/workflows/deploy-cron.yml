@@ -33,8 +33,8 @@ jobs:
       - name: Process ZIP and Update Repository
         if: github.event_name == 'push' || github.event.inputs.run_mode == 'full_deploy'
         run: |
-          # ファイルの存在確認をしてから解凍
           cd cron
+          # ファイルがある時だけ処理する
           if [ -f "${{ env.TARGET_ZIP }}" ]; then
             unzip -o "${{ env.TARGET_ZIP }}" -d ./
             
@@ -44,8 +44,8 @@ jobs:
             git diff --cached --quiet || git commit -m "Auto deploy from ${{ env.TARGET_ZIP }} [skip ci] [pages skip]"
             git push
           else
-            echo "Error: ${{ env.TARGET_ZIP }} not found."
-            exit 1
+            # ファイルがない（削除コミットの時など）は、エラーにせず正常終了させる
+            echo "Notice: ${{ env.TARGET_ZIP }} not found. Skipping process."
           fi
 
       - name: Trigger Remote Sync
