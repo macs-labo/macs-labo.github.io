@@ -73,7 +73,38 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
-      # 4. update.json から情報を取得
+      # 4. Pages デプロイ
+      - name: Prepare Pages Artifact
+        # 変更があった場合、または手動実行の場合に実行
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          mkdir -p staging/data
+          # ルートの静的ファイルをコピー
+          find . -maxdepth 1 -type f -exec cp {} staging/ \;
+          # data ディレクトリの中身をコピー
+          if [ -d "data" ]; then
+            cp -r data/* staging/data/ 2>/dev/null || true
+          fi
+          # cron 内の最新成果物も data 配下に含める
+          cp cron/*.db staging/data/ 2>/dev/null || true
+          cp cron/*.json staging/data/ 2>/dev/null || true
+
+      - name: Setup Pages
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './staging'
+
+      - name: Deploy to GitHub Pages
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      # 5. update.json から情報を取得
       - name: Read update info
         id: info
         if: steps.commit.outputs.changed == 'true'
@@ -88,7 +119,7 @@ jobs:
           echo "title=$RAW_TITLE" >> $GITHUB_OUTPUT
           echo "date=$UPDATE_DATE" >> $GITHUB_OUTPUT
 
-      # 5. Release を作成/更新して zip をアップロード
+      # 6. Release を作成/更新して zip をアップロード
       - name: Create Release
         if: steps.commit.outputs.changed == 'true' && (github.event_name == 'schedule' || github.event.inputs.target == 'acis' || github.event.inputs.target == 'both')
         uses: softprops/action-gh-release@v2
