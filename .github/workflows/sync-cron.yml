@@ -1,4 +1,4 @@
-name: MacsDB CRON Job Updater
+name: Sync MacsDB Update CRON Job
 
 on:
   push:
@@ -10,20 +10,18 @@ on:
         description: '実行モード'
         type: choice
         options:
-          - 'full_deploy'
-          - 'sync_only'
-        default: 'full_deploy'
+          - 'full_sync'
+          - 'site_sync_only'
+        default: 'full_sync'
       force_update:
         description: '強制更新（?update=1）しますか？'
         type: boolean
         default: false
 
 jobs:
-  deploy:
+  sync: # ジョブ名も 'deploy' から 'sync' などに変えると分かりやすいです
     permissions:
-      contents: write      # リポジトリへの git push に必要
-      pages: write         # Pages のデプロイに必要
-      id-token: write      # GitHub Pages の認証（OIDC）に必要
+      contents: write # リポジトリへの Push 権限のみ残す
     env:
       TARGET_ZIP: "cron.zip"
     runs-on: ubuntu-latest
@@ -42,37 +40,24 @@ jobs:
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
             git add .
-            # ここは [skip ci] だけにする（[pages skip] は入れない）
-            # これにより、このプッシュで「1回だけ」正しく Pages ビルドが走ります
-            git diff --cached --quiet || git commit -m "Auto deploy from ${{ env.TARGET_ZIP }} [skip ci]"
+            # [skip ci] を入れることで、この Push で deploy-site.yml が連鎖起動するのを防ぎます
+            git diff --cached --quiet || git commit -m "Auto sync from ${{ env.TARGET_ZIP }} [skip ci]"
             git push
           else
             echo "Notice: ${{ env.TARGET_ZIP }} not found. Skipping."
           fi
 
-      # 最後に Pages をデプロイするステップを追加
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './' # 公開したいディレクトリ（リポジトリルート）
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
       - name: Trigger Remote Sync
         run: |
           OPT=""
           if [ "${{ github.event.inputs.force_update }}" == "true" ]; then
+            # 変数展開の修正：$OPT ではなく OPT
             OPT="?update=1"
           fi
 
           echo "Triggering sync with option: $OPT"
 
-          # 各拠点を叩く（コメントアウトされた行も整理）
+          # 各拠点を叩く
           curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.coresv.net/cron/.sync.cron.php$OPT"
           curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.kabe.info/cron/.sync.cron.php$OPT"
           curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://noyaku.ebb.jp/cron/.sync.cron.php$OPT"
