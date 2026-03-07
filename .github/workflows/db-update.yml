@@ -20,6 +20,8 @@ on:
 
 permissions:
   contents: write
+  pages: write       # Pages のデプロイに必要
+  id-token: write    # デプロイ時の認証に必要
 
 jobs:
   update-db:
