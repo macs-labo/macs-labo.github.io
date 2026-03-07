@@ -1,4 +1,4 @@
-name: MacsDB CRON Job Updater and Data Deploy
+name: MacsDB CRON Job Updater
 
 on:
   push:
@@ -50,27 +50,14 @@ jobs:
             echo "Notice: ${{ env.TARGET_ZIP }} not found. Skipping."
           fi
 
-      - name: Prepare Pages Artifact
-        run: |
-          # 1. 空の公開用フォルダ（staging）を作成
-          mkdir -p staging/data
-          
-          # 2. ルートにあるファイル（index.html等）のみをコピー（cronディレクトリを除外）
-          find . -maxdepth 1 -type f -exec cp {} staging/ \;
-          
-          # 3. dataディレクトリの中身をコピー
-          if [ -d "data" ]; then
-            cp -r data/* staging/data/ 2>/dev/null || true
-          fi
-
+      # 最後に Pages をデプロイするステップを追加
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # リポジトリルートではなく、今作った staging を指定
-          path: './staging'
+          path: './' # 公開したいディレクトリ（リポジトリルート）
 
       - name: Deploy to GitHub Pages
         id: deployment
@@ -86,6 +73,6 @@ jobs:
           echo "Triggering sync with option: $OPT"
 
           # 各拠点を叩く（コメントアウトされた行も整理）
-          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.coresv.jp/acfinder/.sync.cron.php$OPT"
-          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.kabe.info/acfinder/.sync.cron.php$OPT"
-          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://noyaku.ebb.jp/acfinder/.sync.cron.php$OPT"
+          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.coresv.net/cron/.sync.cron.php$OPT"
+          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.kabe.info/cron/.sync.cron.php$OPT"
+          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://noyaku.ebb.jp/cron/.sync.cron.php$OPT"
