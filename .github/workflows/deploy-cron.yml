@@ -34,18 +34,18 @@ jobs:
         if: github.event_name == 'push' || github.event.inputs.run_mode == 'full_deploy'
         run: |
           cd cron
-          # ファイルがある時だけ処理する
           if [ -f "${{ env.TARGET_ZIP }}" ]; then
             unzip -o "${{ env.TARGET_ZIP }}" -d ./
             
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
             git add .
-            git diff --cached --quiet || git commit -m "Auto deploy from ${{ env.TARGET_ZIP }} [skip ci] [pages skip]"
+            # ここは [skip ci] だけにする（[pages skip] は入れない）
+            # これにより、このプッシュで「1回だけ」正しく Pages ビルドが走ります
+            git diff --cached --quiet || git commit -m "Auto deploy from ${{ env.TARGET_ZIP }} [skip ci]"
             git push
           else
-            # ファイルがない（削除コミットの時など）は、エラーにせず正常終了させる
-            echo "Notice: ${{ env.TARGET_ZIP }} not found. Skipping process."
+            echo "Notice: ${{ env.TARGET_ZIP }} not found. Skipping."
           fi
 
       - name: Trigger Remote Sync
