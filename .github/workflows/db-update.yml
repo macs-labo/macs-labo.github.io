@@ -36,12 +36,22 @@ jobs:
           php-version: '8.2'
           extensions: mbstring, sqlite3, pdo_sqlite
 
+      - name: Set Global Environment Variables
+        run: |
+          # inputs.force_update が true なら "true"、そうでなければ "false" を書き出す
+          if [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
+            echo "FORCE_UPDATE=true" >> $GITHUB_ENV
+          else
+            echo "FORCE_UPDATE=false" >> $GITHUB_ENV
+          fi
+
       # 1. spec.db の更新：手動実行時のみ（schedule時は実行しない）
       - name: Update spec.db
         if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.target == 'spec' || github.event.inputs.target == 'both') }}
         run: |
           cd cron
-          if [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
+          # シェルの if ではなく、env に展開して判定する
+          if [ "$FORCE_UPDATE" = "true" ]; then
             php .make.spec.php "update=1"
           else
             php .make.spec.php
@@ -52,8 +62,8 @@ jobs:
         if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.target == 'acis' || github.event.inputs.target == 'both')) }}
         run: |
           cd cron
-          # スケジュール実行時は通常更新、手動の時だけチェックボックスを見る
-          if [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
+          # シェルの if ではなく、env に展開して判定する
+          if [ "$FORCE_UPDATE" = "true" ]; then
             php .make.acis.php "update=1"
           else
             php .make.acis.php
