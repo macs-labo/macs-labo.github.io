@@ -91,6 +91,15 @@ jobs:
           cp cron/*.db staging/data/ 2>/dev/null || true
           cp cron/*.json staging/data/ 2>/dev/null || true
 
+      - name: Create Deployment Inventory
+        run: |
+          echo "=== ACFinder Database Deployment Inventory ===" > staging/data/inventory.txt
+          echo "Deployment Time: $(date '+%Y-%m-%d %H:%M:%S JST')" >> staging/data/inventory.txt
+          echo "GitHub Run ID: ${{ github.run_id }}" >> staging/data/inventory.txt
+          echo "------------------------------------------" >> staging/data/inventory.txt
+          # staging/data 内の全ファイルを詳細表示（ナノ秒まで）で追記
+          ls -l --full-time staging/data/ >> staging/data/inventory.txt
+
       - name: Setup Pages
         if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
         uses: actions/configure-pages@v4
