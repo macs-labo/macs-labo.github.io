@@ -11,10 +11,10 @@ $user_root = ''; // 自動取得できない場合は xrea/coreserver v1 なら 
 // GitHub Pages 運用の場合の自動設定
 $isGithub = (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'github.io') !== false) || getenv('GITHUB_ACTIONS') === 'true';
 if ($isGithub) {
-  $datdir = '../data'; // 親ディレクトリ下の data
+  $datdir  = '../data'; // 親ディレクトリ下の data
   $crondir = '.'; // カレントディレクトリ
-  $libdir = '.'; // カレントディレクトリ
-  $dbpath = false;
+  $libdir  = '.'; // カレントディレクトリ
+  $dbpath  = false;
   $chkbase = 'https://macs-lab.github.io/data';
   return 0;
 }
