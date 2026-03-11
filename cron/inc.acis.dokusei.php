@@ -60,7 +60,7 @@ $updated = false;
 
 //水産動植物への影響
 $time = -microtime(true);
-$xfile = get_new_file($fsuisan, filemtime("$datdir/$suisan"));
+$xfile = get_new_file($fsuisan, getLastModified("$chkbase/$suisan"));
 $sql = <<<SUISAN
 --/d
 /* 水産動植物への影響に係る使用上の注意事項(製剤別) $date */
@@ -112,7 +112,7 @@ if ($excel) {
 
 //製剤毒性
 $time = -microtime(true);
-$xfile = get_new_file($fseizai, filemtime("$datdir/$seizai"));
+$xfile = get_new_file($fseizai, filemtime("$chkbase/$seizai"));
 $sql = <<<SEIZAI
 --/d
 /* 製剤追加情報テーブル $date */
@@ -152,7 +152,7 @@ if ($excel) {
 
 // 有効成分毒性
 $time = -microtime(true);
-$xfile = get_new_file($fdokusei, filemtime("$datdir/$dokusei"));
+$xfile = get_new_file($fdokusei, filemtime("$chkbase/$dokusei"));
 $sql = <<<DOKUSEI1
 --/d
 /* 有効成分毒性マスター $date */

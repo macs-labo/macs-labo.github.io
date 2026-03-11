@@ -2,10 +2,10 @@
 require_once 'inc.sakumotsu.php';
 
 // m_tekiyo テーブルが更新されていれば「農水省農薬登録情報提供システム／作物名で探す」ページを読み込んで sakumotsu.txt 作成
-$mtime = filemtime("$datdir/$massql");
-$fupdate |= filemtime(__FILE__) > $mtime;
-$fupdate |= filemtime("$datdir/spec.beppyo1.txt") > $mtime;
-$fupdate |= filemtime("$datdir/spec.cvo.utf8.txt") > $mtime;
+$mtime = getLastModified("$chkbase/$massql");
+//$fupdate |= filemtime(__FILE__) > $mtime;
+$fupdate |= is_modified("$chkbase/spec.beppyo1.txt", $mtime);
+$fupdate |= is_modified("$chkbase/spec.cvo.utf8.txt", $mtime);
 if (!$finfo && !$fupdate) {
   if ($debug)  echo "acis: sakumotsu: Not Modified\n";
   return 0;
@@ -165,14 +165,12 @@ commit;\n
 SAKU2;
 
 //農水省システムの作物 ID に異常があった場合は、作物マスターを作成せずにエラー終了 2025.8.12
-OpenDB($db);
 $db->sqliteCreateFunction('toruby', '_ruby', 1);
 $res = $db->exec($query);
 if ($res === false) {
   $err = $db->errorInfo();
   logputs("acis: sakumotsu", $err[2], 'Cron DB Error');
   if ($debug) echo "acis: sakumotsu: $err[2]\n";
-  dbClose($db);
   return 0;
 }
 $sql = "select * from $fidtbl where idsaku is null or length(idsaku) != 16 or idsaku = 0";
@@ -181,7 +179,6 @@ if ($res === false) {
   $err = $db->errorInfo();
   logputs("acis: sakumotsu", $err[2], 'Cron DB Error');
   if ($debug) echo "acis: sakumotsu: $err[2]\n";
-  dbClose($db);
   return 0;
 }
 $row = $res->fetch();
@@ -190,7 +187,6 @@ if ($row !== false) {
   $err = "$row[4] $row[5]";
   logputs("acis: sakumotsu id", $err, 'Cron DB Error');
   if ($debug) echo "acis: sakumotsu id error: $err\n";
-  dbClose($db);
   return 0;
 }
 
@@ -424,7 +420,6 @@ if ($res === false) {
   $err = $db->errorInfo();
   logputs("acis: sakumotsu", $err[2], 'Cron DB Error');
   if ($debug) echo "acis: sakumotsu: $err[2]\n";
-  dbClose($db);
   return 0;
 }
 dbCloseStatement($res);
@@ -447,7 +442,6 @@ while ($rec = $res->fetch(PDO::FETCH_NUM)) {
   $sql .= str_replace("''", 'NULL', sprintf("insert into $mastbl values(%d, %d, '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s');\n", $rec[0], $rec[1], $rec[2], $rec[3], $rec[4], $rec[5], $rec[6], $rec[7], $rec[8], $rec[9], $rec[10]));
 }
 dbCloseStatement($res);
-//dbClose($db);
 
 $sql .= <<<SAKU5
 commit;
@@ -479,7 +473,6 @@ while ($rec = $res->fetch(PDO::FETCH_NUM)) {
   $sql .= str_replace("''", 'NULL', sprintf("insert into sakuhojo values('%s', '%s', '%s', '%s');\n", $rec[0], $rec[1], $rec[2], $rec[3]));
 }
 dbCloseStatement($res);
-dbClose($db);
 
 $sql .= <<<SAKU6
 commit;

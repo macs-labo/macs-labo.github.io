@@ -43,10 +43,12 @@ function http_headers($url, $headers = null) {
 
 /* ファイルの Last-Modified 取得 */
 function getLastModified($url) {
-  $mtime = filemtime($url);
-  if ($mtime) return $mtime;
-  $res = http_headers($url);
-  return $res['ResponseCode'] == 200 ? strtotime($res['Last-Modified'] ?? 0) : false;
+  if (!$url) return false;
+  if (strpos($file, 'http') === 0) {
+    $res = http_headers($url);
+    return $res['ResponseCode'] == 200 ? strtotime($res['Last-Modified'] ?? 0) : false;
+  }
+  return filemtime($url);
 }
 
 /* 更新されていれば mtime いなければ false を返す */

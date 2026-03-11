@@ -18,6 +18,17 @@ $ftoxic  = include_once 'inc.acis.dokusei.php';
 $fupdate |= include_once 'inc.acis.csv.php';
 
 //メインデータベース更新
+// 1. 準備：cron/acis.db がなければ data/acis.db をコピー
+if (!file_exists($maindb)) copy("$datdir/$maindb", $maindb);
+
+// 2. Open (1回だけ)
+OpenDB($db);
+
+// 3. 高速化設定 (最初)
+$db->exec('PRAGMA journal_mode = WAL;');
+$db->exec('PRAGMA synchronous = OFF;');
+
+// csv 取り込み後に、関連テーブル・ビュー作成
 $finfo   = include_once 'inc.acis.reginfo.php';
 $fbyochu = include_once 'inc.acis.byochu.php';
 $fsaku   = include_once 'inc.acis.sakumotsu.php';
@@ -37,7 +48,6 @@ if ($facis) {
   --drop view if exists tekiyo;
   create view if not exists tekiyo as select bango,shurui,meisho,tsusho,xidsaku,idsaku,sakumotsu,idbyochu,byochu,mokuteki,jiki,baisu,ekiryo,hoho,basho,jikan,ondo,dojo,chitai,tekiyaku,kongo,kaisu,seibun1,keito1,kaisu1,seibun2,keito2,kaisu2,seibun3,keito3,kaisu3,seibun4,keito4,kaisu4,seibun5,keito5,kaisu5,yoto,koka,zaikei,ryakusho from m_tekiyo left join m_kihon using(bango) left join m_sakumotsu using(sakumotsu) left join m_byochu using(byochu);
   SQL6;
-  OpenDB($db);
   $res = $db->exec($sql);
   $time += microtime(true);
   if ($res === false){
@@ -47,19 +57,17 @@ if ($facis) {
   } else {
     if ($debug) echo "acis: view: Created $time\n";
   }
-  dbClose($db);
 }
 
 //毒性データベース更新
 //if ($ftoxic) {
-if ($ftoxic || $finfo) {
+if ($ftoxic || $facis) {
   $files = array();
   $files['dokusei'] = "$datdir/$dokusei";
   $files['suisan']  = "$datdir/$suisan";
   $files['seizai']  = "$datdir/$seizai";
   $ftoxic = false;
   $time = -microtime(true);
-  OpenDB($db);
   foreach($files as $item => $file) {
     $time = -microtime(true);
     $sql = file_get_contents($file);
@@ -74,7 +82,20 @@ if ($ftoxic || $finfo) {
     $time += microtime(true);
     if ($debug) echo "acis: $item: Created $time\n";
   }
+} else {
+  if ($debug) echo "acis: toxic: Not Updated\n";
+}
+
+// 4. 仕上げ設定 (最後)
+$res = $db->query('PRAGMA integrity_check;')->fetch();
+if ($res[0] === 'ok') {
+  $db->exec('PRAGMA journal_mode = DELETE;'); // WALを統合して消す
   dbClose($db);
+  copy($maindb, "$datdir/$maindb"); // $datdir にコピー
+} else {
+  dbClose($db);
+  unlink($maindb);
+  die('Aborted database update');
 }
 
 if (!$facis && !$ftoxic) return 1;

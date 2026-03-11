@@ -701,7 +701,6 @@ if ($sqlonly) {
   return 1;
 }
 
-OpenDB($db);
 $res = $db->exec($query);
 if ($res === false) {
   $err = $db->errorInfo();
@@ -724,7 +723,6 @@ if ($res === false) {
   $err = $db->errorInfo();
   logputs("acis: byochu", $err[2], 'Cron DB Error');
   if ($debug) echo "acis: byochu: $err[2]\n";
-  dbClose($db);
   return 0;
 }
 while ($rec = $res->fetch(PDO::FETCH_NUM)) {
@@ -763,7 +761,6 @@ while ($rec = $res->fetch(PDO::FETCH_NUM)) {
   $sql .= sprintf("insert into $grptbl values(%d, %d, '%s');\n", $rec[0], $rec[1], $rec[2]);
 }
 dbCloseStatement($res);
-dbClose($db);
 $sql .= "commit;\n";
 file_put_contents("$datdir/$massql", mb_convert_encoding($sql, 'SJIS-win', 'UTF-8'), LOCK_EX);
 

@@ -22,16 +22,9 @@ $db->sqliteCreateFunction('concat2', '_concat2');
 $db->sqliteCreateAggregate('concat2', '_concat2Step', '_concatFinal', 2);
 
 // spec.zip と各ソースのタイムスタンプを比較して、ソースが新しければデータベース更新
-$mtime = filemtime("$datdir/$subzip");
+$mtime = getLastModified("$chkbase/$subzip");
 foreach($src as $item => $file) {
-  if (!$newfile = $fupdate) {
-    if (strpos($file, 'http') === 0) {
-      $newfile = is_modified($file, $mtime) !== false;
-    } else {
-      $newfile = filemtime($file) > $mtime;
-    }
-  }
-  if ($newfile) {
+  if (is_modified("$chkbase/$specfiles[$item]", $mtime, $fupdate)) {
     $sql = str_replace('spec.', '', file_get_contents($file));
     if (strtolower(mb_detect_encoding($sql, 'sjis-win, utf-8')) == 'sjis-win') $sql = mb_convert_encoding($sql, 'utf-8', 'sjis-win');
     $res = $db->exec($sql);
@@ -49,6 +42,7 @@ foreach($src as $item => $file) {
 }
 
 unset($db);
+copy($subdb, "$datdir/$subdb"); // $datdir にコピー
 
 $total += microtime(true);
 

@@ -23,9 +23,9 @@ $fupdate |= $title != mb_convert_encoding(file_get_contents("$datdir/$update"), 
 // 登録基本部の .zip ファイルと toroku.zip ファイルで更新チェック
 // 登録機本部 .zip は If-Modified-Since が使えなくなったので、Last-Modified 取得方式に変更
 $dlurl = dirname($dlpage);
-$mtime = filemtime("$datdir/$csvzip") ?: 0;
-//$res = $fupdate || $mtime <= filemtime(__FILE__) || $mtime <= getLastModified("$dlurl/$files[0]");
-$res = $fupdate || $mtime <= getLastModified("$dlurl/$files[0]");
+$mtime = getLastModified("$chkbase/$csvzip") ?: 0;
+//$res = $fupdate || $mtime <= getLastModified(__FILE__) || $mtime <= getLastModified("$dlurl/$files[0]");
+$res = is_modified("$dlurl/$files[0]", $mtime, $fupdate);
 if (!$res) {
   if ($debug) echo ("csv: Not Modified\n");
   return false;
@@ -62,6 +62,7 @@ while ($rec = fgetcsv($rh)) fwrite($wh, macscsv($rec, $cols)."\r\n");
 fclose($rh);
 unlink($file);
 fclose($wh);
+copy("./$kihon", "$datdir/$kihon");
 $time += microtime(true);
 if ($debug) echo "csv: kihon: Converted $time\n";
 
@@ -83,6 +84,7 @@ foreach($files as $file) {
   unlink($file);
 }
 fclose($wh);
+copy("./$tekiyo", "$datdir/$tekiyo");
 $time += microtime(true);
 if ($debug) echo "csv: tekiyo: Converted $time\n";
 
@@ -120,7 +122,7 @@ if ($jsonResult) file_put_contents("update.json", $jsonResult);
 
 // ファイル圧縮と転送
 exec("zip -Dq $csvzip $update $kihon $tekiyo");
-touch($csvzip, filemtime($kihon));
+//touch($csvzip, filemtime($kihon));
 unlink("$datdir/$update");
 rename("./$csvzip", "$datdir/$csvzip");
 copy("./$update", "$datdir/$update");

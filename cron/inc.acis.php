@@ -15,11 +15,6 @@ $total = null;
 $db = null;
 $fupdate = getForceUpdate();
 
-// トータルタイム開始時刻セット
-function SetTime(&$time) {
-  if (!isset($time)) $time = -microtime(true);
-}
-
 // データベースオープン
 function OpenDB(&$db) {
   if (isset($db)) return;

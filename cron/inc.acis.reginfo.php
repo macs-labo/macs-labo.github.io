@@ -42,15 +42,10 @@ if (!file_exists($kihon)) {
 //$fupdate |= filemtime(__FILE__) > filemtime("$datdir/$mainzip");
 
 // acis.zip と kihon.csv のタイムスタンプを比較して、kihon.csv が新しければデータベース更新
-if (!$fupdate && filemtime("$datdir/$mainzip") > filemtime($kihon)) {
+if (!is_modified("$chkbase/$mainzip", getLastModified("$chkbase/$kihon"), $fupdate)) {
   if ($debug) echo "acis: $kihon: Not Modified\n";
   return 0;
 }
-
-// acis.db があれば削除してデータベースオープン
-SetTime($total);
-if (file_exists($maindb)) unlink($maindb);
-OpenDB($db);
 
 // 登録適用部 m_tekiyo 作成
 $time = -microtime(true);
@@ -70,6 +65,8 @@ while ($line = rtrim(mb_convert_encoding(fgets($fh), 'UTF-8', 'SJIS-win'))) {
   $db->exec("insert into tekiyo values ($line);");
 }
 $sql = <<<ACIS2
+drop table if exists m_tekiyo;
+drop index if exists idxTekiyo;
 create table m_tekiyo (bango integer,sakumotsu varchar,basho varchar,byochu varchar,mokuteki varchar,baisu varchar,ekiryo varchar,jiki varchar,kaisu varchar,hoho varchar,jikan varchar,ondo varchar,dojo varchar,chitai varchar,tekiyaku varchar,kaisu1 varchar,kaisu2 varchar,kaisu3 varchar,kaisu4 varchar,kaisu5 varchar);
 insert into m_tekiyo (bango,sakumotsu,basho,byochu,mokuteki,baisu,ekiryo,jiki,kaisu,hoho,jikan,ondo,dojo,chitai,tekiyaku,kaisu1,kaisu2,kaisu3,kaisu4,kaisu5) select bango,sakumotsu,basho,byochu,mokuteki,baisu,ekiryo,jiki,kaisu,hoho,jikan,ondo,dojo,chitai,tekiyaku,kaisu1,kaisu2,kaisu3,kaisu4,kaisu5 from tekiyo;
 drop table tekiyo;
@@ -106,6 +103,8 @@ while ($line = rtrim(mb_convert_encoding(fgets($fh), 'UTF-8', 'SJIS-win'))) {
   $db->exec("insert into kihon values ($line);");
 }
 $sql = <<<ACIS4
+drop table if exists seibun;
+drop index if exists idxSeibun;
 create table seibun (bango integer,ippanmei varchar,nodo varchar,seibun varchar);
 insert into seibun (bango,ippanmei,nodo,seibun) select bango,ippanmei,nodo,seibun from kihon;
 create index idxSeibun on seibun (bango,ippanmei,seibun);
@@ -180,6 +179,8 @@ update kihon2 set tsusho = '硫酸銅(粉状)' where meisho like '%硫酸銅(粉
 --update kihon2 set tsusho = 'マシン油乳剤97' where bango in (select bango from seibun where ippanmei = 'マシン油' and nodo = '97.0%');
 update kihon2 set tsusho = meisho where meisho like '%バイエル アージラン%';
 update kihon2 set tsusho = meisho where meisho like '%ヤシマNCS%';
+drop table if exists m_kihon;
+drop index if exists idxKihon;
 create table m_kihon (bango integer primary key,shurui varchar,meisho varchar,tsusho varchar,ryakusho varchar,kongo integer,yoto varchar,zaikei varchar,torokubi varchar,kigen varchar,koka varchar,seibun1 varchar,keito1 varchar,seibun2 varchar,keito2 varchar,seibun3 varchar,keito3 varchar,seibun4 varchar,keito4 varchar,seibun5 varchar,keito5 varchar);
 insert into m_kihon (bango,shurui,meisho,tsusho,ryakusho,kongo,yoto,zaikei,torokubi,kigen,koka,seibun1,keito1,seibun2,keito2,seibun3,keito3,seibun4,keito4,seibun5,keito5) select bango,shurui,meisho,tsusho,ryakusho,kongo,yoto,zaikei,torokubi,kigen,koka,seibun1,keito1,seibun2,keito2,seibun3,keito3,seibun4,keito4,seibun5,keito5 from kihon3 left join kihon2 using(bango);
 --create table m_kihon (bango integer primary key,shurui varchar,meisho varchar,tsusho varchar,ryakusho varchar,kongo integer,yoto varchar,zaikei varchar,torokubi varchar,koka varchar,seibun1 varchar,keito1 varchar,seibun2 varchar,keito2 varchar,seibun3 varchar,keito3 varchar,seibun4 varchar,keito4 varchar,seibun5 varchar,keito5 varchar);
@@ -289,7 +290,6 @@ while ($rec = $res->fetch(PDO::FETCH_NUM)) {
   $sql .= sprintf("insert into $kwtbl values(%d, '%s');\n", $rec[0], $rec[1]);
 }
 dbCloseStatement($res);
-dbClose($db);
 $sql .= <<<ACIS8
 commit;
 create index idx$kwtbl on $kwtbl (kws);
