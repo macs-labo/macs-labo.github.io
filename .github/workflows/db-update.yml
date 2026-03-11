@@ -65,7 +65,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add cron/*.db cron/*.csv cron/*.json data/*.zip data/*.txt
+          git add cron/*.db cron/*.csv cron/*.json data/*.*
           if ! git diff --staged --quiet; then
             git commit -m "Update DB and data files [skip ci]"
             git push
@@ -87,9 +87,6 @@ jobs:
           if [ -d "data" ]; then
             cp -r data/* staging/data/ 2>/dev/null || true
           fi
-          # cron 内の最新成果物も data 配下に含める
-          cp cron/*.db staging/data/ 2>/dev/null || true
-          cp cron/*.json staging/data/ 2>/dev/null || true
 
       - name: Create Deployment Inventory
         run: |
