@@ -21,8 +21,7 @@ function get_new_file($fname, $mtime) {
   global $debug, $txpath, $date, $fupdate;
   $date = '';
   $url = "$txpath/$fname";
-  $modified = is_modified($url, $mtime, $fupdate);
-  if ($modified === false) {
+  if (!is_modified($url, $mtime, $fupdate)) {
     if ($debug) echo "$url: Not Modified\n";
     return false;
   }
@@ -166,7 +165,7 @@ DOKUSEI1;
 $sqlfoot = <<<DOKUSEI2
 commit;
 drop view if exists dokusei;
-create view dokusei as with t_seibun as (select distinct ippanmei, seibun as seibunmei from seibun) select ippanmei,seibunmei,yoto,dokusei,jogai, biko, ojas, rac, null as seibunEikyo from m_dokusei left join t_seibun using(ippanmei);\n
+create view dokusei as select ippanmei,seibunmei,yoto,dokusei,jogai, biko, ojas, rac, null as seibunEikyo from m_dokusei left join (select distinct ippanmei, seibun as seibunmei from seibun) using(ippanmei);\n
 DOKUSEI2;
 $excel = read_excel($xfile);
 if ($excel) {

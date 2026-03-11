@@ -1,14 +1,11 @@
 <?php
 $file = 'cron.zip';
-$src = "https://macs.xii.jp/cron/$file";
-$reset = $_REQUEST['reset'] ?? 0;
+$src = "https://github.com/macs-labo/macs-labo.github.io/raw/main/cron/$file";
+$fupdate = $_REQUEST['update'] ?? false;
 
-$debug = 1;
-if ($debug) {
-  error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
-  ini_set('display_errors', 1);
-  header('Content-type: text/plain');
-}
+error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
+ini_set('display_errors', 1);
+header('Content-type: text/plain');
 
 function http_headers($url, $headers = null) {
   $opt['method'] = 'HEAD';
@@ -45,23 +42,39 @@ $total = -microtime(true);
 
 // ローカルと携帯農薬実験室の cron.zip のタイムスタンプを比較して、実験室が新しければファイル同期
 $mtime = is_modified($src, filemtime($file));
-if (!$reset && $mtime === false) {
-  if ($debug) echo "sync: $file: Not Modified\n";
+if (!$fupdate && $mtime === false) {
+  echo "sync: $file: Not Modified\n";
   exit(1);
 }
 
 $body = file_get_contents($src);
 if ($body === false) {
-  if ($debug) echo "sync: Cannot get $src\n";
+  echo "sync: Cannot get $src\n";
   exit(1);
 }
 file_put_contents($file, $body, LOCK_EX);
 touch($file, $mtime);
-if ($debug) echo "sync: $file: Updated\n";
+echo "sync: $file: Downloaded\n";
 
-if ($debug) {
-  `unzip -o ./$file`;
+// unzip コマンドが使えるか確認 (リターンコードが 0 なら成功)
+$return_var = 0;
+$output = [];
+exec("unzip -v", $output, $return_var);
+
+if ($return_var === 0) {
+  exec("unzip -o ./$filename");
+  echo "sync: $file: Updated\n";
+} elseif (class_exists('ZipArchive')) {
+  // unzip コマンドがない場合は ZipArchive クラスを使用
+  $zip = new ZipArchive;
+  if ($zip->open("./$filename") === TRUE) {
+    $zip->extractTo('./');
+    $zip->close();
+    echo "sync: $file: Updated\n";
+  } else {
+    echo "Failed to unzip $filename\n";
+  }
 } else {
-  exec("unzip -o ./$file");
+  echo "Error: unzip command not found and ZipArchive class is missing.\n";
 }
 ?>

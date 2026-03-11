@@ -43,34 +43,18 @@ function http_headers($url, $headers = null) {
 
 /* ファイルの Last-Modified 取得 */
 function getLastModified($url) {
+  $mtime = filemtime($url);
+  if ($mtime) return $mtime;
   $res = http_headers($url);
   return $res['ResponseCode'] == 200 ? strtotime($res['Last-Modified'] ?? 0) : false;
 }
 
 /* 更新されていれば mtime いなければ false を返す */
 function is_modified($url, $date, $forceupdate = false) {
-  if ($date === false || $forceupdate) {
-     $header = '';
-  } else {
-    if (!is_string($date)) $date = gmdate('D, d M Y H:i:s T', $date);
-    $header = "If-Modified-Since: $date";
-  }
-  $res = http_headers($url, $header);
-  if ($res['ResponseCode'] == 200) {
-    return strtotime($res['Last-Modified']);
-  } else {
-    return false;
-  }
-}
-
-/* is_modified で mtime を返すようにしたので、基本こっちは使わない */
-function http_filemtime($url) {
-  $res = http_headers($url);
-  if ($res['ResponseCode'] == 200) {
-    return strtotime($res['Last-Modified']);
-  } else {
-    return false;
-  }
+  $mtime = getLastModified($url);
+  if (!$mtime) return false;
+  if (is_string($date)) $date = strtotime($date);
+  return $forceupdate || $mtime > $date ? $mtime : false;
 }
 
 function logputs($script, $str, $subject = '') {
