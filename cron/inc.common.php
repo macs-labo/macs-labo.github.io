@@ -18,10 +18,17 @@ if ($debug) {
 
 // 強制更新フラグ取得
 function getForceUpdate() {
-  global $argv; // CLI引数にアクセス
+  global $argv; // 先頭で宣言。OKです。
+
+  // 1. Web経由を先にチェック
   $fupdate = $_REQUEST['update'] ?? false;
-  if (PHP_SAPI === 'cli') $fupdate = isset($argv) && in_array('update=1', $argv);
-  return $fupdate;
+
+  // 2. CLI経由なら上書き（または追加チェック）
+  if (PHP_SAPI === 'cli' && isset($argv)) $fupdate = in_array('update=1', $argv); // 文字列として "update=1" が含まれているか
+
+  // 3. 最終判定： "1", 1, "true", true などをすべて正しく true とみなす
+  // filter_var を使うと、文字列の "false" や "0" も正しく偽にできます
+  return filter_var($fupdate, FILTER_VALIDATE_BOOLEAN);
 }
 
 function getResponseCode() {
