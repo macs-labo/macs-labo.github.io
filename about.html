@@ -23,6 +23,7 @@ let intro = `
 `;
 
 if (branch != '本室') intro = `<p>　「<a href="${rootsite}">${sitename}本室</a>」では、普及指導員や営農指導員の方々の現場での農薬適正使用指導を支援するため、携帯端末でも使いやすい農薬登録情報等検索システムを開発しています。「${branch}」では、本室が開発した検索システム及び農薬登録情報等のデータを公開しています。また、HTML5 に対応したモダンブラウザさえ動作すれば OS に全く依存しない、新たな農薬検索システム ACFinder Browser Edition (ACFinderBE) のサービスも提供しています。\n`;
+if (window.location.href.includes('github.io')) intro += `<p>　なお、「${branch}」は、実サーバ環境を持たずにクラウド上で運用するデモサイトとなっています。\n`;
 
 const main = `
 <h4>はじめに</h4>
