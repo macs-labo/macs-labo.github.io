@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>携帯農薬検索実験室</title>
+<script type="text/javascript" src="/setup.js"></script>
+<script type="text/javascript" src="/common.js"></script>
+<script>
+const style = `
+$style = <<<STYLE
+.menu {
+  min-width: 14.0em;
+}
+button.help {
+  min-width: 14.0em;
+  height: 2.2em;
+}
+`;
+
+const head = `
+<h1>${sitename}</h1>
+<h2>${branch}</h2>
+`;
+
+const main = `
+<p class="node"><button class="menu" type="button" onclick="location.href='${acfbpath}/'">ACFinder Browser Edition ≫</button></p>
+<p class="node"><button class="menu" type="button" onclick="location.href='${macspath}/'">携帯農薬検索システム　　 ≫</button></p>
+<p class="node"><button class="menu" type="button" onclick="location.href='${datapath}/'">農薬登録情報ダウンロード ≫</button></p>
+<p class="node"><button class="menu" type="button" onclick="location.href='https://www.facebook.com/groups/272174746319343/'">農薬検索研究会facebook　☞</button></p>
+<p class="node"><button class="help" type="button" onclick="location.href='./about.html'">このサイトについて</button></p>
+`;
+
+const navi = branch == '本室' ?
+  `<p><button type="button" class="menu" onclick="location.href='https://macs.coresv.net/'">☜ ${sitename}(旧)</button></p>\n` :
+  `<p><button type="button" class="menu" onclick="location.href='${rootsite}'">☜ ${sitename}本室</button></p>\n`;
+
+</script>
+</head>
+<body>
+</body>
+</html>
