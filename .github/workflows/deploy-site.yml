@@ -5,6 +5,7 @@ on:
     paths:
       - '**.html'
       - '**.js'
+      - '**.png'
       - 'data/**.html'
       - 'macs/**.css'
 
