@@ -4,9 +4,9 @@ on:
   push:
     paths:
       - '**.html'
-      - 'data/**.html'
       - '**.js'
-      - '**.css'
+      - 'data/**.html'
+      - 'macs/**.css'
 
 jobs:
   deploy:
@@ -19,11 +19,16 @@ jobs:
       - name: Prepare Artifact
         run: |
           mkdir -p staging/data
+          mkdir -p staging/macs
           # ルートのファイル
           find . -maxdepth 1 -type f -exec cp {} staging/ \;
           # 既存のデータディレクトリ（リポジトリ内）をコピー
           if [ -d "data" ]; then
             cp -r data/* staging/data/
+          fi
+          # 既存の macs ディレクトリ（リポジトリ内）をコピー
+          if [ -d "macs" ]; then
+            cp -r macs/* staging/macs/
           fi
 
       - name: Upload artifact
