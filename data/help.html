@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>携帯農薬検索実験室</title>
+<script type="text/javascript" src="../setup.js"></script>
+<script type="text/javascript" src="../common.js"></script>
+<script>
+const file = new URLSearchParams(window.location.search).get('file');
+
+let help = [];
+help['toroku'] = `
+<h4>本サービスについて</h4>
+<p>　本サービスでは、FAMIC(独立行政法人農林水産消費安全技術センター)の許可をいただいて、FAMIC が公開している<A href="https://www.acis.famic.go.jp/ddata/index2.htm" target="_blank">農薬登録情報 CSV データ</a>を一般的な DBMS (データベースマネージメントシステム)等で扱いやすい CSV 形式に変換して提供します。
+本データを使うと、FAMIC CSV データより高速なデータベースの構築が可能となり、CRON ジョブや CGI の実行にリソース制限があるレンタルサーバ等でも扱いやすくなります。</p>
+<p>　本サービスは、欄外の注意事項をご了承いただければ、個人や組織内での利用に限って、誰でも自由に無料で利用することができます。
+ただし、本サービスのデータを使用したウェブ検索システム等で不特定多数が使用するような場合は、別途 FAMIC の許諾を得る必要があります。</p>
+<h4>ファイル構成</h4>
+<p>　本サービスで提供する ${file}.zip は、下記の３ファイルで構成されます。</p>
+<ul>
+<li>update.txt： CSV ダウンロードページのデータタイトル</li>
+<li>kihon.csv： 「登録基本部」の CSV を MACS 形式に変換</li>
+<li>tekiyo.csv： 「登録適用部一」「登録適用部二」の CSV を MACS 形式に変換</li>
+</ul>
+<h4>文字セット</h4>
+<p>　toroku.zip 内のファイルの文字セットは、全て Shift_JIS です。
+半角カタカナは全角カタカナに、全角「（）［］」はそれぞれ半角「() []」に、さらに「①②㍑㍍㌢㎝㎜㎏」等の環境依存文字はそれぞれ「(1) (2) L m cm cm mm kg」に変換しています。
+ただし、「㎡」はそのまま使用しています。</P>
+<p>　なお、エンコード変換する場合、変換元の文字セットは CP932 (perl なら 'cp932'、PHP なら 'sjis-win')を指定することをお勧めします。</p>
+<h4>CSV フォーマット</h4>
+<p>　フィールドセパレータはカンマ(,)、レコードセパレータは CR+LF です。
+DBMS の SQL 文で扱いやすい形式にしたため、一般的な CSV とは下記の点で異なります。</p>
+<ul>
+<li>数値フィールドは引用符無し、文字列フィールドはカンマを含まない場合も全て引用符で囲まれています。</li>
+<li>引用符は、ダブルクォート(&quot;)ではなく、シングルクォート(')です。</li>
+<li>ヌルフィールドは引用符無しで「NULL」となっています。</li>
+</ul>
+<h4>データ更新</h4>
+<p>　FAMIC CSV データの更新チェックは、月〜金曜日の 9～17 時に１時間に１回行います。
+このタイミングで FAMIC のデータが更新されていれば、数分後に本サービスのデータも更新されます。</p>
+<p>　このページを介さずに、プログラム等から直接 ${file}.zip をダウンロードする場合、まず update.txt の HTTP レスポンスヘッダを確認してください。
+ヘッダの 'Last-Modified' フィールドが以前確認した update.txt の 'Last-Modified' より新しい場合は、${file}.zip も更新されています。
+update.txt にアクセスしたとき HTTP ステータスコードに 404 が返される場合は、${file}.zip は現在更新中なので、数十秒後に再アクセスしてください。</p>
+`;
+
+help['acis'] = `
+<h4>本サービスについて</h4>
+<p>　本サービスでは、FAMIC(独立行政法人農林水産消費安全技術センター)の許可をいただいて、FAMIC が公開している<A href="https://www.acis.famic.go.jp/ddata/index2.htm" target="_blank">農薬登録情報 CSV データ</a>や<A href="https://www.acis.famic.go.jp/toroku/" target="_blank">製剤毒性等の Excel データ</a>を <a href="${acfbpath}/" target="_blank">ACFinderBE</a> で使用する <a href="http://www.sqlite.org/" target="_blank">SQLite3</a> のデータベースファイルに変換して提供します。
+<p>　ACFinderBE 等のデータ自動更新が主目的ですが、欄外の注意事項をご了承いただければ、個人や組織内での利用に限って、誰でも自由に無料で独自の検索システム用のデータベースとして利用することができます。
+ただし、本サービスのデータを使用したウェブ検索システム等で不特定多数が使用するような場合は、別途 FAMIC の許諾を得る必要があります。</p>
+<h4>データベースの内容</h4>
+<p>　本データベースの内容については、ACFinder 公式サイトの「<a href="https://acfinder.kabe.info/doku.php?id=technote:dbdef#acisdb_%E3%81%AE%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%83%BB%E3%83%93%E3%83%A5%E3%83%BC%E5%AE%9A%E7%BE%A9" target="_blank">${file}.db のテーブル・ビュー定義</a>」をご覧ください。</p>
+<h4>文字セット</h4>
+<p>　${file}.zip 内のファイルの文字セットは、全て UTF-8 です。
+半角カタカナは全角カタカナに、全角「（）［］」はそれぞれ半角「() []」に、さらに「①②㍑㍍㌢㎝㎜㎏」等の環境依存文字はそれぞれ「(1) (2) L m cm cm mm kg」に変換しています。
+ただし、「㎡」はそのまま使用しています。</P>
+<h4>データ更新</h4>
+<p>　FAMIC CSV 及び製剤毒性等の Excel データの更新チェックは、月〜金曜日の 9～17 時に１時間に１回行います。
+このタイミングで FAMIC のデータが更新されていれば、数分後に本サービスのデータも更新されます。</p>
+<p>　ACFinderBE やこのページを介さずに、プログラム等から直接 ${file}.zip をダウンロードする場合、まず update.txt の HTTP レスポンスヘッダを確認してください。
+ヘッダの 'Last-Modified' フィールドが以前確認した update.txt の 'Last-Modified' より新しい場合は、${file}.zip も更新されています。
+update.txt にアクセスしたとき HTTP ステータスコードに 404 が返される場合は、${file}.zip は現在更新中なので、数十秒後に再アクセスしてください。</p>
+`;
+
+help['spec'] = `
+<h4>本サービスについて</h4>
+<p>　本サービスでは、本サイトで公開している RAC コードなどの各種付加データを  <a href="${acfbpath}/" target="_blank">ACFinderBE</a> で使用する <a href="http://www.sqlite.org/" target="_blank">SQLite3</a> のデータベースファイルに変換して提供します。</p>
+<p>　ACFinderBE 等へのデータ提供が主目的ですが、欄外の注意事項をご了承いただければ、誰でも自由に無料で独自の検索システム用のデータベースとして利用することができます。独自データなので FAMIC の使用許諾も不要です。</p>
+<h4>データベースの内容</h4>
+<p>　本データベースの内容については、ACFinder 公式サイトの「<a href="https://acfinder.kabe.info/doku.php?id=technote:dbdef#specdb_%E3%81%AE%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%83%BB%E3%83%93%E3%83%A5%E3%83%BC%E5%AE%9A%E7%BE%A9" target="_blank">${file}.db のテーブル・ビュー定義</a>」をご覧ください。</p>
+<h4>文字セット</h4>
+<p>　${file}.zip 内のファイルの文字セットは、全て UTF-8 です。</p>
+<h4>データ更新</h4>
+<p>　従来自動更新していた製剤毒性等のテーブルを全て acis.db に移したため、${file}.db については RAC コード等が更新されたときに適宜手動更新します。</p>
+`;
+
+const style = '';
+
+const head = `
+<h1>${sitename}</h1>
+<h2>${branch}</h2>
+<h3>${file}.zip について</h3>
+`;
+
+const main = help[file];
+
+const navi = `<p><button type="button" class="back" onclick="location.href='./'">≪ 戻る</button></p>\n`;
+
+</script>
+</head>
+<body>
+</body>
+</html>

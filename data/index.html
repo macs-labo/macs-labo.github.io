@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>携帯農薬検索実験室</title>
+<script type="text/javascript" src="../setup.js"></script>
+<script type="text/javascript" src="../common.js"></script>
+<script>
+async function filemtime(file) {
+  try {
+    const response = await fetch(file, { method: 'HEAD', cache: 'no-cache' });
+    if (!response.ok) return '';
+    const lastModified = response.headers.get('Last-Modified');
+    if (!lastModified) return '';
+    const mtime = new Date(lastModified);
+    const prop = { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour12: false, hour: '2-digit', minute: '2-digit' };
+    let date = mtime.toLocaleString('ja-JP', prop).replace(/\//g, '.').slice(0, 16);
+    if (new Date() - mtime < 60*60*24*3*1000) date += " <em>New!</em>";
+    return date;
+  } catch (e) {
+    console.error("Fetchエラー:", e);
+    return '';
+  }
+}
+
+const style = `
+em {
+  color: red;
+}
+.file {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+  background: #c1e0ff;
+  border-radius: 1.0em;
+  border: 1px outset #aaaaaa;
+  width: 6.0em;
+  height: 1.7em;
+  margin-right: 1em;
+}
+`;
+
+const head = `
+<h1>${sitename}</h1>
+<h2>${branch}</h2>
+<h3>農薬登録情報ダウンロード</h3>
+`;
+
+let main = '';
+// filemtime 関数は DOMContentLoaded 後に呼び出さないと NetworkError になるため、common.js から initVars 関数を呼び出す
+const initVars = async () => {
+  const [toroku, acis, spec] = await Promise.all([
+    filemtime('./toroku.zip'),
+    filemtime('./acis.zip'),
+    filemtime('./spec.zip')
+  ]);
+  main = `
+  <h4>CSV形式</h4>
+  <p><button type="button" class="help" onclick="location.href='./help.html?file=toroku'">１</button><a href="./toroku.zip" class="file">toroku.zip</a>${toroku}</p>
+  <h4>SQLite形式</h4>
+  <p><button type="button" class="help" onclick="location.href='./help.html?file=acis'">２</button><a href="./acis.zip" class="file">acis.zip</a>${acis}</p>
+  <p><button type="button" class="help" onclick="location.href='./help.html?file=spec'">３</button><a href="./spec.zip" class="file">spec.zip</a>${spec}</p>
+  `;
+};
+
+const navi = `<p><button type="button" class="jump" onclick="location.href='../'">⋘ ${sitename}${branch}</button></p>\n`;
+
+</script>
+</head>
+<body>
+</body>
+</html>
