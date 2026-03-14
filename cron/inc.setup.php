@@ -8,14 +8,14 @@ $macsdir = ''; // GitHub 運用の場合は設定不要
 // サーバ上のユーザルートディレクトリ(空文字列なら自動取得)
 $user_root = ''; // 自動取得できない場合は xrea/coreserver v1 なら /virtual/USERID を手動設定
 
-// GitHub Pages 運用の場合の自動設定
-$isGithub = (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'github.io') !== false) || getenv('GITHUB_ACTIONS') === 'true';
-if ($isGithub) {
-  $datdir  = '../data'; // 親ディレクトリ下の data
-  $crondir = '.'; // カレントディレクトリ
-  $libdir  = '.'; // カレントディレクトリ
+// GitHub Actions 環境（DB更新スクリプト実行時）の自動設定
+if (getenv('GITHUB_ACTIONS') === 'true') {
+  $datdir  = '../data';
+  $crondir = '.';
+  $libdir  = '.';
   $dbpath  = false;
-  $chkbase = 'https://macs-lab.github.io/data';
+  // 判定基準をリポジトリの Raw URL に統一
+  $chkbase = 'https://raw.githubusercontent.com/macs-labo/macs-labo.github.io/main/data';
   return 0;
 }
 
