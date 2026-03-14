@@ -115,7 +115,7 @@ if (!$facis && !$ftoxic) return 1;
 
 // 公開 zip ファイル更新
 exec("zip -Dq $mainzip $maindb");
-rename("./$mainzip", "$datdir/$mainzip");
+rename("$mainzip", "$datdir/$mainzip");
 // 検索システム用データベース更新
 if ($dbpath) {
   mkdir("$dbpath/$udflag");
