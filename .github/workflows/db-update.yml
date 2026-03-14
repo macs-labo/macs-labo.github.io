@@ -49,6 +49,8 @@ jobs:
           else
             echo "FORCE_UPDATE=false" >> $GITHUB_ENV
           fi
+          # GitHub API 用のトークンを一括設定
+          echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
       # 1. spec.db の更新：手動実行時のみ（schedule時は実行しない）
       - name: Update spec.db
