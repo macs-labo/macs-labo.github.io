@@ -64,8 +64,13 @@ $facis = $finfo || $fbyochu || $fsaku;
 // info テーブル及びビュー作成
 if ($facis) {
   $time = -microtime(true);
-  $lastUpdate = mb_convert_encoding(rtrim(file_get_contents("$datdir/$update")), 'UTF-8', 'SJIS-win');
-  $lastUpdate = preg_replace('/分$/', '', $lastUpdate);
+  //$lastUpdate = mb_convert_encoding(rtrim(file_get_contents("$datdir/$update")), 'UTF-8', 'SJIS-win');
+  //$lastUpdate = preg_replace('/分$/', '', $lastUpdate);
+  $raw = file_get_contents("$datdir/$update");
+  $lastUpdate = mb_convert_encoding($raw, 'UTF-8', 'SJIS-win');
+  // 制御文字（\r や目に見えないゴミ）を確実に消す
+  $lastUpdate = preg_replace('/[\x00-\x1F\x7F]/', '', $lastUpdate);
+  $lastUpdate = preg_replace('/分$/u', '', trim($lastUpdate));
   echo "LastUpdate: $lastUpdate\n";
   $sql = <<<SQL6
   create table if not exists main.info (Item varchar primary key, Value varchar);
