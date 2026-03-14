@@ -77,6 +77,8 @@ if ($facis) {
   create view if not exists tekiyo as select bango,shurui,meisho,tsusho,xidsaku,idsaku,sakumotsu,idbyochu,byochu,mokuteki,jiki,baisu,ekiryo,hoho,basho,jikan,ondo,dojo,chitai,tekiyaku,kongo,kaisu,seibun1,keito1,kaisu1,seibun2,keito2,kaisu2,seibun3,keito3,kaisu3,seibun4,keito4,kaisu4,seibun5,keito5,kaisu5,yoto,koka,zaikei,ryakusho from m_tekiyo left join m_kihon using(bango) left join m_sakumotsu using(sakumotsu) left join m_byochu using(byochu);
   SQL6;
   $res = $db->exec($sql);
+  $stmt = $db->prepare("insert or replace into main.info (Item, Value) values (?, ?)");
+  $res = $stmt->execute(['LastUpdate', $lastUpdate]);
   $time += microtime(true);
   if ($res === false){
     $err = $db->errorInfo();
