@@ -35,7 +35,7 @@ $tm3 = '旭|石原|一農|井筒屋|出光|永光|大塚|科研|兼商|京都微
 // tekiyo.csv より torokku.zip が新しければ toroku.zip 解凍
 $fupdate |= !file_exists($tekiyo) || is_modified("$chkbase/$csvzip", getLastModified("$chkbase/$tekiyo"));
 if ($fupdate) {
-  exec("unzip -o $chkbase/$csvzip");
+  exec("unzip -o $datdir/$csvzip");
   if ($debug) echo "unzip: $csvzip\n";
 }
 
