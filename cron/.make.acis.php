@@ -64,31 +64,31 @@ $facis = $finfo || $fbyochu || $fsaku;
 // info テーブル及びビュー作成
 if ($facis) {
   $time = -microtime(true);
-  //$lastUpdate = mb_convert_encoding(rtrim(file_get_contents("$datdir/$update")), 'UTF-8', 'SJIS-win');
-  //$lastUpdate = preg_replace('/分$/', '', $lastUpdate);
-  $raw = file_get_contents("$datdir/$update");
+  $lastUpdate = mb_convert_encoding(rtrim(file_get_contents("$datdir/$update")), 'UTF-8', 'SJIS-win');
+  $lastUpdate = preg_replace('/分$/', '', $lastUpdate);
+  /*$raw = file_get_contents("$datdir/$update");
   $lastUpdate = mb_convert_encoding($raw, 'UTF-8', 'SJIS-win');
   // 制御文字（\r や目に見えないゴミ）を確実に消す
   $lastUpdate = preg_replace('/[\x00-\x1F\x7F]/', '', $lastUpdate);
-  $lastUpdate = preg_replace('/分$/u', '', trim($lastUpdate));
+  $lastUpdate = preg_replace('/分$/u', '', trim($lastUpdate));*/
   echo "LastUpdate: $lastUpdate\n";
-  $res = $db->exec('create table if not exists main.info (Item varchar primary key, Value text);');
+  /*$res = $db->exec('create table if not exists main.info (Item varchar primary key, Value varchar);');
   $db->prepare("insert or replace into main.info (Item, Value) values ('Version', ?)")->execute([$dbver]);
-  $db->prepare("insert or replace into main.info (Item, Value) values ('LastUpdate', ?)")->execute([(string)$lastUpdate]);
-  $check = $db->query("select Value from main.info where Item='LastUpdate'")->fetchColumn();
-  echo "CHECK_DB_VAL: [" . $check . "]\n";
+  $db->prepare("insert or replace into main.info (Item, Value) values ('LastUpdate', ?)")->execute([(string)$lastUpdate]);*/
   $sql = <<<SQL6
-  /*create table if not exists main.info (Item varchar primary key, Value varchar);
+  create table if not exists main.info (Item varchar primary key, Value varchar);
   begin transaction;
   insert or replace into main.info (Item, Value) values ('LastUpdate', '$lastUpdate');
   insert or replace into main.info (Item, Value) values ('Version', '$dbver');
-  commit;*/
+  commit;
   create view if not exists vTekiyo as select bango,shurui,meisho,sakumotsu,byochu,mokuteki,jiki,baisu,ekiryo,hoho,basho,jikan,ondo,dojo,chitai,tekiyaku,kongo,kaisu,seibun1,keito1,kaisu1,seibun2,keito2,kaisu2,seibun3,keito3,kaisu3,seibun4,keito4,kaisu4,seibun5,keito5,kaisu5,yoto,koka,zaikei,ryakusho from m_tekiyo left join m_kihon using(bango);
   create view if not exists vTsushoTekiyo as select distinct sakumotsu,byochu,mokuteki,shurui,tsusho,jiki,baisu,ekiryo,hoho,basho,jikan,ondo,dojo,chitai,tekiyaku,kongo,kaisu,seibun1,keito1,kaisu1,seibun2,keito2,kaisu2,seibun3,keito3,kaisu3,seibun4,keito4,kaisu4,seibun5,keito5,kaisu5,yoto,koka,zaikei from m_tekiyo left join m_kihon using(bango);
   --drop view if exists tekiyo;
   create view if not exists tekiyo as select bango,shurui,meisho,tsusho,xidsaku,idsaku,sakumotsu,idbyochu,byochu,mokuteki,jiki,baisu,ekiryo,hoho,basho,jikan,ondo,dojo,chitai,tekiyaku,kongo,kaisu,seibun1,keito1,kaisu1,seibun2,keito2,kaisu2,seibun3,keito3,kaisu3,seibun4,keito4,kaisu4,seibun5,keito5,kaisu5,yoto,koka,zaikei,ryakusho from m_tekiyo left join m_kihon using(bango) left join m_sakumotsu using(sakumotsu) left join m_byochu using(byochu);
   SQL6;
   $res = $db->exec($sql);
+  $check = $db->query("select Value from main.info where Item='LastUpdate'")->fetchColumn();
+  echo "CHECK_DB_VAL: [" . $check . "]\n";
   $time += microtime(true);
   if ($res === false){
     $err = $db->errorInfo();
