@@ -1,7 +1,7 @@
 --/d
-/* …Y“®A•¨‚Ö‚Ì‰e‹¿‚ÉŒW‚ég—pã‚Ì’ˆÓ–€(»Ü•Ê) 2026.02.27 */
+/* …Y“®A•¨‚Ö‚Ì‰e‹¿‚ÉŒW‚ég—pã‚Ì’ˆÓ–€(»Ü•Ê) 2026.03.14 */
 create table if not exists info (item varchar primary key, value varchar);
-insert or replace into info (item, value) values ('suisan', '2026.02.27');
+insert or replace into info (item, value) values ('suisan', '2026.03.14');
 drop table if exists suisan;
 create table suisan (bango integer, chuijiko varchar);
 begin transaction;
