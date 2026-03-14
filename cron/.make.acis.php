@@ -104,7 +104,10 @@ $res = $db->query('PRAGMA integrity_check;')->fetch();
 if ($res[0] === 'ok') {
   $db->exec('PRAGMA journal_mode = DELETE;'); // WALを統合して消す
   dbClose($db);
-  copy($maindb, "$datdir/$maindb"); // $datdir にコピー
+  // 確実に物理ファイルとしてコピーを完了させる
+  if (!copy($maindb, "$datdir/$maindb")) {
+    die("Failed to copy $maindb to $datdir");
+  }
 } else {
   dbClose($db);
   unlink($maindb);
@@ -114,7 +117,7 @@ if ($res[0] === 'ok') {
 if (!$facis && !$ftoxic) return 1;
 
 // 公開 zip ファイル更新
-exec("zip -Dq $mainzip $maindb");
+exec("zip -jDq $datdir/$mainzip $datdir/$maindb");
 rename("$mainzip", "$datdir/$mainzip");
 // 検索システム用データベース更新
 if ($dbpath) {
