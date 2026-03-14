@@ -72,9 +72,9 @@ if ($facis) {
   $lastUpdate = preg_replace('/[\x00-\x1F\x7F]/', '', $lastUpdate);
   $lastUpdate = preg_replace('/分$/u', '', trim($lastUpdate));
   echo "LastUpdate: $lastUpdate\n";
-  $res = $db->exec('create table if not exists main.info (Item varchar primary key, Value varchar);');
+  $res = $db->exec('create table if not exists main.info (Item varchar primary key, Value text);');
   $db->prepare("insert or replace into main.info (Item, Value) values ('Version', ?)")->execute([$dbver]);
-  $db->prepare("insert or replace into main.info (Item, Value) values ('LastUpdate', ?)")->execute(['2026.03.04']);//(string)$lastUpdate]);
+  $db->prepare("insert or replace into main.info (Item, Value) values ('LastUpdate', ?)")->execute((string)$lastUpdate]);
   $check = $db->query("select Value from main.info where Item='LastUpdate'")->fetchColumn();
   echo "CHECK_DB_VAL: [" . $check . "]\n";
   $sql = <<<SQL6
