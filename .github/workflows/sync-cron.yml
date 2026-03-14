@@ -3,7 +3,7 @@ name: Sync MacsDB Update CRON Job
 on:
   push:
     paths:
-      - 'cron/**'
+      - 'cron/cron.zip'
   workflow_dispatch:
     inputs:
       run_mode:
@@ -19,7 +19,7 @@ on:
         default: false
 
 jobs:
-  sync: # ジョブ名も 'deploy' から 'sync' などに変えると分かりやすいです
+  sync:
     permissions:
       contents: write # リポジトリへの Push 権限のみ残す
     env:
