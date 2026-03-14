@@ -1,8 +1,4 @@
 <?php
-/* 初期設定 */
-mb_internal_encoding('utf8');
-error_reporting(E_ALL & ~(E_WARNING | E_NOTICE | E_DEPRECATED));
-
 //カレントディレクトリをスクリプトディレクトリに変更
 chdir(__DIR__);
 
@@ -20,8 +16,8 @@ foreach($files as $file) {
     echo "Not Found $file\n";
     continue;
   }
-  $mtime = filemtime($file);
-  if (filemtime("$dstpath/$file") >= $mtime) {
+  $mtime = getLastModified($file);
+  if ($mtime <= getLastModified("$dstpath/$file")) {
     echo "Not Modified $file\n";
     continue;
   }
@@ -35,8 +31,8 @@ foreach($data as $file) {
     echo "Not Found $file\n";
     continue;
   }
-  $mtime1 = filemtime($file);
-  $mtime2 = filemtime("$dstpath/$file");
+  $mtime1 = getLastModified($file);
+  $mtime2 = getLastModified("$dstpath/$file");
   if ($mtime2 < $mtime1) {
     copy("./$file", "$dstpath/$file");
     touch("$dstpath/$file", $mtime1);

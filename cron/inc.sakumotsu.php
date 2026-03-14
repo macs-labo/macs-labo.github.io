@@ -12,7 +12,7 @@ $midtbl  = 'mid_sakumotsu';
 $tmptbl = 't_sakumotsu';
 $mastbl = 'm_sakumotsu';
 $massql = $sakumotsu;
-$ftime  = filemtime(__FILE__);
+$ftime  = getLastModified(convUrl(__FILE__));
 
 //漢字かな変換用変数設定
 $from = array('水苗', '苗代', '稚苗', '中苗', '育苗', '種苗', '子苗', '苗木', '雄木', '種芋');

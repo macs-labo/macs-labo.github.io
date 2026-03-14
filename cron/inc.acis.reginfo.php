@@ -32,17 +32,19 @@ $tm3 = '旭|石原|一農|井筒屋|出光|永光|大塚|科研|兼商|京都微
      . '丸和|三井(東圧)?|三菱|明治|理研';
 //2024.3.8 (北海)?三共|武田|東ソー 削除、「信越」付きは実態としてはないが残した
 
-// kihon.csv がなければ、toroku.zip 解凍
-if (!file_exists($kihon)) {
-  exec("unzip -o $datdir/$csvzip");
+// tekiyo.csv より torokku.zip が新しければ toroku.zip 解凍
+$fupdate |= !file_exists($tekiyo) || is_modified("$chkbase/$csvzip", getLastModified("$chkbase/$tekiyo"));
+if ($fupdate) {
+  exec("unzip -o $chkbase/$csvzip");
   if ($debug) echo "unzip: $csvzip\n";
 }
 
 // このスクリプトが acis.zip より新しければ $fupdate 設定
-//$fupdate |= filemtime(__FILE__) > filemtime("$datdir/$mainzip");
+$fupdate |= is_modified(convUrl(__FILE__), getLastModified("$chkbase/$mainzip"));
 
-// acis.zip と kihon.csv のタイムスタンプを比較して、kihon.csv が新しければデータベース更新
-if (!is_modified("$chkbase/$mainzip", getLastModified("$chkbase/$kihon"), $fupdate)) {
+// kihon.csv が acis.zip より新しければデータベース更新
+$fupdate |= is_modified("$chkbase/$kihon", getLastModified("$chkbase/$mainzip"));
+if (!$fupdate) {
   if ($debug) echo "acis: $kihon: Not Modified\n";
   return 0;
 }

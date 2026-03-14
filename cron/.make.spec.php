@@ -6,7 +6,7 @@ require_once 'inc.common.php';
 require_once 'inc.sqlite.php';
 require_once 'inc.spec.php';
 
-$update = false;
+$updated = false;
 $fupdate = getForceUpdate();
 
 $total = -microtime(true);
@@ -34,7 +34,7 @@ foreach($src as $item => $file) {
       if ($debug) echo "spec: $item: $err[2]\n";
       return 2;
     }
-    $update = true;
+    $updated = true;
     if ($debug) echo "spec: $item: Updated\n";
   } else {
     if ($debug) echo "spec: $item: Not Modified\n";
@@ -46,7 +46,7 @@ copy($subdb, "$datdir/$subdb"); // $datdir にコピー
 
 $total += microtime(true);
 
-if (!$update) return 1;
+if (!$updated) return 1;
 // 公開 zip ファイル更新
 exec("zip -Dq $subzip $subdb");
 rename("./$subzip", "$datdir/$subzip");
@@ -54,7 +54,7 @@ rename("./$subzip", "$datdir/$subzip");
   if ($dbpath) {
   mkdir("$dbpath/$udflag");
   copy("./$subdb", "$dbpath/$subdb");
-  //touch("$dbpath/$subdb", filemtime($subdb));
+  //touch("$dbpath/$subdb", getLastModified($subdb));
   rmdir("$dbpath/$udflag");
 }
 logputs('spec', "Created $total");

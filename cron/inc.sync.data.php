@@ -8,7 +8,7 @@ require_once 'inc.dokusei.php';
 
 $fupdate = getForceUpdate();
 
-$git = 'https://macs-labo.github.io/data';
+$git = 'https://raw.githubusercontent.com/macs-labo/macs-labo.github.io/main/data';
 
 $sites[] = $git;
 if (!$fupdate) {

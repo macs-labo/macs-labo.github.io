@@ -16,7 +16,6 @@ if ($debug) {
   error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
   ini_set('display_errors', 1);
   header('Content-type: text/plain');
-  echo "$chkbase\n";
 }
 
 // 強制更新フラグ取得
@@ -29,7 +28,6 @@ function getForceUpdate() {
   // 2. CLI経由なら上書き（または追加チェック）
   if (PHP_SAPI === 'cli' && isset($argv)) {
     $fupdate = in_array('update=1', $argv); // 文字列として "update=1" が含まれているか
-    if (isset($argv[1])) echo "$argv[1]\n";
   }
 
   // 3. 最終判定： "1", 1, "true", true などをすべて正しく true とみなす
@@ -96,6 +94,7 @@ function getLastModified($url) {
   }
 
   // ローカルファイルの場合
+  clearstatcache();
   return filemtime($url);
 }
 
@@ -104,13 +103,20 @@ function is_modified($url, $date, $forceupdate = false) {
   $mtime = getLastModified($url);
   if (!$mtime) return false;
   if (is_string($date)) $date = strtotime($date);
-  return $forceupdate || $mtime > $date ? $mtime : false;
+  return ($mtime > $date) || $forceupdate ? $mtime : false;
+}
+
+// GitHub Actions 上では $pass を URL 変換
+function convUrl($path) {
+  global $chkbase; // セットアップで設定したURLベース
+  // GitHub Actions 環境の場合 $chkbase (/data) を自分自身のディレクトリ (/cron) に変換してURLを生成
+  return $dbpath ? $path : dirname($chkbase) . '/cron/' . basename($path); 
 }
 
 function logputs($script, $str, $subject = '') {
   global $mailto;
   $date = date('Y.m.d H:i:s');
-  $fh = fopen(dirname(__FILE__).'/log.txt', 'a');
+  $fh = fopen(__DIR__.'/log.txt', 'a');
   $body = "$date $script $str\n";
   fwrite($fh, $body);
   fclose($fh);
@@ -123,7 +129,7 @@ function logputs($script, $str, $subject = '') {
 function updatetopic($title) {
   global $dbname, $dbuser, $dbpass;
   if (!$dbname) return;
-  $datetime = date("Y-m-d H:i:s", filemtime("$datdir/$csvzip"));
+  $datetime = date("Y-m-d H:i:s", getLastModified("$datdir/$csvzip"));
   $sql = "INSERT INTO macs_topic (display, ctime, subject, content, href) "
        . "VALUES (10, '{$datetime}' , '農薬登録情報更新', 'データページの農薬登録情報を「{$title}」に更新しました。', 'data.php');";
   $db = new PDO("mysql:host=localhost;dbname=$dbname", $dbuser, $dbpass, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));

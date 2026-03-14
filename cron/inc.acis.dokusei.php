@@ -112,7 +112,7 @@ if ($excel) {
 
 //製剤毒性
 $time = -microtime(true);
-$xfile = get_new_file($fseizai, filemtime("$chkbase/$seizai"));
+$xfile = get_new_file($fseizai, getLastModified("$chkbase/$seizai"));
 $sql = <<<SEIZAI
 --/d
 /* 製剤追加情報テーブル $date */
@@ -152,7 +152,7 @@ if ($excel) {
 
 // 有効成分毒性
 $time = -microtime(true);
-$xfile = get_new_file($fdokusei, filemtime("$chkbase/$dokusei"));
+$xfile = get_new_file($fdokusei, getLastModified("$chkbase/$dokusei"));
 $sql = <<<DOKUSEI1
 --/d
 /* 有効成分毒性マスター $date */

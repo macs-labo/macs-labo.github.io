@@ -17,13 +17,14 @@ function updatedb($file) {
   if ($debug) echo "sync: $db: Updated\n";
 }
 
+$fupdate = getForceUpdate();
 $total = -microtime(true);
 
 // $files2 と各ソースのタイムスタンプを比較して、ソースが新しければファイル同期
 foreach($files2 as $item => $file) {
   $from = $src[$item];
   $dest = "$datdir/$file";
-  $mtime = is_modified($from, filemtime($dest), $fupdate);
+  $mtime = is_modified($from, getLastModified($dest), $fupdate);
   if ($mtime === false) {
     if ($debug) echo "sync: $file: Not Modified\n";
   } else {
@@ -34,7 +35,6 @@ foreach($files2 as $item => $file) {
     }
     file_put_contents($dest, $body, LOCK_EX);
     touch($dest, $mtime);
-    //if ($file == $update) updatetopic(mb_convert_endoding($body, "UTF-8", "SJIS-win"));
     if ($debug) echo "sync: $file: Updated\n";
   }
 }
@@ -45,7 +45,7 @@ foreach($files1 as $file) {
     clearstatcache();
     $from = "$site/$file";
     $dest = "$datdir/$file";
-    $mtime = is_modified($from, filemtime($dest), $fupdate);
+    $mtime = is_modified($from, getLastModified($dest), $fupdate);
     if ($mtime === false) {
       if ($debug) echo "sync: $file: Not Modified $site\n";
     } else {

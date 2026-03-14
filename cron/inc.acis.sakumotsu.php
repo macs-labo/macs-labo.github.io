@@ -3,7 +3,7 @@ require_once 'inc.sakumotsu.php';
 
 // m_tekiyo テーブルが更新されていれば「農水省農薬登録情報提供システム／作物名で探す」ページを読み込んで sakumotsu.txt 作成
 $mtime = getLastModified("$chkbase/$massql");
-//$fupdate |= filemtime(__FILE__) > $mtime;
+$fupdate |= is_modified(convUrl(__FILE__), $mtime);
 $fupdate |= is_modified("$chkbase/spec.beppyo1.txt", $mtime);
 $fupdate |= is_modified("$chkbase/spec.cvo.utf8.txt", $mtime);
 if (!$finfo && !$fupdate) {

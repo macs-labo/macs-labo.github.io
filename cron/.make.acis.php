@@ -37,11 +37,11 @@ $facis = $finfo || $fbyochu || $fsaku;
 // info テーブル及びビュー作成
 if ($facis) {
   $time = -microtime(true);
-  $update = mb_convert_encoding(rtrim(file_get_contents("update.txt")), 'UTF-8', 'SJIS-win');
-  $update = preg_replace('/分$/', '', $update);
+  $lastUpdate = mb_convert_encoding(rtrim(file_get_contents("update.txt")), 'UTF-8', 'SJIS-win');
+  $lastUpdate = preg_replace('/分$/', '', $lastUpdate);
   $sql = <<<SQL6
   create table if not exists main.info (Item varchar primary key, Value varchar);
-  insert or replace into main.info (Item, Value) values ('LastUpdate', '$update');
+  insert or replace into main.info (Item, Value) values ('LastUpdate', '$lastUpdate');
   insert or replace into main.info (Item, Value) values ('Version', '$dbver');
   create view if not exists vTekiyo as select bango,shurui,meisho,sakumotsu,byochu,mokuteki,jiki,baisu,ekiryo,hoho,basho,jikan,ondo,dojo,chitai,tekiyaku,kongo,kaisu,seibun1,keito1,kaisu1,seibun2,keito2,kaisu2,seibun3,keito3,kaisu3,seibun4,keito4,kaisu4,seibun5,keito5,kaisu5,yoto,koka,zaikei,ryakusho from m_tekiyo left join m_kihon using(bango);
   create view if not exists vTsushoTekiyo as select distinct sakumotsu,byochu,mokuteki,shurui,tsusho,jiki,baisu,ekiryo,hoho,basho,jikan,ondo,dojo,chitai,tekiyaku,kongo,kaisu,seibun1,keito1,kaisu1,seibun2,keito2,kaisu2,seibun3,keito3,kaisu3,seibun4,keito4,kaisu4,seibun5,keito5,kaisu5,yoto,koka,zaikei from m_tekiyo left join m_kihon using(bango);
@@ -107,7 +107,7 @@ rename("./$mainzip", "$datdir/$mainzip");
 if ($dbpath) {
   mkdir("$dbpath/$udflag");
   copy("./$maindb", "$dbpath/$maindb");
-  //touch("$dbpath/$maindb", filemtime($maindb));
+  //touch("$dbpath/$maindb", getLastModified($maindb));
   rmdir("$dbpath/$udflag");
 }
 $total += microtime(true);

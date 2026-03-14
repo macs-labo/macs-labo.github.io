@@ -24,7 +24,7 @@ $fupdate |= $title != mb_convert_encoding(file_get_contents("$datdir/$update"), 
 // 登録機本部 .zip は If-Modified-Since が使えなくなったので、Last-Modified 取得方式に変更
 $dlurl = dirname($dlpage);
 $mtime = getLastModified("$chkbase/$csvzip") ?: 0;
-//$res = $fupdate || $mtime <= getLastModified(__FILE__) || $mtime <= getLastModified("$dlurl/$files[0]");
+//$res = $fupdate || $mtime <= getLastModified(convUrl(__FILE__)) || $mtime <= getLastModified("$dlurl/$files[0]");
 $res = is_modified("$dlurl/$files[0]", $mtime, $fupdate);
 if (!$res) {
   if ($debug) echo ("csv: Not Modified\n");
@@ -122,7 +122,7 @@ if ($jsonResult) file_put_contents("update.json", $jsonResult);
 
 // ファイル圧縮と転送
 exec("zip -Dq $csvzip $update $kihon $tekiyo");
-//touch($csvzip, filemtime($kihon));
+//touch($csvzip, getLastModified($kihon));
 unlink("$datdir/$update");
 rename("./$csvzip", "$datdir/$csvzip");
 copy("./$update", "$datdir/$update");
