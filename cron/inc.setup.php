@@ -38,5 +38,4 @@ $datdir  = "{$user_root}$macsdir/data$no"; // データ公開ディレクトリ
 $crondir = "$user_root/cron$no"; // cron ディレクトリ
 $libdir  = "$user_root/lib/php"; // php ライブラリディレクトリ
 $dbpath  = "$user_root/sqlitedb/famic$no"; // データベースディレクトリ
-$chkbase = $datdir;
 ?>
