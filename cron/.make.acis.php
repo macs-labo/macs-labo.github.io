@@ -66,6 +66,7 @@ if ($facis) {
   $time = -microtime(true);
   $lastUpdate = mb_convert_encoding(rtrim(file_get_contents("$datdir/$update")), 'UTF-8', 'SJIS-win');
   $lastUpdate = preg_replace('/分$/', '', $lastUpdate);
+  echo "LastUpdate: $lastUpdate\n";
   $sql = <<<SQL6
   create table if not exists main.info (Item varchar primary key, Value varchar);
   insert or replace into main.info (Item, Value) values ('LastUpdate', '$lastUpdate');
