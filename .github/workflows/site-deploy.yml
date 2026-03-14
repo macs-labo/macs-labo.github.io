@@ -1,13 +1,8 @@
-name: MACS-labo Site Deploy
+name: MACS-labo Site Deploy (Manual)
 
 on:
-  push:
-    paths:
-      - '**.html'
-      - '**.js'
-      - '**.png'
-      - 'data/**.html'
-      - 'macs/**.css'
+  # 手動実行のみに制限
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -19,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # タイムスタンプ復元のために全履歴が必要
+          fetch-depth: 0 # タイムスタンプ復元のために全履歴を取得
 
       - name: Restore timestamps
         uses: chetan/git-restore-mtime-action@v2
@@ -29,18 +24,18 @@ jobs:
           mkdir -p staging/data
           mkdir -p staging/macs
           
-          # -p オプションでタイムスタンプを保持してコピー
+          # -p オプションで Git 上のタイムスタンプを維持してコピー
           # ルートのファイル
           find . -maxdepth 1 -type f -exec cp -p {} staging/ \;
           
-          # data ディレクトリ
+          # data ディレクトリ（リポジトリ内にある静的HTMLなど）
           if [ -d "data" ]; then
-            cp -rp data/* staging/data/
+            cp -rp data/* staging/data/ 2>/dev/null || true
           fi
           
           # macs ディレクトリ
           if [ -d "macs" ]; then
-            cp -rp macs/* staging/macs/
+            cp -rp macs/* staging/macs/ 2>/dev/null || true
           fi
 
       - name: Upload artifact
