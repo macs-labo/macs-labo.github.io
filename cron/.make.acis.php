@@ -74,7 +74,7 @@ if ($facis) {
   echo "LastUpdate: $lastUpdate\n";
   $res = $db->exec('create table if not exists main.info (Item varchar primary key, Value text);');
   $db->prepare("insert or replace into main.info (Item, Value) values ('Version', ?)")->execute([$dbver]);
-  $db->prepare("insert or replace into main.info (Item, Value) values ('LastUpdate', ?)")->execute((string)$lastUpdate]);
+  $db->prepare("insert or replace into main.info (Item, Value) values ('LastUpdate', ?)")->execute([(string)$lastUpdate]);
   $check = $db->query("select Value from main.info where Item='LastUpdate'")->fetchColumn();
   echo "CHECK_DB_VAL: [" . $check . "]\n";
   $sql = <<<SQL6
