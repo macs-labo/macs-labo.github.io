@@ -11,11 +11,11 @@ require_once 'inc.csv.php';
 require_once 'inc.acis.php';
 $total = -microtime(true);
 
-// 毒性データ SQL 作成
-$ftoxic  = include_once 'inc.acis.dokusei.php';
-
 // CSV データ更新
 $fupdate |= include_once 'inc.acis.csv.php';
+
+// 毒性データ SQL 作成
+$ftoxic  = include_once 'inc.acis.dokusei.php';
 
 //メインデータベース更新
 // 1. 準備：cron/acis.db がなければ data/acis.db をコピー
@@ -37,7 +37,7 @@ $facis = $finfo || $fbyochu || $fsaku;
 // info テーブル及びビュー作成
 if ($facis) {
   $time = -microtime(true);
-  $lastUpdate = mb_convert_encoding(rtrim(file_get_contents("update.txt")), 'UTF-8', 'SJIS-win');
+  $lastUpdate = mb_convert_encoding(rtrim(file_get_contents("$chkbase/$update")), 'UTF-8', 'SJIS-win');
   $lastUpdate = preg_replace('/分$/', '', $lastUpdate);
   $sql = <<<SQL6
   create table if not exists main.info (Item varchar primary key, Value varchar);
