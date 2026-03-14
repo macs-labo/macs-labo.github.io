@@ -21,22 +21,26 @@ jobs:
 
       - name: Prepare Artifact
         run: |
+          # 1. 配信用の staging ディレクトリ構造を作成
           mkdir -p staging/data
           mkdir -p staging/macs
           
-          # -p オプションで Git 上のタイムスタンプを維持してコピー
-          # ルートのファイル
-          find . -maxdepth 1 -type f -exec cp -p {} staging/ \;
-          
-          # data ディレクトリ（リポジトリ内にある静的HTMLなど）
+          # 2. ルートにある静的ファイル (html, js, png等) を属性保持してコピー
+          # -a (archive) は -p (preserve) を含み、より強力に属性を維持します
+          find . -maxdepth 1 -type f -not -name ".*" -exec cp -a {} staging/ \;
+
+          # 3. 指定ディレクトリのみを再帰的に属性保持してコピー
           if [ -d "data" ]; then
-            cp -rp data/* staging/data/ 2>/dev/null || true
+            cp -a data/. staging/data/
           fi
           
-          # macs ディレクトリ
           if [ -d "macs" ]; then
-            cp -rp macs/* staging/macs/ 2>/dev/null || true
+            cp -a macs/. staging/macs/
           fi
+
+          # 4. (デバッグ用) 実際にコピーされた zip の時刻を確認
+          echo "=== Final Timestamp Check in Staging ==="
+          ls -l --full-time staging/data/*.zip || echo "No zip files found"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
