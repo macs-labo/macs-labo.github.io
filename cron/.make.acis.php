@@ -87,8 +87,6 @@ if ($facis) {
   create view if not exists tekiyo as select bango,shurui,meisho,tsusho,xidsaku,idsaku,sakumotsu,idbyochu,byochu,mokuteki,jiki,baisu,ekiryo,hoho,basho,jikan,ondo,dojo,chitai,tekiyaku,kongo,kaisu,seibun1,keito1,kaisu1,seibun2,keito2,kaisu2,seibun3,keito3,kaisu3,seibun4,keito4,kaisu4,seibun5,keito5,kaisu5,yoto,koka,zaikei,ryakusho from m_tekiyo left join m_kihon using(bango) left join m_sakumotsu using(sakumotsu) left join m_byochu using(byochu);
   SQL6;
   $res = $db->exec($sql);
-  $check = $db->query("select Value from main.info where Item='LastUpdate'")->fetchColumn();
-  echo "CHECK_DB_VAL: [" . $check . "]\n";
   $time += microtime(true);
   if ($res === false){
     $err = $db->errorInfo();
@@ -108,6 +106,11 @@ if ($res[0] === 'ok') {
   if (!copy($maindb, "$datdir/$maindb")) {
     die("Failed to copy $maindb to $datdir");
   }
+  // 【重要】コピー直後のファイルを再検証（これで空なら copy タイミングの問題）
+  $db_check = new PDO("sqlite:$datdir/$maindb");
+  $val = $db_check->query("select Value from info where Item='LastUpdate'")->fetchColumn();
+  $db_check = null;
+  echo "CHECK_AFTER_COPY: [$val]\n";
 } else {
   dbClose($db);
   unlink($maindb);
@@ -117,8 +120,17 @@ if ($res[0] === 'ok') {
 if (!$facis && !$ftoxic) return 1;
 
 // 公開 zip ファイル更新
-exec("zip -jDq $datdir/$mainzip $datdir/$maindb");
+//exec("zip -jDq $datdir/$mainzip $datdir/$maindb");
 //rename("$mainzip", "$datdir/$mainzip");
+$zip = new ZipArchive();
+// CREATE | OVERWRITE で、確実に最新の状態だけで作り直す
+if ($zip->open("$datdir/$mainzip", ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+    // $datdir 側の確定したファイルを、$maindb（ファイル名のみ）として格納
+    $zip->addFile("$datdir/$maindb", $maindb);
+    $zip->close();
+} else {
+    die("Failed to create ZIP file with ZipArchive.");
+}
 // 検索システム用データベース更新
 if ($dbpath) {
   mkdir("$dbpath/$udflag");
