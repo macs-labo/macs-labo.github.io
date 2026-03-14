@@ -16,25 +16,37 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # タイムスタンプ復元のために全履歴が必要
+
+      - name: Restore timestamps
+        uses: chetan/git-restore-mtime-action@v2
+
       - name: Prepare Artifact
         run: |
           mkdir -p staging/data
           mkdir -p staging/macs
+          
+          # -p オプションでタイムスタンプを保持してコピー
           # ルートのファイル
-          find . -maxdepth 1 -type f -exec cp {} staging/ \;
-          # 既存のデータディレクトリ（リポジトリ内）をコピー
+          find . -maxdepth 1 -type f -exec cp -p {} staging/ \;
+          
+          # data ディレクトリ
           if [ -d "data" ]; then
-            cp -r data/* staging/data/
+            cp -rp data/* staging/data/
           fi
-          # 既存の macs ディレクトリ（リポジトリ内）をコピー
+          
+          # macs ディレクトリ
           if [ -d "macs" ]; then
-            cp -r macs/* staging/macs/
+            cp -rp macs/* staging/macs/
           fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: './staging'
+          
       - name: Deploy
         uses: actions/deploy-pages@v4
