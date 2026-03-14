@@ -3,15 +3,16 @@ name: Sync MacsDB Update CRON Job
 on:
   push:
     paths:
-      - 'cron/cron.zip'
+      - 'cron/cron.zip' # 職場からの手動アップロードやPushで自動実行
   workflow_dispatch:
     inputs:
       run_mode:
         description: '実行モード'
         type: choice
         options:
-          - 'full_sync'
-          - 'site_sync_only'
+          - 'full_sync'      # リポジトリ展開 ＋ 姉妹サイト同期
+          - 'github_only'    # リポジトリ展開のみ（動作確認用）
+          - 'site_sync_only' # 姉妹サイト同期のみ（再試行用）
         default: 'full_sync'
       force_update:
         description: '強制更新（?update=1）しますか？'
@@ -21,7 +22,7 @@ on:
 jobs:
   sync:
     permissions:
-      contents: write # リポジトリへの Push 権限のみ残す
+      contents: write
     env:
       TARGET_ZIP: "cron.zip"
     runs-on: ubuntu-latest
@@ -30,49 +31,42 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # --- STEP 1: リポジトリ内のファイルを ZIP から展開 ---
       - name: Process ZIP and Update Repository
-        # inputs が無い（pushイベント）か、mode が full_sync の時に実行
+        # push時、または run_mode が full_sync か github_only の時に実行
         if: |
           github.event_name == 'push' || 
-          github.event.inputs.run_mode == 'full_sync'
+          github.event.inputs.run_mode == 'full_sync' || 
+          github.event.inputs.run_mode == 'github_only'
         run: |
           cd cron
           if [ -f "${{ env.TARGET_ZIP }}" ]; then
-            echo "Unzipping ${{ env.TARGET_ZIP }}..."
             unzip -o "${{ env.TARGET_ZIP }}" -d ./
-            
-            # ZIP自体はリポジトリに残したくない場合（任意）はここで削除
-            # rm "${{ env.TARGET_ZIP }}" 
-
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
-            
-            # すべての変更（追加・削除・更新）をステージング
             git add -A .
-            
-            # 差分がある場合のみコミット
             if ! git diff --cached --quiet; then
               git commit -m "Auto sync from ${{ env.TARGET_ZIP }} [skip ci]"
               git push
-              echo "Repository updated and pushed."
-            else
-              echo "No changes detected in unzipped files."
             fi
           else
-            echo "Error: ${{ env.TARGET_ZIP }} not found in cron/ directory."
-            exit 1 # ファイルがない場合はエラーで落として通知させる
+            echo "Error: ${{ env.TARGET_ZIP }} not found."
+            exit 1
           fi
+
+      # --- STEP 2: 姉妹サイト（外部サーバー）を叩く ---
       - name: Trigger Remote Sync
+        # 明示的に 'full_sync' か 'site_sync_only' が選ばれた時だけ実行する
+        # (push イベントの時は inputs が空なので、ここは自動的に false になります)
+        if: |
+          github.event.inputs.run_mode == 'full_sync' || 
+          github.event.inputs.run_mode == 'site_sync_only'
         run: |
           OPT=""
           if [ "${{ github.event.inputs.force_update }}" == "true" ]; then
-            # 変数展開の修正：$OPT ではなく OPT
             OPT="?update=1"
           fi
-
           echo "Triggering sync with option: $OPT"
-
-          # 各拠点を叩く
           curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.coresv.net/cron/.sync.cron.php$OPT"
           curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.kabe.info/cron/.sync.cron.php$OPT"
           curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://noyaku.ebb.jp/cron/.sync.cron.php$OPT"
