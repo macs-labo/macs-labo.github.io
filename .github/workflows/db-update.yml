@@ -29,6 +29,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # タイムスタンプ復元に必要
+
+      - name: Restore timestamps
+        uses: chetan/git-restore-mtime-action@v2
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -93,9 +98,9 @@ jobs:
           mkdir -p staging/data
           # ルートの静的ファイルをコピー
           find . -maxdepth 1 -type f -exec cp {} staging/ \;
-          # data ディレクトリの中身をコピー
+          # # -p で属性（タイムスタンプ）を保持して data ディレクトリの中身をコピー
           if [ -d "data" ]; then
-            cp -r data/* staging/data/ 2>/dev/null || true
+            cp -rp data/* staging/data/ 2>/dev/null || true
           fi
 
       - name: Create Deployment Inventory
