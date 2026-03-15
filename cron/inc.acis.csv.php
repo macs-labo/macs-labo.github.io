@@ -49,6 +49,12 @@ unset($file);
 $time += microtime(true);
 if ($debug) echo "csv: Downloaded $time\n";
 
+// 強制更新時は、*.csv を削除
+if ($fupdate) {
+  unlink($kihon);
+  unlink($tekiyo);
+}
+
 // 登録基本部を MACS CSV 形式に変換
 $time = -microtime(true);
 $file = array_shift($files);
