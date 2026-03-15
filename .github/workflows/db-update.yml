@@ -13,15 +13,20 @@ on:
         description: 'Force update (add update=1)'
         type: boolean
         default: false
+      sync_mode:
+        description: 'Remote Sync Mode'
+        required: true
+        default: 'fully_sync'
+        type: choice
+        options: [fully_sync, dbupdate_only, site_sync_only]
 
-  # スケジュール実行
-  #schedule:
-  #  - cron: '2 0-6 * * 1-5' # 月-金 9-17時 02分 (JST)
+  schedule:
+    - cron: '2 0-6 * * 1-5'
 
 permissions:
   contents: write
-  pages: write       # Pages のデプロイに必要
-  id-token: write    # デプロイ時の認証に必要
+  pages: write
+  id-token: write
 
 jobs:
   update-db:
@@ -30,7 +35,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # タイムスタンプ復元に必要
+          fetch-depth: 0
 
       - name: Restore timestamps
         uses: chetan/git-restore-mtime-action@v2
@@ -42,14 +47,22 @@ jobs:
           extensions: mbstring, sqlite3, pdo_sqlite
 
       - name: Set Global Environment Variables
-        id: vars  # id を追加
+        id: vars
         run: |
+          # Force Update 判定
           if [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
             echo "FORCE_UPDATE=true" >> $GITHUB_OUTPUT
           else
             echo "FORCE_UPDATE=false" >> $GITHUB_OUTPUT
           fi
-          # GH_TOKEN は引き続き ENV で OK（run 内でしか使わないため）
+          
+          # Sync Mode 判定
+          SMODE="fully_sync"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            SMODE="${{ github.event.inputs.sync_mode }}"
+          fi
+          echo "SYNC_MODE=$SMODE" >> $GITHUB_OUTPUT
+
           echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
       # 1. spec.db の更新：手動実行時のみ（schedule時は実行しない）
@@ -83,13 +96,11 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # --- ここがポイント：acis.zip の変更を個別にチェック ---
           ACIS_CHANGED=false
           if git diff --name-only | grep -q "data/acis.zip"; then
             ACIS_CHANGED=true
           fi
           echo "acis_changed=$ACIS_CHANGED" >> $GITHUB_OUTPUT
-          # --------------------------------------------------
 
           git add cron/*.zip cron/*.db cron/*.csv cron/*.txt cron/*.json data/*.*
           if ! git diff --staged --quiet; then
@@ -169,17 +180,30 @@ jobs:
       - name: Trigger Remote Sync
         if: steps.commit.outputs.acis_changed == 'true' || steps.vars.outputs.FORCE_UPDATE == 'true'
         run: |
-          # 反映待ち（2分）
           echo "Waiting 120 seconds for GitHub CDN/Pages to reflect changes..."
           sleep 120
 
-          OPT=""
-          if [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
-            OPT="?update=1"
+          # クエリパラメータの組み立て
+          QUERY=""
+          
+          # 1. 動作モードの判定
+          case "${{ steps.vars.outputs.SYNC_MODE }}" in
+            "dbupdate_only")   QUERY="mode=dbupdate" ;;
+            "site_sync_only")  QUERY="mode=sitesync" ;;
+            *)                 QUERY="" ;; # fully_sync はパラメータなし
+          esac
+
+          # 2. 強制更新フラグの付与
+          if [[ "${{ steps.vars.outputs.FORCE_UPDATE }}" == "true" ]]; then
+            if [[ -n "$QUERY" ]]; then QUERY="${QUERY}&update=1"; else QUERY="update=1"; fi
           fi
 
-          echo "Triggering sync with option: $OPT"
-          # curl 実行（タイムアウトを考慮して念のため長めの設定で）
+          # 3. URL末尾の調整
+          OPT=""
+          if [[ -n "$QUERY" ]]; then OPT="?$QUERY"; fi
+
+          echo "Triggering sync with URL suffix: $OPT"
+          
           curl -s --connect-timeout 10 --max-time 300 "https://macs.coresv.net/cron/.sync.data.php$OPT"
           curl -s --connect-timeout 10 --max-time 300 "https://macs.kabe.info/cron/.sync.data.php$OPT"
           curl -s --connect-timeout 10 --max-time 300 "https://noyaku.ebb.jp/cron/.sync.data.php$OPT"
