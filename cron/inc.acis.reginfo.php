@@ -32,20 +32,30 @@ $tm3 = '旭|石原|一農|井筒屋|出光|永光|大塚|科研|兼商|京都微
      . '丸和|三井(東圧)?|三菱|明治|理研';
 //2024.3.8 (北海)?三共|武田|東ソー 削除、「信越」付きは実態としてはないが残した
 
-// tekiyo.csv より torokku.zip が新しければ toroku.zip 解凍
-$fupdate |= !file_exists($tekiyo) || is_modified("$chkbase/$csvzip", getLastModified("$chkbase/$tekiyo"));
+// tekiyo.csv と torokku.zip/tekiyo.csv の内容が異なる場合は toroku.zip 解凍
+//$fupdate |= !file_exists($tekiyo) || is_changed("$datdir/$csvzip/$tekiyo", $tekiyo));
+// toroku.zip/tekiyo.csv が tekiyo.csv より新しければ toroku.zip 解凍
+$mtimeTekiyo = getLastModified(convUrl($tekiyo));
+echo date('Y.m.d H:i:s', getLastModified("$datdir/$csvzip/$tekiyo")) . " /$csvzip/$tekiyo\n";
+echo date('Y.m.d H:i:s', $mtimeTekiyo) . " $tekiyo\n";
+$fupdate |= !file_exists($tekiyo) || is_modified("$datdir/$csvzip/$tekiyo", $mtimeTekiyo);
 if ($fupdate) {
   exec("unzip -o $datdir/$csvzip");
   if ($debug) echo "unzip: $csvzip\n";
 }
 
-// このスクリプトが acis.zip より新しければ $fupdate 設定
-$fupdate |= is_modified(convUrl(__FILE__), getLastModified("$chkbase/$mainzip"));
+$mtimeAcis = getLastModified("$datdir/$mainzip/$maindb");
+echo date('Y.m.d H:i:s', getLastModified(convUrl(__FILE__))) . " __FILE__\n";
+echo date('Y.m.d H:i:s', $mtimeAcis) . " /$mainzip/$maindb\n";
+echo date('Y.m.d H:i:s', $mtimeTekiyo) . " $tekiyo\n";
 
-// kihon.csv が acis.zip より新しければデータベース更新
-$fupdate |= is_modified("$chkbase/$kihon", getLastModified("$chkbase/$mainzip"));
+// このスクリプトが acis.zip/acis.db より新しければ $fupdate 設定
+$fupdate |= is_modified(convUrl(__FILE__), $mtimeAcis);
+
+// tekiyo.csv が acis.zip/acis.db より新しければデータベース更新
+$fupdate |= is_modified(convUrl($tekiyo), $mtimeAcis);
 if (!$fupdate) {
-  if ($debug) echo "acis: $kihon: Not Modified\n";
+  if ($debug) echo "acis: $tekiyo: Not Modified\n";
   return 0;
 }
 

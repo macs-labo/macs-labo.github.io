@@ -51,21 +51,37 @@ function http_headers($url, $headers = null) {
   $res['ResponseCode'] = intval(substr($res[0], 9, 3));
   return $res;
 }
-
 /* ファイルの Last-Modified 取得 */
 function getLastModified($url) {
   if (!$url) return false;
 
-  // GitHub の Raw URL かどうかを判定
+  // 1. zip 内のファイル判定 (local path: archive.zip/file.csv)
+  if (preg_match('/\.zip\//i', $url)) {
+    $parts = explode('.zip/', $url, 2);
+    $zipPath = $parts[0] . '.zip';
+    $innerFile = $parts[1];
+
+    if (file_exists($zipPath)) {
+      $zip = new ZipArchive();
+      if ($zip->open($zipPath) === TRUE) {
+        $stat = $zip->statName($innerFile);
+        $zip->close();
+        return isset($stat['mtime']) ? $stat['mtime'] : false;
+      }
+    }
+    // zipファイル自体がURLの場合や、zipが開けない場合は後続の処理へ（必要に応じて）
+  }
+
+  // 2. GitHub の Raw URL かどうかを判定
   if (preg_match('|^https://raw\.githubusercontent\.com/([^/]+)/([^/]+)/([^/]+)/(.+)$|', $url, $matches)) {
     $owner  = $matches[1];
     $repo   = $matches[2];
-    $branch = $matches[3]; // 今回のAPIでは使いませんが抽出は可能
+    $branch = $matches[3];
     $path   = $matches[4];
 
     $api_url = "https://api.github.com/repos/$owner/$repo/commits?path=$path&page=1&per_page=1";
 
-    $token = getenv('GH_TOKEN'); // yamlで設定した環境変数
+    $token = getenv('GH_TOKEN');
     $opt = array(
       'http' => array(
         'method' => 'GET',
@@ -84,18 +100,22 @@ function getLastModified($url) {
         return strtotime($data[0]['commit']['committer']['date']);
       }
     }
-    return false; // API取得失敗時
+    return false;
   }
 
-  // 通常のHTTP URLの場合
+  // 3. 通常のHTTP URLの場合
   if (strpos($url, 'http') === 0) {
     $res = http_headers($url);
     return $res['ResponseCode'] == 200 ? strtotime($res['Last-Modified'] ?? 0) : false;
   }
 
-  // ローカルファイルの場合
-  clearstatcache();
-  return filemtime($url);
+  // 4. ローカルファイルの場合
+  if (file_exists($url)) {
+    clearstatcache();
+    return filemtime($url);
+  }
+
+  return false;
 }
 
 /* 更新されていれば mtime いなければ false を返す */
@@ -103,7 +123,55 @@ function is_modified($url, $date, $forceupdate = false) {
   $mtime = getLastModified($url);
   if (!$mtime) return false;
   if (is_string($date)) $date = strtotime($date);
-  return ($mtime - 10 > $date) || $forceupdate ? $mtime : false;
+  return ($mtime > $date) || $forceupdate ? $mtime : false;
+}
+
+/**
+ * ファイルのハッシュ値を取得する（zip内のファイルにも対応）
+ * * @param string $path ファイルパス。zip内を指す場合は 'path/to/archive.zip/filename.csv' 形式
+ * @param string $algo ハッシュアルゴリズム（デフォルト sha256）
+ * @return string|false ハッシュ値。失敗時はfalse
+ */
+function get_path_hash($path, $algo = 'sha256') {
+  // パスに .zip/ が含まれるかチェック（大文字小文字を区別しない）
+  if (preg_match('/\.zip\//i', $path)) {
+    // zipファイルのパスと、その中のファイル名に分割
+    $parts = explode('.zip/', $path, 2);
+    $zipPath = $parts[0] . '.zip';
+    $innerFile = $parts[1];
+
+    $zip = new ZipArchive();
+    if ($zip->open($zipPath) === TRUE) {
+      $fp = $zip->getStream($innerFile);
+      if (!$fp) {
+        $zip->close();
+        return false;
+      }
+      
+      // ストリームからハッシュを計算（メモリ効率が良い）
+      $ctx = hash_init($algo);
+      while (!feof($fp)) {
+        hash_update($ctx, fread($fp, 8192));
+      }
+      $hash = hash_final($ctx);
+      
+      fclose($fp);
+      $zip->close();
+      return $hash;
+    }
+    return false;
+  }
+
+  // 通常のファイルの場合
+  if (!file_exists($path)) return false;
+  return hash_file($algo, $path);
+}
+
+// ハッシュ比較によるファイル更新チェック
+function is_changed($path1, $path2) {
+  $h1 = get_path_hash($path1);
+  $h2 = get_path_hash($path2);
+  return $h1 !== $h2;
 }
 
 // GitHub Actions 上では $pass を URL 変換

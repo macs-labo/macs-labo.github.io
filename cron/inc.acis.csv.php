@@ -20,12 +20,10 @@ $files[1] = preg_replace('|.*<a\s+href="(.*?)"[^>]*>登録適用部一.*|is', '$
 $files[2] = preg_replace('|.*<a\s+href="(.*?)"[^>]*>登録適用部二.*|is', '$1', $s);
 // http レスポンスヘッダで Last-Modified が取得できないので、$title と update.txt の内容が異なる場合は強制更新
 $fupdate |= $title != mb_convert_encoding(file_get_contents("$datdir/$update"), 'UTF-8', 'SJIS-win');
-// 登録基本部の .zip ファイルと toroku.zip ファイルで更新チェック
+// 登録基本部の .zip ファイルと toroku.zip/kihon.csv ファイルで更新チェック
 // 登録機本部 .zip は If-Modified-Since が使えなくなったので、Last-Modified 取得方式に変更
 $dlurl = dirname($dlpage);
-$mtime = getLastModified("$chkbase/$csvzip") ?: 0;
-//$res = $fupdate || $mtime <= getLastModified(convUrl(__FILE__)) || $mtime <= getLastModified("$dlurl/$files[0]");
-$res = is_modified("$dlurl/$files[0]", $mtime, $fupdate);
+$res = is_modified("$dlurl/$files[1]", getLastModified("$datdir/$csvzip/$kihon"), $fupdate);
 if (!$res) {
   if ($debug) echo ("csv: Not Modified\n");
   return false;
@@ -48,12 +46,6 @@ foreach($files as &$file) {
 unset($file);
 $time += microtime(true);
 if ($debug) echo "csv: Downloaded $time\n";
-
-// 強制更新時は、*.csv を削除
-if ($fupdate) {
-  unlink($kihon);
-  unlink($tekiyo);
-}
 
 // 登録基本部を MACS CSV 形式に変換
 $time = -microtime(true);

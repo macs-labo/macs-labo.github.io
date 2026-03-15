@@ -11,10 +11,6 @@ require_once 'inc.csv.php';
 require_once 'inc.acis.php';
 $total = -microtime(true);
 
-echo date('Y.m.d H:i:s', getlastModified("$chkbase/$tekiyo")) . " $tekiyo\n";
-echo date('Y.m.d H:i:s', getlastModified("$chkbase/$toroku")) . " $toroku\n";
-exit;
-
 // 毒性データ SQL 作成
 $ftoxic  = include_once 'inc.acis.dokusei.php';
 
@@ -70,21 +66,10 @@ if ($facis) {
   $time = -microtime(true);
   $lastUpdate = mb_convert_encoding(rtrim(file_get_contents("$datdir/$update")), 'UTF-8', 'SJIS-win');
   $lastUpdate = preg_replace('/分$/', '', $lastUpdate);
-  /*$raw = file_get_contents("$datdir/$update");
-  $lastUpdate = mb_convert_encoding($raw, 'UTF-8', 'SJIS-win');
-  // 制御文字（\r や目に見えないゴミ）を確実に消す
-  $lastUpdate = preg_replace('/[\x00-\x1F\x7F]/', '', $lastUpdate);
-  $lastUpdate = preg_replace('/分$/u', '', trim($lastUpdate));*/
-  echo "LastUpdate: $lastUpdate\n";
-  /*$res = $db->exec('create table if not exists main.info (Item varchar primary key, Value varchar);');
-  $db->prepare("insert or replace into main.info (Item, Value) values ('Version', ?)")->execute([$dbver]);
-  $db->prepare("insert or replace into main.info (Item, Value) values ('LastUpdate', ?)")->execute([(string)$lastUpdate]);*/
   $sql = <<<SQL6
   create table if not exists main.info (Item varchar primary key, Value varchar);
-  begin transaction;
   insert or replace into main.info (Item, Value) values ('LastUpdate', '$lastUpdate');
   insert or replace into main.info (Item, Value) values ('Version', '$dbver');
-  commit;
   create view if not exists vTekiyo as select bango,shurui,meisho,sakumotsu,byochu,mokuteki,jiki,baisu,ekiryo,hoho,basho,jikan,ondo,dojo,chitai,tekiyaku,kongo,kaisu,seibun1,keito1,kaisu1,seibun2,keito2,kaisu2,seibun3,keito3,kaisu3,seibun4,keito4,kaisu4,seibun5,keito5,kaisu5,yoto,koka,zaikei,ryakusho from m_tekiyo left join m_kihon using(bango);
   create view if not exists vTsushoTekiyo as select distinct sakumotsu,byochu,mokuteki,shurui,tsusho,jiki,baisu,ekiryo,hoho,basho,jikan,ondo,dojo,chitai,tekiyaku,kongo,kaisu,seibun1,keito1,kaisu1,seibun2,keito2,kaisu2,seibun3,keito3,kaisu3,seibun4,keito4,kaisu4,seibun5,keito5,kaisu5,yoto,koka,zaikei from m_tekiyo left join m_kihon using(bango);
   --drop view if exists tekiyo;
@@ -110,11 +95,6 @@ if ($res[0] === 'ok') {
   if (!copy($maindb, "$datdir/$maindb")) {
     die("Failed to copy $maindb to $datdir");
   }
-  // 【重要】コピー直後のファイルを再検証（これで空なら copy タイミングの問題）
-  $db_check = new PDO("sqlite:$datdir/$maindb");
-  $val = $db_check->query("select Value from info where Item='LastUpdate'")->fetchColumn();
-  $db_check = null;
-  echo "CHECK_AFTER_COPY: [$val]\n";
 } else {
   dbClose($db);
   unlink($maindb);
@@ -125,15 +105,14 @@ if (!$facis && !$ftoxic) return 1;
 
 // 公開 zip ファイル更新
 //exec("zip -jDq $datdir/$mainzip $datdir/$maindb");
-//rename("$mainzip", "$datdir/$mainzip");
 $zip = new ZipArchive();
 // CREATE | OVERWRITE で、確実に最新の状態だけで作り直す
 if ($zip->open("$datdir/$mainzip", ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-    // $datdir 側の確定したファイルを、$maindb（ファイル名のみ）として格納
-    $zip->addFile("$datdir/$maindb", $maindb);
-    $zip->close();
+  // $datdir 側の確定したファイルを、$maindb（ファイル名のみ）として格納
+  $zip->addFile("$datdir/$maindb", $maindb);
+  $zip->close();
 } else {
-    die("Failed to create ZIP file with ZipArchive.");
+  die("Failed to create ZIP file with ZipArchive.");
 }
 // 検索システム用データベース更新
 if ($dbpath) {
