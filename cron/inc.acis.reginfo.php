@@ -33,17 +33,14 @@ $tm3 = '旭|石原|一農|井筒屋|出光|永光|大塚|科研|兼商|京都微
 //2024.3.8 (北海)?三共|武田|東ソー 削除、「信越」付きは実態としてはないが残した
 
 // tekiyo.csv と torokku.zip/tekiyo.csv の内容が異なる場合は toroku.zip 解凍
-//$fupdate |= !file_exists($tekiyo) || is_changed("$datdir/$csvzip/$tekiyo", $tekiyo));
-// toroku.zip/tekiyo.csv が tekiyo.csv より新しければ toroku.zip 解凍
-$mtimeTekiyo = getLastModified(convUrl($tekiyo));
-echo date('Y.m.d H:i:s', getLastModified("$datdir/$csvzip/$tekiyo")) . " /$csvzip/$tekiyo\n";
-echo date('Y.m.d H:i:s', $mtimeTekiyo) . " $tekiyo\n";
-$fupdate |= !file_exists($tekiyo) || is_modified("$datdir/$csvzip/$tekiyo", $mtimeTekiyo);
+$fupdate |= is_changed("$datdir/$csvzip/$tekiyo", $tekiyo);
 if ($fupdate) {
   exec("unzip -o $datdir/$csvzip");
   if ($debug) echo "unzip: $csvzip\n";
+  clearstatcache();
 }
 
+$mtimeTekiyo = getLastModified(convUrl($tekiyo));
 $mtimeAcis = getLastModified("$datdir/$mainzip/$maindb");
 echo date('Y.m.d H:i:s', getLastModified(convUrl(__FILE__))) . " __FILE__\n";
 echo date('Y.m.d H:i:s', $mtimeAcis) . " /$mainzip/$maindb\n";
