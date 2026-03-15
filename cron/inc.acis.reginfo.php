@@ -40,11 +40,7 @@ if ($fupdate) {
   clearstatcache();
 }
 
-$mtimeTekiyo = getLastModified(convUrl($tekiyo));
 $mtimeAcis = getLastModified("$datdir/$mainzip/$maindb");
-echo date('Y.m.d H:i:s', getLastModified(convUrl(__FILE__))) . " __FILE__\n";
-echo date('Y.m.d H:i:s', $mtimeAcis) . " /$mainzip/$maindb\n";
-echo date('Y.m.d H:i:s', $mtimeTekiyo) . " $tekiyo\n";
 
 // このスクリプトが acis.zip/acis.db より新しければ $fupdate 設定
 $fupdate |= is_modified(convUrl(__FILE__), $mtimeAcis);
