@@ -118,11 +118,15 @@ jobs:
         if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
         run: |
           mkdir -p staging/data
+          mkdir -p staging/macs
           # ルートの静的ファイルをコピー
           find . -maxdepth 1 -type f -exec cp {} staging/ \;
           # # -p で属性（タイムスタンプ）を保持して data ディレクトリの中身をコピー
           if [ -d "data" ]; then
             cp -rp data/* staging/data/ 2>/dev/null || true
+          fi
+          if [ -d "macs" ]; then
+            cp -rp macs/* staging/macs/ 2>/dev/null || true
           fi
 
       - name: Create Deployment Inventory
