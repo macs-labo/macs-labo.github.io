@@ -11,6 +11,10 @@ require_once 'inc.csv.php';
 require_once 'inc.acis.php';
 $total = -microtime(true);
 
+echo date('Y.m.d H:i:s', getlastModified("$chkbase/$tekiyo")) . " $tekiyo\n";
+echo date('Y.m.d H:i:s', getlastModified("$chkbase/$toroku")) . " $toroku\n";
+exit;
+
 // 毒性データ SQL 作成
 $ftoxic  = include_once 'inc.acis.dokusei.php';
 
