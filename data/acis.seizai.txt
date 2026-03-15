@@ -1,7 +1,7 @@
 --/d
-/* 製剤追加情報テーブル 2026.03.14 */
+/* 製剤追加情報テーブル 2026.03.15 */
 create table if not exists info (item varchar primary key, value varchar);
-insert or replace into info (item, value) values ('seizai', '2026.03.14');
+insert or replace into info (item, value) values ('seizai', '2026.03.15');
 drop table if exists seizai;
 create table seizai (bango integer primary key, dokusei varchar, kousin varchar);
 begin transaction;

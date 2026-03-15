@@ -1,7 +1,7 @@
 --/d
-/* 有効成分毒性マスター 2026.03.14 */
+/* 有効成分毒性マスター 2026.03.15 */
 create table if not exists info (item varchar primary key, value varchar);
-insert or replace into info (item, value) values ('m_dokusei', '2026.03.14');
+insert or replace into info (item, value) values ('m_dokusei', '2026.03.15');
 drop table if exists m_dokusei;
 create table m_dokusei (ippanmei varchar, nai varchar, yoto varchar, biko varchar, ojas varchar, rac varchar, dokusei varchar, adi varchar, arfd varchar, wqs varchar, eqs varchar, hatsutoroku varchar, jogai varchar);
 begin transaction;
