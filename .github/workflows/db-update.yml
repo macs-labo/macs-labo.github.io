@@ -42,14 +42,14 @@ jobs:
           extensions: mbstring, sqlite3, pdo_sqlite
 
       - name: Set Global Environment Variables
+        id: vars  # id を追加
         run: |
-          # inputs.force_update が true なら "true"、そうでなければ "false" を書き出す
           if [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
-            echo "FORCE_UPDATE=true" >> $GITHUB_ENV
+            echo "FORCE_UPDATE=true" >> $GITHUB_OUTPUT
           else
-            echo "FORCE_UPDATE=false" >> $GITHUB_ENV
+            echo "FORCE_UPDATE=false" >> $GITHUB_OUTPUT
           fi
-          # GitHub API 用のトークンを一括設定
+          # GH_TOKEN は引き続き ENV で OK（run 内でしか使わないため）
           echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
       # 1. spec.db の更新：手動実行時のみ（schedule時は実行しない）
@@ -82,6 +82,15 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          
+          # --- ここがポイント：acis.zip の変更を個別にチェック ---
+          ACIS_CHANGED=false
+          if git diff --name-only | grep -q "data/acis.zip"; then
+            ACIS_CHANGED=true
+          fi
+          echo "acis_changed=$ACIS_CHANGED" >> $GITHUB_OUTPUT
+          # --------------------------------------------------
+
           git add cron/*.zip cron/*.db cron/*.csv cron/*.txt cron/*.json data/*.*
           if ! git diff --staged --quiet; then
             git commit -m "Update DB and data files [skip ci]"
@@ -132,45 +141,41 @@ jobs:
       # 5. update.json から情報を取得
       - name: Read update info
         id: info
-        if: steps.commit.outputs.changed == 'true'
+        # acis.zip が変わった時だけ実行
+        if: steps.commit.outputs.acis_changed == 'true'
         run: |
-          # jq を使って JSON の値を環境変数に抽出
           VERSION_TAG=$(jq -r '.version_tag' cron/update.json)
           RAW_TITLE=$(jq -r '.raw_title' cron/update.json)
           UPDATE_DATE=$(jq -r '.update_date' cron/update.json)
-          
-          # 後続のステップで使えるように出力にセット
           echo "tag=$VERSION_TAG" >> $GITHUB_OUTPUT
           echo "title=$RAW_TITLE" >> $GITHUB_OUTPUT
           echo "date=$UPDATE_DATE" >> $GITHUB_OUTPUT
 
-      # 6. Release を作成/更新して zip をアップロード
+      # 6. Release を作成/更新（acis.zip が変わった時だけ）
       - name: Create Release
-        if: steps.commit.outputs.changed == 'true' && (github.event_name == 'schedule' || github.event.inputs.target == 'acis' || github.event.inputs.target == 'both')
+        if: steps.commit.outputs.acis_changed == 'true'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.info.outputs.tag }}  # "v2026.02.99"
-          name: ${{ steps.info.outputs.title }}     # "2026年02月失効反映分"
+          tag_name: ${{ steps.info.outputs.tag }}
+          name: ${{ steps.info.outputs.title }}
           body: |
             自動更新によるデータベースアップデート
             更新日時: ${{ steps.info.outputs.date }}
           files: data/acis.zip
-          draft: false
-          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # 7. 各拠点の同期スクリプトを叩く
       - name: Trigger Remote Sync
-        # データが更新された時だけ通知を飛ばす
-        if: steps.commit.outputs.changed == 'true'
+        # env ではなく steps.vars.outputs を参照
+        if: steps.commit.outputs.acis_changed == 'true' || steps.vars.outputs.FORCE_UPDATE == 'true'
         run: |
-          # update-db.yml の文脈でも force_update オプションを継承可能
+          # run 内では環境変数として参照したいので、必要ならここで再定義するか
+          # github.event.inputs を直接使うのが楽です
           OPT=""
-          if [ "${{ github.event.inputs.force_update }}" == "true" ]; then
+          if [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
             OPT="?update=1"
           fi
-
           echo "Triggering sync with option: $OPT"
 
           # 各拠点の同期用PHPを叩く（.netrc設定済みなら認証もスムーズですね）
