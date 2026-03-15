@@ -67,6 +67,6 @@ jobs:
             OPT="?update=1"
           fi
           echo "Triggering sync with option: $OPT"
-          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.coresv.net/cron/.sync.cron.php$OPT"
           curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.kabe.info/cron/.sync.cron.php$OPT"
           curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://noyaku.ebb.jp/cron/.sync.cron.php$OPT"
+          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" "https://macs.coresv.net/cron/.sync.cron.php$OPT"
