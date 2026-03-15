@@ -103,7 +103,7 @@ function is_modified($url, $date, $forceupdate = false) {
   $mtime = getLastModified($url);
   if (!$mtime) return false;
   if (is_string($date)) $date = strtotime($date);
-  return ($mtime > $date) || $forceupdate ? $mtime : false;
+  return ($mtime - 10 > $date) || $forceupdate ? $mtime : false;
 }
 
 // GitHub Actions 上では $pass を URL 変換
