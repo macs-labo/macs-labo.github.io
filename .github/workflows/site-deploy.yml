@@ -31,11 +31,11 @@ jobs:
 
           # 3. 指定ディレクトリのみを再帰的に属性保持してコピー
           if [ -d "data" ]; then
-            cp -a data/. staging/data/
+            cp -a data/*.html staging/data/
           fi
           
           if [ -d "macs" ]; then
-            cp -a macs/. staging/macs/
+            cp -a macs/*.css staging/macs/
           fi
 
           # 4. (デバッグ用) 実際にコピーされた zip の時刻を確認
