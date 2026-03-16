@@ -9,14 +9,56 @@
 <script>
 async function filemtime(file) {
   try {
-    const response = await fetch(file, { method: 'HEAD', cache: 'no-cache' });
-    if (!response.ok) return '';
-    const lastModified = response.headers.get('Last-Modified');
+    let lastModified;
+
+    if (file.includes('raw.githubusercontent.com')) {
+      // GitHub APIを使用してコミット情報を取得
+      // URL例: https://raw.githubusercontent.com/user/repo/main/path/to/file
+      // API例: https://api.github.com/repos/user/repo/commits?path=path/to/file&page=1&per_page=1
+      const parts = file.replace('https://raw.githubusercontent.com/', '').split('/');
+      const owner = parts[0];
+      const repo = parts[1];
+      const branch = parts[2];
+      const filePath = parts.slice(3).join('/');
+
+      const apiUrl = `https://api.github.com/repos/${owner}/${repo}/commits?path=${filePath}&sha=${branch}&per_page=1`;
+      
+      const response = await fetch(apiUrl, { cache: 'no-cache' });
+      if (!response.ok) return '';
+      
+      const commits = await response.json();
+      if (commits && commits.length > 0) {
+        lastModified = commits[0].commit.committer.date; // ISO 8601形式 (e.g. 2023-10-01T12:00:00Z)
+      } else {
+        return '';
+      }
+    } else {
+      // 通常のHTTP HEADリクエスト
+      const response = await fetch(file, { method: 'HEAD', cache: 'no-cache' });
+      if (!response.ok) return '';
+      lastModified = response.headers.get('Last-Modified');
+    }
+
     if (!lastModified) return '';
+
     const mtime = new Date(lastModified);
-    const prop = { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour12: false, hour: '2-digit', minute: '2-digit' };
+    const prop = { 
+      timeZone: 'Asia/Tokyo', 
+      year: 'numeric', 
+      month: '2-digit', 
+      day: '2-digit', 
+      hour12: false, 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    };
+
     let date = mtime.toLocaleString('ja-JP', prop).replace(/\//g, '.').slice(0, 16);
-    if (new Date() - mtime < 60*60*24*3*1000) date += " <em>New!</em>";
+    
+    // 3日以内の場合に New! を付ける
+    if (new Date() - mtime < 60 * 60 * 24 * 3 * 1000) {
+      date += " <em>New!</em>";
+    }
+
     return date;
   } catch (e) {
     console.error("Fetchエラー:", e);
