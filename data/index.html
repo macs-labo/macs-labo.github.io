@@ -24,6 +24,8 @@ async function filemtime(file) {
   }
 }
 
+const datadir = window.location.href.includes('github.io') ? 'https://raw.githubusercontent.com/macs-labo/macs-labo.github.io/main/data' : '.';
+
 const style = `
 em {
   color: red;
@@ -52,16 +54,16 @@ let main = '';
 // filemtime 関数は DOMContentLoaded 後に呼び出さないと NetworkError になるため、common.js から initVars 関数を呼び出す
 const initVars = async () => {
   const [toroku, acis, spec] = await Promise.all([
-    filemtime('./toroku.zip'),
-    filemtime('./acis.zip'),
-    filemtime('./spec.zip')
+    filemtime(`${datadir}/toroku.zip`),
+    filemtime(`${datadir}/acis.zip`),
+    filemtime(`${datadir}/spec.zip`)
   ]);
   main = `
   <h4>CSV形式</h4>
-  <p><button type="button" class="help" onclick="location.href='./help.html?file=toroku'">１</button><a href="./toroku.zip" class="file">toroku.zip</a>${toroku}</p>
+  <p><button type="button" class="help" onclick="location.href='./help.html?file=toroku'">１</button><a href="${datadir}/toroku.zip" class="file">toroku.zip</a>${toroku}</p>
   <h4>SQLite形式</h4>
-  <p><button type="button" class="help" onclick="location.href='./help.html?file=acis'">２</button><a href="./acis.zip" class="file">acis.zip</a>${acis}</p>
-  <p><button type="button" class="help" onclick="location.href='./help.html?file=spec'">３</button><a href="./spec.zip" class="file">spec.zip</a>${spec}</p>
+  <p><button type="button" class="help" onclick="location.href='./help.html?file=acis'">２</button><a href="${datadir}/acis.zip" class="file">acis.zip</a>${acis}</p>
+  <p><button type="button" class="help" onclick="location.href='./help.html?file=spec'">３</button><a href="${datadir}/spec.zip" class="file">spec.zip</a>${spec}</p>
   `;
 };
 
