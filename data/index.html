@@ -66,6 +66,31 @@ async function filemtime(file) {
   }
 }
 
+async function fetchSjisText(url) {
+  try {
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`HTTPエラー! ステータス: ${response.status}`);
+    }
+
+    // レスポンスをバイナリデータ（ArrayBuffer）として取得
+    const buffer = await response.arrayBuffer();
+
+    // TextDecoder を 'shift-jis' (または 'windows-31j' / 'cp932') で初期化
+    // ※ 'shift-jis' を指定しても、モダンブラウザは通常 CP932 として処理します
+    const decoder = new TextDecoder('shift-jis');
+
+    // バイナリをデコードして文字列として返す
+    const text = decoder.decode(buffer);
+    
+    return text;
+  } catch (error) {
+    console.error('フェッチまたはデコード中にエラーが発生しました:', error);
+    return null;
+  }
+}
+
 const datadir = window.location.href.includes('github.io') ? 'https://raw.githubusercontent.com/macs-labo/macs-labo.github.io/main/data' : '.';
 
 const style = `
@@ -89,23 +114,30 @@ em {
 const head = `
 <h1>${sitename}</h1>
 <h2>${branch}</h2>
-<h3>農薬登録情報ダウンロード</h3>
+<h3>農薬情報ダウンロード</h3>
 `;
 
 let main = '';
 // filemtime 関数は DOMContentLoaded 後に呼び出さないと NetworkError になるため、common.js から initVars 関数を呼び出す
 const initVars = async () => {
-  const [toroku, acis, spec] = await Promise.all([
+  const [update, toroku, acis, spec] = await Promise.all([
+    filemtime(`${datadir}/update.txt`),
     filemtime(`${datadir}/toroku.zip`),
     filemtime(`${datadir}/acis.zip`),
     filemtime(`${datadir}/spec.zip`)
   ]);
+
+  const dbdate = await fetchSjisText(`${datadir}/update.txt`);
+
   main = `
+  <h3>${dbdate}</h3>
   <h4>CSV形式</h4>
   <p><button type="button" class="help" onclick="location.href='./help.html?file=toroku'">１</button><a href="${datadir}/toroku.zip" class="file">toroku.zip</a>${toroku}</p>
   <h4>SQLite形式</h4>
   <p><button type="button" class="help" onclick="location.href='./help.html?file=acis'">２</button><a href="${datadir}/acis.zip" class="file">acis.zip</a>${acis}</p>
   <p><button type="button" class="help" onclick="location.href='./help.html?file=spec'">３</button><a href="${datadir}/spec.zip" class="file">spec.zip</a>${spec}</p>
+  <h4>更新情報</h4>
+  <p><button type="button" class="help" onclick="location.href='./help.html?file=update'">４</button><a href="${datadir}/update.ptxt" class="file">update.txt</a>${update}</p>
   `;
 };
 
