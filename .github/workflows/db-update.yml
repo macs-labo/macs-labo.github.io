@@ -112,47 +112,8 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
-      # 4. Pages デプロイ
-      - name: Prepare Pages Artifact
-        # 変更があった場合、または手動実行の場合に実行
-        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
-        run: |
-          mkdir -p staging/data
-          mkdir -p staging/macs
-          # ルートの静的ファイルをコピー
-          find . -maxdepth 1 -type f -exec cp {} staging/ \;
-          # # -p で属性（タイムスタンプ）を保持して data ディレクトリの中身をコピー
-          if [ -d "data" ]; then
-            cp -rp data/* staging/data/ 2>/dev/null || true
-          fi
-          if [ -d "macs" ]; then
-            cp -rp macs/* staging/macs/ 2>/dev/null || true
-          fi
-
-      - name: Create Deployment Inventory
-        run: |
-          echo "=== ACFinder Database Deployment Inventory ===" > staging/data/inventory.txt
-          echo "Deployment Time: $(date '+%Y-%m-%d %H:%M:%S JST')" >> staging/data/inventory.txt
-          echo "GitHub Run ID: ${{ github.run_id }}" >> staging/data/inventory.txt
-          echo "------------------------------------------" >> staging/data/inventory.txt
-          # staging/data 内の全ファイルを詳細表示（ナノ秒まで）で追記
-          ls -l --full-time staging/data/ >> staging/data/inventory.txt
-
-      - name: Setup Pages
-        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './staging'
-
-      - name: Deploy to GitHub Pages
-        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
-        id: deployment
-        uses: actions/deploy-pages@v4
-
+      # 4. Pages デプロイ--> 廃止 データは Pages ではなく raw.githubusers.com から取得
+      
       # 5. update.json から情報を取得
       - name: Read update info
         id: info
