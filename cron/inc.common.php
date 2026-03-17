@@ -79,16 +79,29 @@ function getLastModified($url) {
     $branch = $matches[3];
     $path   = $matches[4];
 
-    $api_url = "https://api.github.com/repos/$owner/$repo/commits?path=$path&page=1&per_page=1";
+    $api_url = "https://api.github.com/repos/$owner/$repo/commits?path=$path&sha=$branch&page=1&per_page=1";
 
-    $token = getenv('GH_TOKEN');
+    // HTTPリクエストヘッダーからAuthorizationトークンを取得
+    $token = '';
+    $auth_header = '';
+    if (function_exists('getallheaders')) {
+      $all_headers = getallheaders();
+      $auth_header = $all_headers['Authorization'] ?? '';
+    } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+      $auth_header = $_SERVER['HTTP_AUTHORIZATION'];
+    }
+    if (preg_match('/^(?:token|Bearer)\s+(.+)$/i', $auth_header, $matches)) {
+      $token = $matches[1];
+    }
+
+    $http_headers = array('User-Agent: PHP-Script');
+    if ($token) {
+      $http_headers[] = 'Authorization: token ' . $token;
+    }
     $opt = array(
       'http' => array(
         'method' => 'GET',
-        'header' => array(
-          'User-Agent: PHP-Script',
-          'Authorization: token ' . $token
-        )
+        'header' => implode("\r\n", $http_headers)
       )
     );
     $context = stream_context_create($opt);
