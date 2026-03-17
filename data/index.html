@@ -7,7 +7,7 @@
 <script type="text/javascript" src="../setup.js"></script>
 <script type="text/javascript" src="../common.js"></script>
 <script>
-async function filemtime(file) {
+async function getLastModified(file) {
   try {
     let lastModified;
 
@@ -111,34 +111,39 @@ em {
 }
 `;
 
-const head = `
+let head = `
 <h1>${sitename}</h1>
 <h2>${branch}</h2>
-<h3>農薬情報ダウンロード</h3>
 `;
 
 let main = '';
-// filemtime 関数は DOMContentLoaded 後に呼び出さないと NetworkError になるため、common.js から initVars 関数を呼び出す
+
+// getLastModified 関数は DOMContentLoaded 後に呼び出さないと NetworkError になるため、common.js から initVars 関数を呼び出す
 const initVars = async () => {
   const [update, toroku, acis, spec] = await Promise.all([
-    filemtime(`${datadir}/update.txt`),
-    filemtime(`${datadir}/toroku.zip`),
-    filemtime(`${datadir}/acis.zip`),
-    filemtime(`${datadir}/spec.zip`)
+    getLastModified(`${datadir}/update.txt`),
+    getLastModified(`${datadir}/toroku.zip`),
+    getLastModified(`${datadir}/acis.zip`),
+    getLastModified(`${datadir}/spec.zip`)
   ]);
 
   const dbdate = await fetchSjisText(`${datadir}/update.txt`);
 
+  head += `<h3>${dbdate}データダウンロード</h3>`;
+
   main = `
-  <h3>${dbdate}</h3>
   <h4>CSV形式</h4>
   <p><button type="button" class="help" onclick="location.href='./help.html?file=toroku'">１</button><a href="${datadir}/toroku.zip" class="file">toroku.zip</a>${toroku}</p>
   <h4>SQLite形式</h4>
   <p><button type="button" class="help" onclick="location.href='./help.html?file=acis'">２</button><a href="${datadir}/acis.zip" class="file">acis.zip</a>${acis}</p>
   <p><button type="button" class="help" onclick="location.href='./help.html?file=spec'">３</button><a href="${datadir}/spec.zip" class="file">spec.zip</a>${spec}</p>
-  <h4>更新情報</h4>
-  <p><button type="button" class="help" onclick="location.href='./help.html?file=update'">４</button><a href="${datadir}/update.ptxt" class="file">update.txt</a>${update}</p>
   `;
+/*
+  main += `
+  <h4>更新情報</h4>
+  <p><button type="button" class="help" onclick="location.href='./help.html?file=update'">４</button><a href="${datadir}/update.txt" class="file">update.txt</a>${update}</p>
+  `;
+*/
 };
 
 const navi = `<p><button type="button" class="jump" onclick="location.href='../'">⋘ ${sitename}${branch}</button></p>\n`;
