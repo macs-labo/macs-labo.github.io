@@ -84,19 +84,12 @@ function getLastModified($url) {
     // トークン取得ロジック
     $token = '';
     if (PHP_SAPI === 'cli') { 
-      $token = getenv('GH_TOKEN') ?: getenv('GITHUB_TOKEN') ?: '';
+      // CLI実行 (GitHub Actions 上の PHP) の場合は環境変数を参照
+      $token = getenv('GITHUB_TOKEN') ?: getenv('GH_TOKEN') ?: '';
     } else {
-      if (function_exists('getallheaders')) {
-        $all_headers = getallheaders();
-        $auth_header = $all_headers['Authorization'] ?? '';
-      } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
-        $auth_header = $_SERVER['HTTP_AUTHORIZATION'];
-      } else {
-        $auth_header = '';
-      }
-      if (preg_match('/^(?:token|Bearer)\s+(.+)$/i', $auth_header, $matches_auth)) {
-        $token = $matches_auth[1];
-      }
+      // Web経由 (curl経由) の場合はカスタムヘッダー X-GitHub-Token を参照
+      // Apache経由の場合、PHPでは $_SERVER['HTTP_X_GITHUB_TOKEN'] に格納される
+      $token = $_SERVER['HTTP_X_GITHUB_TOKEN'] ?? '';
     }
 
     $http_headers = array('User-Agent: PHP-Script');
