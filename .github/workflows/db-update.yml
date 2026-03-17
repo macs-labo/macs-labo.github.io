@@ -169,7 +169,7 @@ jobs:
 
           echo "Triggering sync with URL suffix: $OPT"
           
-          curl -s --connect-timeout 10 --max-time 300 "https://macs.xii.jp/cron/.sync.data.php$OPT"
-          curl -s --connect-timeout 10 --max-time 300 "https://macs.kabe.info/cron/.sync.data.php$OPT"
-          curl -s --connect-timeout 10 --max-time 300 "https://noyaku.ebb.jp/cron/.sync.data.php$OPT"
-          curl -s --connect-timeout 10 --max-time 300 "https://macs.coresv.net/cron/.sync.data.php$OPT"
+          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://macs.kabe.info/cron/.sync.data.php$OPT"
+          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://noyaku.ebb.jp/cron/.sync.data.php$OPT"
+          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://macs.coresv.net/cron/.sync.data.php$OPT"
+
