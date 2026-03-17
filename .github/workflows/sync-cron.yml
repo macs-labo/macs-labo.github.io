@@ -14,14 +14,6 @@ on:
           - 'github_only'    # リポジトリ展開のみ
           - 'site_sync_only' # 姉妹サイト同期のみ
         default: 'full_sync'
-      sync_mode: # 同期先の動作オプションを追加
-        description: '同期先の動作モード'
-        type: choice
-        options:
-          - 'fully_sync'
-          - 'dbupdate_only'
-          - 'site_sync_only'
-        default: 'fully_sync'
       force_update:
         description: '強制更新（?update=1）しますか？'
         type: boolean
@@ -75,31 +67,24 @@ jobs:
           github.event.inputs.run_mode == 'site_sync_only'
         run: |
           # GitHub CDN の反映待ち
-          echo "Waiting 120 seconds for GitHub to reflect changes..."
-          sleep 120
-
-          # クエリパラメータの組み立て
-          QUERY=""
-          
-          # 1. sync_mode の判定 (手動実行時のみ)
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            case "${{ github.event.inputs.sync_mode }}" in
-              "dbupdate_only")   QUERY="mode=dbupdate" ;;
-              "site_sync_only")  QUERY="mode=sitesync" ;;
-            esac
+          # push 時、または run_mode が 'full_sync' か 'github_only' の場合のみ待機
+          if [[ "${{ github.event_name }}" == "push" || "${{ github.event.inputs.run_mode }}" == "full_sync" ]]; then
+            echo "Waiting 120 seconds for GitHub to reflect changes..."
+            sleep 120
           fi
 
-          # 2. 強制更新フラグの付与
+          # 1. 強制更新フラグの付与
           if [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
             if [[ -n "$QUERY" ]]; then QUERY="${QUERY}&update=1"; else QUERY="update=1"; fi
           fi
 
-          # 3. URL末尾の調整
+          # 2. URL末尾の調整
           OPT=""
           if [[ -n "$QUERY" ]]; then OPT="?$QUERY"; fi
 
           echo "Triggering sync with URL suffix: $OPT"
 
+          # 3. curl オプションの設定
           CURL_OPTS=(
             -s 
             -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" 
