@@ -31,7 +31,6 @@ function getForceUpdate() {
   }
 
   // 3. 最終判定： "1", 1, "true", true などをすべて正しく true とみなす
-  // filter_var を使うと、文字列の "false" や "0" も正しく偽にできます
   return filter_var($fupdate, FILTER_VALIDATE_BOOLEAN);
 }
 
@@ -51,11 +50,12 @@ function http_headers($url, $headers = null) {
   $res['ResponseCode'] = intval(substr($res[0], 9, 3));
   return $res;
 }
+
 /* ファイルの Last-Modified 取得 */
 function getLastModified($url) {
   if (!$url) return false;
 
-  // 1. zip 内のファイル判定 (local path: archive.zip/file.csv)
+  // 1. ローカルの zip 内ファイル判定 (path/to/archive.zip/innerfile.csv)
   if (preg_match('/\.zip\//i', $url)) {
     $parts = explode('.zip/', $url, 2);
     $zipPath = $parts[0] . '.zip';
@@ -66,13 +66,13 @@ function getLastModified($url) {
       if ($zip->open($zipPath) === TRUE) {
         $stat = $zip->statName($innerFile);
         $zip->close();
+        // チェックアウト直後の zip 自体の mtime はあてにならないため、zip 内のファイルの mtime を優先
         return isset($stat['mtime']) ? $stat['mtime'] : false;
       }
     }
-    // zipファイル自体がURLの場合や、zipが開けない場合は後続の処理へ（必要に応じて）
   }
 
-  // 2. GitHub の Raw URL かどうかを判定
+  // 2. GitHub の Raw URL かどうかを判定 (GitHub API 経由でコミット日時を取得)
   if (preg_match('|^https://raw\.githubusercontent\.com/([^/]+)/([^/]+)/([^/]+)/(.+)$|', $url, $matches)) {
     $owner  = $matches[1];
     $repo   = $matches[2];
@@ -81,27 +81,34 @@ function getLastModified($url) {
 
     $api_url = "https://api.github.com/repos/$owner/$repo/commits?path=$path&sha=$branch&page=1&per_page=1";
 
-    // HTTPリクエストヘッダーからAuthorizationトークンを取得
+    // トークン取得ロジック
     $token = '';
-    $auth_header = '';
-    if (function_exists('getallheaders')) {
-      $all_headers = getallheaders();
-      $auth_header = $all_headers['Authorization'] ?? '';
-    } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
-      $auth_header = $_SERVER['HTTP_AUTHORIZATION'];
-    }
-    if (preg_match('/^(?:token|Bearer)\s+(.+)$/i', $auth_header, $matches)) {
-      $token = $matches[1];
+    if (PHP_SAPI === 'cli') { 
+      $token = getenv('GH_TOKEN') ?: getenv('GITHUB_TOKEN') ?: '';
+    } else {
+      if (function_exists('getallheaders')) {
+        $all_headers = getallheaders();
+        $auth_header = $all_headers['Authorization'] ?? '';
+      } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        $auth_header = $_SERVER['HTTP_AUTHORIZATION'];
+      } else {
+        $auth_header = '';
+      }
+      if (preg_match('/^(?:token|Bearer)\s+(.+)$/i', $auth_header, $matches_auth)) {
+        $token = $matches_auth[1];
+      }
     }
 
     $http_headers = array('User-Agent: PHP-Script');
     if ($token) {
       $http_headers[] = 'Authorization: token ' . $token;
     }
+    
     $opt = array(
       'http' => array(
         'method' => 'GET',
-        'header' => implode("\r\n", $http_headers)
+        'header' => implode("\r\n", $http_headers),
+        'ignore_errors' => true
       )
     );
     $context = stream_context_create($opt);
@@ -116,13 +123,13 @@ function getLastModified($url) {
     return false;
   }
 
-  // 3. 通常のHTTP URLの場合
+  // 3. 通常の HTTP URL の場合
   if (strpos($url, 'http') === 0) {
     $res = http_headers($url);
-    return $res['ResponseCode'] == 200 ? strtotime($res['Last-Modified'] ?? 0) : false;
+    return ($res['ResponseCode'] == 200) ? strtotime($res['Last-Modified'] ?? 0) : false;
   }
 
-  // 4. ローカルファイルの場合
+  // 4. 通常のローカルファイルの場合
   if (file_exists($url)) {
     clearstatcache();
     return filemtime($url);
@@ -141,14 +148,9 @@ function is_modified($url, $date, $forceupdate = false) {
 
 /**
  * ファイルのハッシュ値を取得する（zip内のファイルにも対応）
- * * @param string $path ファイルパス。zip内を指す場合は 'path/to/archive.zip/filename.csv' 形式
- * @param string $algo ハッシュアルゴリズム（デフォルト sha256）
- * @return string|false ハッシュ値。失敗時はfalse
  */
 function get_path_hash($path, $algo = 'sha256') {
-  // パスに .zip/ が含まれるかチェック（大文字小文字を区別しない）
   if (preg_match('/\.zip\//i', $path)) {
-    // zipファイルのパスと、その中のファイル名に分割
     $parts = explode('.zip/', $path, 2);
     $zipPath = $parts[0] . '.zip';
     $innerFile = $parts[1];
@@ -160,14 +162,11 @@ function get_path_hash($path, $algo = 'sha256') {
         $zip->close();
         return false;
       }
-      
-      // ストリームからハッシュを計算（メモリ効率が良い）
       $ctx = hash_init($algo);
       while (!feof($fp)) {
         hash_update($ctx, fread($fp, 8192));
       }
       $hash = hash_final($ctx);
-      
       fclose($fp);
       $zip->close();
       return $hash;
@@ -175,7 +174,6 @@ function get_path_hash($path, $algo = 'sha256') {
     return false;
   }
 
-  // 通常のファイルの場合
   if (!file_exists($path)) return false;
   return hash_file($algo, $path);
 }
@@ -187,10 +185,11 @@ function is_changed($path1, $path2) {
   return $h1 !== $h2;
 }
 
-// GitHub Actions 上では $pass を URL 変換
+// GitHub Actions 上では $path を URL 変換
 function convUrl($path) {
-  global $chkbase; // セットアップで設定したURLベース
-  // GitHub Actions 環境の場合 $chkbase (/data) を自分自身のディレクトリ (/cron) に変換してURLを生成
+  global $chkbase, $dbpath; 
+  // $dbpath が false (GitHub Actions 環境) の場合、
+  // $chkbase (/data) を自分自身のディレクトリ (/cron) に変換してURLを生成
   return $dbpath ? $path : dirname($chkbase) . '/cron/' . basename($path); 
 }
 
@@ -205,17 +204,4 @@ function logputs($script, $str, $subject = '') {
     mb_send_mail($mailto, $subject, $body); 
   }
 }
-
-/*
-function updatetopic($title) {
-  global $dbname, $dbuser, $dbpass;
-  if (!$dbname) return;
-  $datetime = date("Y-m-d H:i:s", getLastModified("$datdir/$csvzip"));
-  $sql = "INSERT INTO macs_topic (display, ctime, subject, content, href) "
-       . "VALUES (10, '{$datetime}' , '農薬登録情報更新', 'データページの農薬登録情報を「{$title}」に更新しました。', 'data.php');";
-  $db = new PDO("mysql:host=localhost;dbname=$dbname", $dbuser, $dbpass, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
-  $db->exec($sql);
-  unset($db);
-}
-*/
 ?>
