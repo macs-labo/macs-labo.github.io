@@ -170,7 +170,7 @@ jobs:
 
           CURL_OPTS=(
             -s 
-            -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }} 
+            -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" 
             -H "X-GitHub-Token: ${{ secrets.GITHUB_TOKEN }}"
           )
 
