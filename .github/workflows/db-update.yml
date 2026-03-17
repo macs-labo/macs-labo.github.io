@@ -170,10 +170,11 @@ jobs:
 
           CURL_OPTS=(
             -s 
-            -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" 
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"
+            -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }} 
+            -H "X-GitHub-Token: ${{ secrets.GITHUB_TOKEN }}"
           )
 
+          curl "${CURL_OPTS[@]}" "https://macs.xii.jp/cron/.sync.data.php$OPT"
           curl "${CURL_OPTS[@]}" "https://macs.kabe.info/cron/.sync.data.php$OPT"
           curl "${CURL_OPTS[@]}" "https://noyaku.ebb.jp/cron/.sync.data.php$OPT"
           curl "${CURL_OPTS[@]}" "https://macs.coresv.net/cron/.sync.data.php$OPT"
