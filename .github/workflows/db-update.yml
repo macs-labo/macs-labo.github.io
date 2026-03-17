@@ -31,6 +31,8 @@ permissions:
 jobs:
   update-db:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -61,9 +63,6 @@ jobs:
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             SMODE="${{ github.event.inputs.sync_mode }}"
           fi
-          echo "SYNC_MODE=$SMODE" >> $GITHUB_OUTPUT
-
-          echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
       # 1. spec.db の更新：手動実行時のみ（schedule時は実行しない）
       - name: Update spec.db
@@ -168,8 +167,13 @@ jobs:
           if [[ -n "$QUERY" ]]; then OPT="?$QUERY"; fi
 
           echo "Triggering sync with URL suffix: $OPT"
-          
-          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://macs.kabe.info/cron/.sync.data.php$OPT"
-          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://noyaku.ebb.jp/cron/.sync.data.php$OPT"
-          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://macs.coresv.net/cron/.sync.data.php$OPT"
 
+          CURL_OPTS=(
+            -s 
+            -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" 
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"
+          )
+
+          curl "${CURL_OPTS[@]}" "https://macs.kabe.info/cron/.sync.data.php$OPT"
+          curl "${CURL_OPTS[@]}" "https://noyaku.ebb.jp/cron/.sync.data.php$OPT"
+          curl "${CURL_OPTS[@]}" "https://macs.coresv.net/cron/.sync.data.php$OPT"

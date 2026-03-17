@@ -99,7 +99,13 @@ jobs:
           if [[ -n "$QUERY" ]]; then OPT="?$QUERY"; fi
 
           echo "Triggering sync with URL suffix: $OPT"
-          
-          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://macs.kabe.info/cron/.sync.cron.php$OPT"
-          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://noyaku.ebb.jp/cron/.sync.cron.php$OPT"
-          curl -s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://macs.coresv.net/cron/.sync.cron.php$OPT"
+
+          CURL_OPTS=(
+            -s 
+            -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" 
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"
+          )
+
+          curl "${CURL_OPTS[@]}" "https://macs.kabe.info/cron/.sync.cron.php$OPT"
+          curl "${CURL_OPTS[@]}" "https://noyaku.ebb.jp/cron/.sync.cron.php$OPT"
+          curl "${CURL_OPTS[@]}" "https://macs.coresv.net/cron/.sync.cron.php$OPT"
