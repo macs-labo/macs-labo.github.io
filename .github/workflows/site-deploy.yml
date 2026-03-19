@@ -33,10 +33,6 @@ jobs:
           if [ -d "data" ]; then
             cp -a data/*.html staging/data/
           fi
-          
-          if [ -d "macs" ]; then
-            cp -a macs/*.css staging/macs/
-          fi
 
           # 4. (デバッグ用) 実際にコピーされた zip の時刻を確認
           echo "=== Final Timestamp Check in Staging ==="
