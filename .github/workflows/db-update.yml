@@ -31,6 +31,13 @@ permissions:
 jobs:
   update-db:
     runs-on: ubuntu-latest
+    outputs:
+      acis_changed: ${{ steps.commit.outputs.acis_changed }}
+      force_update: ${{ steps.vars.outputs.FORCE_UPDATE }}
+      sync_mode: ${{ steps.vars.outputs.SYNC_MODE }}
+      tag: ${{ steps.info.outputs.tag }}
+      title: ${{ steps.info.outputs.title }}
+      date: ${{ steps.info.outputs.date }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -51,44 +58,30 @@ jobs:
       - name: Set Global Environment Variables
         id: vars
         run: |
-          # Force Update 判定
           if [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
             echo "FORCE_UPDATE=true" >> $GITHUB_OUTPUT
           else
             echo "FORCE_UPDATE=false" >> $GITHUB_OUTPUT
           fi
           
-          # Sync Mode 判定
           SMODE="fully_sync"
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             SMODE="${{ github.event.inputs.sync_mode }}"
           fi
+          echo "SYNC_MODE=$SMODE" >> $GITHUB_OUTPUT
 
-      # 1. spec.db の更新：手動実行時のみ（schedule時は実行しない）
       - name: Update spec.db
         if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.target == 'spec' || github.event.inputs.target == 'both') }}
         run: |
           cd cron
-          # シェルの if ではなく、env に展開して判定する
-          if [ "$FORCE_UPDATE" = "true" ]; then
-            php .make.spec.php "update=1"
-          else
-            php .make.spec.php
-          fi
+          [[ "${{ steps.vars.outputs.FORCE_UPDATE }}" == "true" ]] && php .make.spec.php "update=1" || php .make.spec.php
 
-      # 2. acis.db の更新：スケジュール実行時、または手動で acis/both が選ばれた時
       - name: Update acis.db
         if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.target == 'acis' || github.event.inputs.target == 'both')) }}
         run: |
           cd cron
-          # シェルの if ではなく、env に展開して判定する
-          if [ "$FORCE_UPDATE" = "true" ]; then
-            php .make.acis.php "update=1"
-          else
-            php .make.acis.php
-          fi
+          [[ "${{ steps.vars.outputs.FORCE_UPDATE }}" == "true" ]] && php .make.acis.php "update=1" || php .make.acis.php
 
-      # 3. コミットとプッシュ
       - name: Commit and Push changes
         id: commit
         run: |
@@ -96,84 +89,75 @@ jobs:
           git config --local user.name "github-actions[bot]"
           
           ACIS_CHANGED=false
-          if git diff --name-only | grep -q "data/acis.zip"; then
+          git add cron/*.zip cron/*.db cron/*.csv cron/*.txt cron/*.json data/*.*
+          if git diff --cached --name-only | grep -q "data/acis.zip"; then
             ACIS_CHANGED=true
           fi
           echo "acis_changed=$ACIS_CHANGED" >> $GITHUB_OUTPUT
 
-          git add cron/*.zip cron/*.db cron/*.csv cron/*.txt cron/*.json data/*.*
           if ! git diff --staged --quiet; then
             git commit -m "Update DB and data files [skip ci]"
             git push
-            echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "No changes to commit"
-            echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
-      # 4. Pages デプロイ--> 廃止 データは Pages ではなく raw.githubusers.com から取得
-      
-      # 5. update.json から情報を取得
       - name: Read update info
         id: info
-        # acis.zip が変わった時だけ実行
         if: steps.commit.outputs.acis_changed == 'true'
         run: |
-          VERSION_TAG=$(jq -r '.version_tag' cron/update.json)
-          RAW_TITLE=$(jq -r '.raw_title' cron/update.json)
-          UPDATE_DATE=$(jq -r '.update_date' cron/update.json)
-          echo "tag=$VERSION_TAG" >> $GITHUB_OUTPUT
-          echo "title=$RAW_TITLE" >> $GITHUB_OUTPUT
-          echo "date=$UPDATE_DATE" >> $GITHUB_OUTPUT
+          echo "tag=$(jq -r '.version_tag' cron/update.json)" >> $GITHUB_OUTPUT
+          echo "title=$(jq -r '.raw_title' cron/update.json)" >> $GITHUB_OUTPUT
+          echo "date=$(jq -r '.update_date' cron/update.json)" >> $GITHUB_OUTPUT
 
-      # 6. Release を作成/更新（acis.zip が変わった時だけ）
+  # 並列ジョブ1: Release の作成（過去データ保存用）
+  create-release:
+    needs: update-db
+    if: needs.update-db.outputs.acis_changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code (for assets)
+        uses: actions/checkout@v4
       - name: Create Release
-        if: steps.commit.outputs.acis_changed == 'true'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.info.outputs.tag }}
-          name: ${{ steps.info.outputs.title }}
+          tag_name: ${{ needs.update-db.outputs.tag }}
+          name: ${{ needs.update-db.outputs.title }}
           body: |
             自動更新によるデータベースアップデート
-            更新日時: ${{ steps.info.outputs.date }}
+            更新日時: ${{ needs.update-db.outputs.date }}
           files: data/acis.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 7. 各拠点の同期スクリプトを叩く
+  # 並列ジョブ2: 外部サイトの同期（各拠点の .sync.data.php を叩く）
+  sync-remote:
+    needs: update-db
+    # acisが変わった、または強制更新の場合
+    if: needs.update-db.outputs.acis_changed == 'true' || needs.update-db.outputs.force_update == 'true'
+    runs-on: ubuntu-latest
+    steps:
       - name: Trigger Remote Sync
-        if: steps.commit.outputs.acis_changed == 'true' || steps.vars.outputs.FORCE_UPDATE == 'true'
         run: |
-          echo "Waiting 120 seconds for GitHub CDN/Pages to reflect changes..."
+          echo "Waiting 120 seconds for GitHub CDN to reflect changes..."
           sleep 120
 
-          # クエリパラメータの組み立て
           QUERY=""
-          
-          # 1. 動作モードの判定
-          case "${{ steps.vars.outputs.SYNC_MODE }}" in
+          case "${{ needs.update-db.outputs.sync_mode }}" in
             "dbupdate_only")   QUERY="mode=dbupdate" ;;
             "site_sync_only")  QUERY="mode=sitesync" ;;
-            *)                 QUERY="" ;; # fully_sync はパラメータなし
           esac
 
-          # 2. 強制更新フラグの付与
-          if [[ "${{ steps.vars.outputs.FORCE_UPDATE }}" == "true" ]]; then
-            if [[ -n "$QUERY" ]]; then QUERY="${QUERY}&update=1"; else QUERY="update=1"; fi
+          if [[ "${{ needs.update-db.outputs.force_update }}" == "true" ]]; then
+            [[ -z "$QUERY" ]] && QUERY="update=1" || QUERY="${QUERY}&update=1"
           fi
 
-          # 3. URL末尾の調整
-          OPT=""
-          if [[ -n "$QUERY" ]]; then OPT="?$QUERY"; fi
-
+          OPT=$([[ -n "$QUERY" ]] && echo "?$QUERY" || echo "")
           echo "Triggering sync with URL suffix: $OPT"
 
-          CURL_OPTS=(
-            -s 
-            -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" 
-            -H "X-GitHub-Token: ${{ secrets.GITHUB_TOKEN }}"
-          )
-
+          CURL_OPTS=(-s -u "${{ secrets.SYNC_USER }}:${{ secrets.SYNC_PASS }}" -H "X-GitHub-Token: ${{ secrets.GITHUB_TOKEN }}")
           curl "${CURL_OPTS[@]}" "https://macs.xii.jp/cron/.sync.data.php$OPT"
           curl "${CURL_OPTS[@]}" "https://macs.kabe.info/cron/.sync.data.php$OPT"
           curl "${CURL_OPTS[@]}" "https://noyaku.ebb.jp/cron/.sync.data.php$OPT"
