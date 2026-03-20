@@ -16,6 +16,6 @@ branches.forEach(b => {
 });
 
 const acfbpath = '/acfinder';
-const macspath = '/macs';
+const macspath = branch === '本室別館' ? 'https://emacs.vercel.com' : '/macs';
 const datapath = '/data';
 const rootsite = 'http://macs.xii.jp/';
