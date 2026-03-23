@@ -88,18 +88,46 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
+          # *.db 以外（zip, csv, txt, jsonなど）をステージング
+          # data/*.db を明示的に除外して add
+          git add cron/*.zip cron/*.csv cron/*.txt cron/*.json data/*
+          git reset data/*.db
+          
           ACIS_CHANGED=false
-          git add cron/*.zip cron/*.db cron/*.csv cron/*.txt cron/*.json data/*.*
           if git diff --cached --name-only | grep -q "data/acis.zip"; then
             ACIS_CHANGED=true
           fi
           echo "acis_changed=$ACIS_CHANGED" >> $GITHUB_OUTPUT
 
           if ! git diff --staged --quiet; then
-            git commit -m "Update DB and data files [skip ci]"
+            git commit -m "Update distribution files [skip ci]"
             git push
           else
-            echo "No changes to commit"
+            echo "No changes for distribution files"
+          fi
+
+      - name: Push DB files to macs repository (for Vercel)
+        if: steps.commit.outputs.acis_changed == 'true' || github.event.inputs.target == 'both'
+        env:
+          # ここで Secret を環境変数として渡す
+          MY_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          # クローン時に変数を使用
+          git clone https://$MY_PAT@github.com/macs-labo/macs.git macs_dest
+          
+          mkdir -p macs_dest/data
+          cp cron/*.db macs_dest/data/
+          
+          cd macs_dest
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add data/*.db
+          
+          if ! git diff --staged --quiet; then
+            git commit -m "Update databases for Vercel [skip ci]"
+            git push
+          else
+            echo "No DB changes for macs repo"
           fi
 
       - name: Read update info
