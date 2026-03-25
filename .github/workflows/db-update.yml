@@ -20,8 +20,8 @@ on:
         type: choice
         options: [fully_sync, dbupdate_only, site_sync_only]
 
-  schedule:
-    - cron: '2 0-6 * * 1-5'
+  #schedule:
+    #- cron: '2 0-6 * * 1-5'
 
 permissions:
   contents: write
